@@ -1,9 +1,9 @@
 import { KafkaClientOptions } from 'kafka-node'
+import { Kafka } from '@/app/kafka'
 
-type EggMySQL = RDSClient;
 declare module 'egg' {
   interface Application {
-    kafka: EggMySQL;
+    kafka:  Kafka;
   }
 
   interface EggAppConfig {

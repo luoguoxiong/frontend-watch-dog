@@ -12,6 +12,7 @@
     "stop": "egg-scripts stop --title=egg-server-blubiu",
     "ets": "ets -w",
     "dev": "egg-bin dev",
+    "debug": "egg-bin debug",
     "test:local": "egg-bin test -p",
     "test": "npm run lint -- --fix && npm run test:local",
     "cov": "egg-bin cov -p",

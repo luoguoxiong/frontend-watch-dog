@@ -1,8 +1,11 @@
 import { Application } from 'egg';
-import kafka from './app/kafka';
+import { useKafka } from '@/app/kafka';
+
 export default function(app: Application) {
+  const ctx = app.createAnonymousContext();
   app.beforeStart(async () => {
-    kafka(app);
+    useKafka(app);
+    ctx.service.report.useKafkaConsume();
     console.log('blibiu....');
   });
 }

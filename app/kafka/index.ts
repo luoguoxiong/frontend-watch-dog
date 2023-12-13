@@ -1,77 +1,75 @@
-'use strict';
 import assert from 'node:assert';
-import kafka, { KafkaClient, Producer, KafkaClientOptions, ProduceRequest, OffsetFetchRequest, Message } from 'kafka-node';
+import kafka, { KafkaClient, Producer, KafkaClientOptions, ProduceRequest, Message } from 'kafka-node';
 import { Application } from 'egg';
+import { Topics } from './type';
+export class Kafka {
+  private config:KafkaClientOptions;
+  private app: Application;
+  private client: KafkaClient;
+  private producer: Producer;
+  private isInit:boolean;
 
-export default (app:Application) => {
-  app.addSingleton('kafka', createClient);
-};
-
-class Kafka {
-  public config:KafkaClientOptions;
-  public app: Application;
-  public client: KafkaClient;
-  public producer: Producer;
   constructor(config:KafkaClientOptions, app:Application) {
-    this.config = config || {};
+    this.config = config;
     this.app = app;
     this.client = new kafka.KafkaClient(this.config);
     const Producer = kafka.Producer;
-    if (this.client) {
-      this.producer = new Producer(this.client);
-      this.producer.on('ready', () => {
-        this.app.coreLogger.info('[egg-kafka] the producer is ready.');
+    this.producer = new Producer(this.client);
+    this.producer.on('ready', () => {
+      this.isInit = true;
+      this.app.coreLogger.info('[kafka] the producer is ready.');
+    });
+    this.producer.on('error', err => {
+      this.app.coreLogger.error(`[kafka] have error ${err}`);
+    });
+  }
+
+  consumer(topic:Topics, onMessage:(messge:Message)=>void) {
+    this.client.createTopics([{
+      topic,
+      partitions: 1,
+      replicationFactor: 1,
+    }], (err, result) => {
+      if (err) {
+        result.forEach(item => {
+          this.app.coreLogger.error(item.error);
+        });
+        return;
+      }
+      const offsetFetchRequest = {
+        topic,
+      };
+      const consumer = new kafka.Consumer(
+        this.client,
+        [ offsetFetchRequest ],
+        {
+          autoCommit: true,
+        },
+      );
+      consumer.on('error', err => {
+        this.app.coreLogger.error(`[kafka] consumer have error ${err}`);
       });
-      this.producer.on('error', err => {
-        this.app.coreLogger.error(`[egg-kafka] have error ${err}`);
+      consumer.on('message', (message:Message) => {
+        onMessage && onMessage(message);
       });
+    });
+  }
+
+  send(topic:Topics, messages:any) {
+    if (this.isInit) {
+      const message:ProduceRequest = {
+        topic,
+        messages,
+      };
+      this.producer.send([ message ], err => {
+        if (err) assert(err, '[kafka] producer send err. errmsg ${err}');
+      });
+    } else {
+      this.app.coreLogger.error('[kafka] producer is no ready!');
     }
   }
-
-
-  consumer(consumers:OffsetFetchRequest[], onMessage:(messge:Message)=>void) {
-    const Consumer = kafka.Consumer;
-    const _consumer = new Consumer(
-      this.client,
-      consumers,
-      {
-        autoCommit: true,
-      },
-    );
-    _consumer.on('error', err => {
-      this.app.coreLogger.error(`[egg-kafka] consumer have error ${err}`);
-    });
-    _consumer.on('message', (message:Message) => {
-      onMessage && onMessage(message);
-    });
-  }
-
-  consumerGroup(type = 'web', fn) {
-    assert(type, '[egg-kafka] consumers type argument must be required');
-    const kafkaConfig = this.app.config.kafka;
-    const kafkaHost = kafkaConfig.kafkaHost;
-    const consumerOption = kafkaConfig.consumerGroup[type] || {};
-    const topic = consumerOption.topic;
-    consumerOption.kafkaHost = kafkaHost;
-    const ConsumerGroup = kafka.ConsumerGroup;
-    const _consumer = new ConsumerGroup(consumerOption, topic);
-    _consumer.on('error', err => {
-      this.app.coreLogger.error(`[egg-kafka] consumer have error ${err}`);
-    });
-    _consumer.on('message', message => {
-      fn && fn(message);
-    });
-  }
-
-  send(producers:ProduceRequest[]) {
-    this.producer.send(producers, (err, data) => {
-      if (err) assert(err, '[egg-kafka] err. errmsg ${err}');
-      console.log(data);
-    });
-  }
 }
 
-function createClient(config, app) {
-  const kafka = new Kafka(config, app);
-  return kafka;
-}
+export const useKafka = (app:Application) => {
+  app.kafka = new Kafka(app.config.kafka, app);
+};
