@@ -19,7 +19,8 @@
     "ci": "npm run lint && npm run cov && npm run tsc && npm run clean",
     "lint": "eslint . --ext .ts --cache",
     "tsc": "tsc",
-    "clean": "tsc -b --clean"
+    "clean": "tsc -b --clean",
+    "sequelize": "sequelize init:config && sequelize init:migrations"
   },
   "dependencies": {
     "@eggjs/tegg": "^3.5.2",
@@ -32,8 +33,10 @@
     "egg": "^3.15.0",
     "egg-mysql": "^4.0.0",
     "egg-scripts": "^2.17.0",
+    "egg-sequelize": "^6.0.0",
     "egg-tracer": "^2.0.0",
-    "kafka-node": "^5.0.0"
+    "kafka-node": "^5.0.0",
+    "mysql2": "^3.6.5"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "1",
@@ -44,6 +47,8 @@
     "egg-ts-helper": "^2.1.0",
     "eslint": "8",
     "eslint-config-egg": "13",
+    "sequelize": "6.6.2",
+    "sequelize-cli": "6.6.2",
     "typescript": "~5.2.2"
   },
   "engines": {
