@@ -31,3 +31,19 @@ npm start
 
 - Node.js >= 16.x
 - Typescript >= 4.x
+
+### 
+```shell
+# 创建表
+npx sequelize migration:generate --name=init-users
+
+npx sequelize db:migrate
+
+npx sequelize db:migrate:undo
+# 修改表
+npx sequelize-cli seed:generate --name user
+
+npx sequelize-cli db:seed:all
+
+npx sequelize-cli db:seed:all:undo
+```

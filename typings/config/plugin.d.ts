@@ -22,7 +22,6 @@ import '@eggjs/tegg-schedule-plugin';
 import '@eggjs/tegg-eventbus-plugin';
 import '@eggjs/tegg-aop-plugin';
 import 'egg-tracer';
-import 'egg-mysql';
 import 'egg-sequelize';
 import { EggPluginItem } from 'egg';
 declare module 'egg' {
@@ -46,7 +45,6 @@ declare module 'egg' {
     eventbusModule?: EggPluginItem;
     aopModule?: EggPluginItem;
     tracer?: EggPluginItem;
-    mysql?: EggPluginItem;
     sequelize?: EggPluginItem;
   }
 }
