@@ -3,10 +3,10 @@
 /* eslint-disable */
 
 import 'egg';
-import ExportUsers from '../../../app/model/users';
+import ExportPages from '../../../app/model/pages';
 
 declare module 'egg' {
   interface IModel {
-    Users: ReturnType<typeof ExportUsers>;
+    Pages: ReturnType<typeof ExportPages>;
   }
 }

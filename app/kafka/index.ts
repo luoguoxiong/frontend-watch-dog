@@ -29,11 +29,13 @@ export class Kafka {
       topic,
       partitions: 1,
       replicationFactor: 1,
-    }], (err, result) => {
+    }], err => {
       if (err) {
-        result.forEach(item => {
-          this.app.coreLogger.error(item.error);
-        });
+        console.log('forEach', err);
+
+        // result.forEach(item => {
+        //   this.app.coreLogger.error(item.error);
+        // });
         return;
       }
       const offsetFetchRequest = {
@@ -59,7 +61,7 @@ export class Kafka {
     if (this.isInit) {
       const message:ProduceRequest = {
         topic,
-        messages,
+        messages: JSON.stringify(messages),
       };
       this.producer.send([ message ], err => {
         if (err) assert(err, '[kafka] producer send err. errmsg ${err}');

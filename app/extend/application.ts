@@ -1,23 +1,23 @@
 import { Application } from 'typings/app';
+import { pagesModel } from '@/app/model/pages';
 
-export default {
-  async createTable(appId:string) {
-    const app = this as Application;
-
-    const { STRING } = app.Sequelize;
-    const DynamicModel = app.model.define(`user-${appId}`, {
-      columnName: {
-        type: STRING,
-        comment: 'toDo',
-      },
-      age: {
-        type: STRING,
-        comment: 'toDo',
-      },
-    });
-    // 同步模型到数据库
-    await DynamicModel.sync();
-    return DynamicModel;
-  },
+const isExitTable = async (app:Application, targetTable) => {
+  const allTable = await app.model.getQueryInterface().showAllTables();
+  return allTable.includes(targetTable);
 };
 
+export default {
+  async getPagesModel(appId:string) {
+    const app = this as Application;
+
+    const tableName = `pages_${appId}_reports`;
+
+    const isExist = await isExitTable(app, tableName);
+
+    const model = app.model.define(tableName, pagesModel);
+    if (!isExist) {
+      await model.sync();
+    }
+    return model;
+  },
+};

@@ -28,6 +28,10 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-tracer',
   },
+  cors: {
+    enable: true,
+    package: 'egg-cors',
+  },
   sequelize: {
     enable: true,
     package: 'egg-sequelize',

@@ -15,6 +15,19 @@ export default (appInfo: EggAppInfo) => {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
   };
 
+  config.security = {
+    domainWhiteList: [ 'http://192.168.104.105:18090', 'http://localhost:7001' ],
+    csrf: {
+      enable: false,
+      ignore: '/api/v1/report/**',
+    },
+  };
+
+  config.cors = {
+    origin: '*',
+    allowMethods: 'GET,PUT,POST,DELETE',
+  };
+
   // the return config will combines to EggAppConfig
   return {
     ...config,

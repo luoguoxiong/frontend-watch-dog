@@ -1,0 +1,22 @@
+{
+  "name": "web-test",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "hull dev",
+    "dev:vite": "hull dev --vite",
+    "build": "hull build",
+    "build:vite": "hull build  --vite",
+    "server": "hull server",
+    "server:vite": "hull server --vite"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.4",
+    "@hulljs/eslint-config-hull-app": "^0.1.0",
+    "@hulljs/cli": "0.8.0"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
