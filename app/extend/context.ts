@@ -1,19 +1,6 @@
 import { Context } from 'egg';
+import { BluBiuResponseCode, responseMsg } from './context.type';
 
-
-type ResponseMsg = {
-  [key in BluBiuResponseCode]: string;
-};
-
-export enum BluBiuResponseCode{
-  SUCCESS = 1000,
-  QUERYERROR = 1001
-}
-
-export const responseMsg:ResponseMsg = {
-  [BluBiuResponseCode.SUCCESS]: '',
-  [BluBiuResponseCode.QUERYERROR]: '请求参数错误',
-};
 
 export interface BluBiuResponse<T>{
   code: BluBiuResponseCode
@@ -31,7 +18,7 @@ export default {
     };
   },
 
-  success(data:any) {
+  success(data?:any) {
     this.result(BluBiuResponseCode.SUCCESS, data);
   },
 

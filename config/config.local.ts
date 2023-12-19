@@ -12,6 +12,9 @@ export default () => {
         password: '123456',
         define: {
           freezeTableName: true,
+          timestamps: true,
+          createdAt: true,
+          updatedAt: true,
         },
       },
     ],

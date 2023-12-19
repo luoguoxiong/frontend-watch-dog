@@ -34,7 +34,7 @@ const testTask = ()=>{
 const apiUrl = 'http://localhost:7001/report';
 
 const params:PageModelIn = {
-  appId: 'appId001',
+  appId: 'luoguoxiong001',
   isFirst: Math.random()>0.5?true:false,
   origin:location.origin,
   pageUrl:"/",
@@ -70,10 +70,11 @@ fetch(urlWithParams,{method:"get"})
   });
 }
 let index = 0
-const id = setInterval(()=>{
-  index++
-  testTask()
-  if(index===1000){
-    clearInterval(id)
-  }
-},10)
+testTask()
+// const id = setInterval(()=>{
+//   index++
+//   testTask()
+//   if(index===1000){
+//     clearInterval(id)
+//   }
+// },10)

@@ -32,18 +32,9 @@ npm start
 - Node.js >= 16.x
 - Typescript >= 4.x
 
-### 
-```shell
-# 创建表
-npx sequelize migration:generate --name=init-users
+## 用到的库
+[egg-sequelize](https://github.com/eggjs/egg-sequelize)
 
-npx sequelize db:migrate
+[sequelize-cli](https://sequelize.org/docs/v7/cli/)
 
-npx sequelize db:migrate:undo
-# 修改表
-npx sequelize-cli seed:generate --name user
-
-npx sequelize-cli db:seed:all
-
-npx sequelize-cli db:seed:all:undo
-```
+[kafka-node](https://github.com/SOHU-Co/kafka-node)
