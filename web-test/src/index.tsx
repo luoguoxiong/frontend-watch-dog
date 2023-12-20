@@ -37,8 +37,8 @@ const params:PageModelIn = {
   appId: 'luoguoxiong001',
   isFirst: Math.random()>0.5?true:false,
   origin:location.origin,
-  pageUrl:"/",
-  userId:Math.random()>0.5?"":`${Math.random()}`,
+  pageUrl: "/",
+  userId:`${Math.floor(Math.random() * 100) + 1}`,
   loadTime:10,
   dnsTime:20,
   tcpTime:30,
@@ -70,11 +70,7 @@ fetch(urlWithParams,{method:"get"})
   });
 }
 let index = 0
-testTask()
-// const id = setInterval(()=>{
-//   index++
-//   testTask()
-//   if(index===1000){
-//     clearInterval(id)
-//   }
-// },10)
+const id = setInterval(()=>{
+  index++
+  testTask()
+},1000)

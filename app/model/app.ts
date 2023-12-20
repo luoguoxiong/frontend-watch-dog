@@ -1,7 +1,7 @@
 import * as sequelize from 'sequelize';
 import { Application } from 'typings/app';
-
-export interface AppModelIn {
+import { PublicTimeIn } from './type';
+export interface AppModelIn extends PublicTimeIn {
   /** 应用AppId */
   appId:string
   /** 创建用户Id */
@@ -37,6 +37,6 @@ export const appModel:sequelize.ModelAttributes = {
   },
 };
 
-export default (app:Application) => {
+export default (app:Application):sequelize.ModelCtor<sequelize.Model<AppModelIn>> => {
   return app.model.define('app', appModel);
 };

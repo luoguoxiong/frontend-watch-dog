@@ -1,6 +1,6 @@
 import * as sequelize from 'sequelize';
-
-export interface PageModelIn {
+import { PublicTimeIn } from './type';
+export interface PageModelIn extends PublicTimeIn {
   /** 应用AppId */
   appId:string
   /** 是否是首屏 */
@@ -11,6 +11,22 @@ export interface PageModelIn {
   origin?:string
   /** 用户ID */
   userId?:string
+  /** ip地址 */
+  ip?:string
+  /** 浏览器名称 */
+  browserName?:string
+  /** 浏览器版本号 */
+  browserVersion?:string
+  /** 浏览器主版本 */
+  browserMajors?:string
+  /** 系统名称 */
+  osName?:string
+  /** 系统版本号 */
+  osVersion?:string
+  /** 设备名称 */
+  deviceVendor?:string
+  /** 设备模型 */
+  deviceModel?:string
   /** 页面加时长 */
   loadTime?:number
   /** 页面Dns解析时长 */
@@ -54,6 +70,38 @@ export const pagesModel:sequelize.ModelAttributes = {
   userId: {
     type: sequelize.STRING(20),
     comment: '用户ID',
+  },
+  ip: {
+    type: sequelize.STRING(15),
+    comment: 'ip地址',
+  },
+  browserName: {
+    type: sequelize.STRING(15),
+    comment: '浏览器名称',
+  },
+  browserVersion: {
+    type: sequelize.STRING(15),
+    comment: '浏览器版本号',
+  },
+  browserMajor: {
+    type: sequelize.STRING(15),
+    comment: '浏览器主版本',
+  },
+  osName: {
+    type: sequelize.STRING(15),
+    comment: '系统名称',
+  },
+  osVersion: {
+    type: sequelize.STRING(15),
+    comment: '系统版本号',
+  },
+  deviceVendor: {
+    type: sequelize.STRING(15),
+    comment: '设备名称',
+  },
+  deviceModel: {
+    type: sequelize.STRING(15),
+    comment: '设备模型',
   },
   loadTime: {
     type: sequelize.INTEGER(),

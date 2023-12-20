@@ -8,5 +8,5 @@ export const getUserIp = (ctx:Context) => {
   ctx.req.connection.remoteAddress ||
   ctx.req.socket.remoteAddress ||
   ctx.ip) as string;
-  return res ? res.match(/[.\d\w]+/g)?.join('') : '';
+  return res === '::1' ? '127.0.0.1' : res;
 };

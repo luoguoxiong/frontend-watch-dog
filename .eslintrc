@@ -3,5 +3,8 @@
   "extends": [
     "eslint-config-egg/typescript",
     "eslint-config-egg/lib/rules/enforce-node-prefix"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": 0
+  }
 }
