@@ -7,10 +7,12 @@ specifiers:
   '@types/react-dom': ^18.0.4
   react: ^17.0.1
   react-dom: ^17.0.1
+  web-vitals: ^3.5.0
 
 dependencies:
   react: registry.npmmirror.com/react/17.0.2
   react-dom: registry.npmmirror.com/react-dom/17.0.2_react@17.0.2
+  web-vitals: registry.npmmirror.com/web-vitals/3.5.0
 
 devDependencies:
   '@hulljs/cli': registry.npmmirror.com/@hulljs/cli/0.8.0
@@ -9943,6 +9945,12 @@ packages:
     dependencies:
       minimalistic-assert: registry.npmmirror.com/minimalistic-assert/1.0.1
     dev: true
+
+  registry.npmmirror.com/web-vitals/3.5.0:
+    resolution: {integrity: sha512-f5YnCHVG9Y6uLCePD4tY8bO/Ge15NPEQWtvm3tPzDKygloiqtb4SVqRHBcrIAqo2ztqX5XueqDn97zHF0LdT6w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/web-vitals/-/web-vitals-3.5.0.tgz}
+    name: web-vitals
+    version: 3.5.0
+    dev: false
 
   registry.npmmirror.com/webpack-bundle-analyzer/4.10.1:
     resolution: {integrity: sha512-s3P7pgexgT/HTUSYgxJyn28A+99mmLq4HsJepMPzu0R8ImJc52QNqaFYW1Z2z2uIb1/J3eYgaAWVpaC+v/1aAQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-4.10.1.tgz}

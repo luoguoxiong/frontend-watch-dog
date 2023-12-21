@@ -33,9 +33,12 @@
     "cron-parser": "^4.9.0",
     "egg": "^3.15.0",
     "egg-cors": "^3.0.0",
+    "egg-elasticsearch": "^1.0.0",
     "egg-scripts": "^2.17.0",
     "egg-sequelize": "^6.0.0",
     "egg-tracer": "^2.0.0",
+    "egg-validate": "^2.0.2",
+    "elasticsearch": "^16.7.3",
     "kafka-node": "^5.0.0",
     "mysql2": "^3.6.5",
     "ua-parser-js": "^1.0.37"

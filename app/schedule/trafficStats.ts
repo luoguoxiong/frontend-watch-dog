@@ -6,7 +6,7 @@ export default (app:Application) => {
       cron: app.config.trafficStatsScheduleMin,
       type: 'all',
       disable: false,
-      immediate: true,
+      immediate: false,
     },
     async task(ctx:Context) {
       ctx.service.trafficStats.getTrafficStatsMinutes();

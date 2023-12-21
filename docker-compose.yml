@@ -9,7 +9,6 @@ services:
       - "TZ=Asia/Shanghai"
     ports: 
       - 3306:3306
-        # 源 https://raw.githubusercontent.com/wurstmeister/kafka-docker/master/docker-compose.yml
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
@@ -19,8 +18,12 @@ services:
     ports:
       - "9092:9092"
     environment:
-      # your docker host IP (Note: Do not use localhost or 127.0.0.1 as the host ip if you want to run multiple brokers.)
       KAFKA_ADVERTISED_HOST_NAME: ${hostIP}
-      # KAFKA_ZOOKEEPER_CONNECT: zookeeper:2180
       KAFKA_ZOOKEEPER_CONNECT: ${hostIP}:2181
-  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"

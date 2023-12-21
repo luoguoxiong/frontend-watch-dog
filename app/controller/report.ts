@@ -6,6 +6,16 @@ import { getUserIp } from '@/app/utils';
 export default class ReportController extends Controller {
   public async index() {
     const { ctx, service } = this;
+    ctx.validate(
+      {
+        appId: 'string',
+        isFirst: {
+          type: 'string',
+          min: 0,
+          max: 1,
+        },
+        pageUrl: 'string',
+      }, ctx.query);
     const query = ctx.query as any as PageModelIn;
     const isOk = await service.app.checkAppIdStatus(query.appId);
     if (isOk) {
