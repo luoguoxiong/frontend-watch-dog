@@ -5,7 +5,6 @@ services:
     environment:
       - "MYSQL_ROOT_PASSWORD=123456"
       - "MYSQL_DATABASE=database_development"
-      - "MYSQL_DATABASE=database_test"
       - "TZ=Asia/Shanghai"
     ports: 
       - 3306:3306
@@ -22,8 +21,14 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: ${hostIP}:2181
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
     ports:
       - "9200:9200"
+    environment:
+      - discovery.type=single-node
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - I18N_LOCALE=zh-CN

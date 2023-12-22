@@ -90,7 +90,7 @@ export interface PageModelIn {
   /** 应用AppId */
   appId:string
   /** 是否是首屏 */
-  isFirst: 0 | 1
+  isFirst: boolean
   /** 访问Url路径 */
   pageUrl:string
   /** 访问的域名 */
@@ -120,9 +120,9 @@ const apiUrl = 'http://localhost:7001/report';
 
 const params:PageModelIn = {
   appId: 'luoguoxiong001',
-  isFirst: Math.random()>0.5?1:0,
+  isFirst: Math.random()>0.5?true:false,
   origin:location.origin,
-  pageUrl: "/",
+  pageUrl: `/${Math.floor(Math.random() * 100) + 1}`,
   userId:`${Math.floor(Math.random() * 100) + 1}`,
   loadTime:10,
   dnsTime:20,
@@ -155,10 +155,10 @@ fetch(urlWithParams,{method:"get"})
   });
 }
 let index = 0
-// const id = setInterval(()=>{
-//   index++
-//   testTask()
-// },1000)
+const id = setInterval(()=>{
+  index++
+  testTask()
+},10)
 
 setTimeout(() => {
   ReactDOM.render(<div>111</div>,document.getElementById("root"))

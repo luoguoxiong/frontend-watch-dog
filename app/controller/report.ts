@@ -9,11 +9,6 @@ export default class ReportController extends Controller {
     ctx.validate(
       {
         appId: 'string',
-        isFirst: {
-          type: 'string',
-          min: 0,
-          max: 1,
-        },
         pageUrl: 'string',
       }, ctx.query);
     const query = ctx.query as any as PageModelIn;

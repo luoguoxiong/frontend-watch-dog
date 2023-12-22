@@ -3,7 +3,9 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
-  config.trafficStatsScheduleMin = '0 */1 * * * *';
+  config.trafficStatsScheduleMin = '0 */60 * * * *';
+
+  config.trafficStatsScheduleDay = '0 0 */24 * * *';
 
   // override config from framework / plugin
   // use for cookie sign key, should change to your own and keep security
@@ -16,8 +18,6 @@ export default (appInfo: EggAppInfo) => {
   const bizConfig = {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
   };
-
-  config.pvuvipScheduleTaskMinTime = '0 */2 * * * *';
 
   config.security = {
     domainWhiteList: [ 'http://192.168.104.105:18090', 'http://localhost:7001' ],

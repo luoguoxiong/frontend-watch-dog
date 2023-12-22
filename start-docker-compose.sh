@@ -1,2 +1,2 @@
 export hostIP='192.168.104.105'
-docker-compose up -d  --build
+DOCKER_DEFAULT_PLATFORM=linux/arm64  docker-compose up -d  --build

@@ -9,11 +9,9 @@ export default class TrafficStatsService extends Service {
    */
   async getTrafficStatsMinutes() {
     try {
-      // 使用 cron-parser 每分钟执行一次
       const interval = parser.parseExpression(this.app.config.trafficStatsScheduleMin);
       const endTime = interval.prev().getTime();
       const beginTime = interval.prev().getTime();
-      // 获取所有应用的 Traffic 统计数据
       this.getAllAppTrafficStats(
         {
           beginTime,
@@ -28,6 +26,35 @@ export default class TrafficStatsService extends Service {
             await trafficModel.create({
               appId,
               type: 1,
+              ...item,
+            });
+          }
+        },
+      );
+    } catch (error) {
+      this.app.logger.error(error);
+    }
+  }
+
+  async getTrafficStatsDays() {
+    try {
+      const interval = parser.parseExpression(this.app.config.trafficStatsScheduleDay);
+      const endTime = interval.prev().getTime();
+      const beginTime = interval.prev().getTime();
+      this.getAllAppTrafficStats(
+        {
+          beginTime,
+          endTime,
+        },
+        async (trafficStatsRes, appId) => {
+          // 转换 Traffic 统计数据格式并存储到数据库
+          const pageStatsResult = this.trafficTrasform(trafficStatsRes);
+          const trafficModel = await this.app.getTrafficStatsModel(appId);
+          for (let index = 0; index < pageStatsResult.length; index++) {
+            const item = pageStatsResult[index];
+            await trafficModel.create({
+              appId,
+              type: 2,
               ...item,
             });
           }

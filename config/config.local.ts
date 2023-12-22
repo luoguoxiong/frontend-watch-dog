@@ -8,7 +8,7 @@ export default () => {
         dialect: 'mysql',
         host: '127.0.0.1',
         port: 3306,
-        database: 'database_dev',
+        database: 'database_development',
         password: '123456',
         define: {
           freezeTableName: true,
@@ -22,6 +22,10 @@ export default () => {
 
   config.kafka = {
     kafkaHost: 'localhost:9092',
+  };
+
+  config.esClient = {
+    node: 'http://localhost:9200',
   };
 
   return config;

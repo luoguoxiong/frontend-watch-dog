@@ -10,3 +10,17 @@ export const getUserIp = (ctx:Context) => {
   ctx.ip) as string;
   return res === '::1' ? '127.0.0.1' : res;
 };
+
+
+export const cacheConfig = () => {
+  const isInit = {};
+  return {
+    set(key:string, value:any) {
+      isInit[key] = value;
+    },
+    get(key:string) {
+      return isInit[key];
+    },
+  };
+};
+
