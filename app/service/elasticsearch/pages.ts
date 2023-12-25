@@ -2,9 +2,6 @@ import { Service } from 'egg';
 
 import { cacheConfig } from '@/app/utils';
 
-import fs from 'node:fs';
-import path from 'node:path';
-
 const pageEsIndexIscCreateConfig = cacheConfig();
 
 export default class PagesEsService extends Service {
@@ -89,11 +86,19 @@ export default class PagesEsService extends Service {
         // scroll: '1m', // 设置滚动时间
         body: {
           // from: 2, // 起始记录索引，从第一条记录开始
-          query: {
-            range: {
-              '@timestamp': {
-                gte: new Date('2023-12-20T08:18:27.029Z').getTime(),
-                lte: new Date('2024-12-21T08:18:28.426Z').getTime(),
+          aggs: {
+            grouped_data: {
+              terms: {
+                field: 'pageUrl.keyword', // 第一个字段
+                size: 2147483647,
+              },
+              aggs: {
+                data: {
+                  terms: {
+                    field: 'userId.keyword', // 第一个字段
+                    size: 2147483647,
+                  },
+                },
               },
             },
           },
@@ -106,8 +111,8 @@ export default class PagesEsService extends Service {
     }
   }
 
-  async analyzePageUv(appId) {
-    const { body } = await this.app.esClient.search({
+  async analyzePageTrafficStats(appId:string, beginTime:number, endTime:number, groupKey?:string) {
+    const esQuery = {
       index: this.getEsIndexName(appId),
       body: {
         size: 0,
@@ -117,20 +122,46 @@ export default class PagesEsService extends Service {
               field: 'pageUrl.keyword', // 第一个字段
               size: 2147483647,
             },
-            aggs: {
-              ip: {
-                terms: {
-                  field: 'ip.keyword', // 第一个字段
-                  size: 2147483647,
-                },
-              },
+            aggs: {},
+          },
+        },
+        query: {
+          range: {
+            '@timestamp': {
+              gte: new Date(beginTime).getTime(),
+              lte: new Date(endTime).getTime(),
             },
           },
         },
         track_total_hits: true,
       },
-    });
-    fs.writeFileSync(path.join(__dirname, './test.json'), JSON.stringify(body.aggregations.grouped_data.buckets));
+    };
+    if (groupKey) {
+      esQuery.body.aggs.grouped_data.aggs = {
+        data: {
+          terms: {
+            field: `${groupKey}.keyword`, // 第一个字段
+            size: 2147483647,
+          },
+        },
+      };
+      const { body } = await this.app.esClient.search(esQuery);
+      const data = body.aggregations.grouped_data.buckets;
 
+      return data.map(item => {
+        return {
+          pageUrl: item.key,
+          count: item.data.buckets.length,
+        };
+      });
+    }
+    const { body } = await this.app.esClient.search(esQuery);
+    const data = body.aggregations.grouped_data.buckets;
+    return data.map(item => {
+      return {
+        pageUrl: item.key,
+        count: item.doc_count,
+      };
+    });
   }
 }

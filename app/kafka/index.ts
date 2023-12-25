@@ -32,10 +32,6 @@ export class Kafka {
     }], err => {
       if (err) {
         console.log('forEach', err);
-
-        // result.forEach(item => {
-        //   this.app.coreLogger.error(item.error);
-        // });
         return;
       }
       const offsetFetchRequest = {

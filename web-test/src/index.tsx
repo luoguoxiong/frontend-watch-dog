@@ -157,8 +157,9 @@ fetch(urlWithParams,{method:"get"})
 let index = 0
 const id = setInterval(()=>{
   index++
+  if(index===201) clearInterval(id) 
   testTask()
-},10)
+},100)
 
 setTimeout(() => {
   ReactDOM.render(<div>111</div>,document.getElementById("root"))

@@ -3,8 +3,7 @@ import { Controller } from 'egg';
 export default class PerformanceController extends Controller {
   public async getPagesPerformance() {
     const { ctx, service } = this;
-    this.service.elasticsearch.pages.analyzePageUv(ctx.query.appId);
-    const data = await service.elasticsearch.pages.getReportData(ctx.query.appId);
+    const data = await service.elasticsearch.pages.analyzePageTrafficStats(ctx.query.appId, 0, 11212121212121, 'userId');
     this.ctx.success({ data });
   }
 }

@@ -243,8 +243,6 @@ const data = [{
   requestTime: 80,
 }];
 
-console.log('data', data.length);
-
 
 async function insertData(indexName, data) {
   return await client.index({

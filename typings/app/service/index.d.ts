@@ -15,6 +15,8 @@ import ExportTrafficStats from '../../../app/service/trafficStats';
 import ExportType from '../../../app/service/type';
 import ExportElasticsearchIndex from '../../../app/service/elasticsearch/index';
 import ExportElasticsearchPages from '../../../app/service/elasticsearch/pages';
+import ExportElasticsearchTrafficStats from '../../../app/service/elasticsearch/trafficStats';
+import ExportElasticsearchType from '../../../app/service/elasticsearch/type';
 
 declare module 'egg' {
   interface IService {
@@ -27,6 +29,8 @@ declare module 'egg' {
     elasticsearch: {
       index: AutoInstanceType<typeof ExportElasticsearchIndex>;
       pages: AutoInstanceType<typeof ExportElasticsearchPages>;
+      trafficStats: AutoInstanceType<typeof ExportElasticsearchTrafficStats>;
+      type: AutoInstanceType<typeof ExportElasticsearchType>;
     }
   }
 }

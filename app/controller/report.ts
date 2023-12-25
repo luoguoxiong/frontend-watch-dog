@@ -16,12 +16,13 @@ export default class ReportController extends Controller {
     if (isOk) {
       const parser = new UAParser();
       const agent = ctx.headers['user-agent'];
+      const createIndex = () => Math.floor(Math.random() * 4);
       const ip = getUserIp(ctx);
       parser.setUA(agent);
       const result = parser.getResult();
       const querys = {
         ...query,
-        ip,
+        ip: [ ip, '192.168.104.101', '192.168.104.102', '192.168.104.103' ][createIndex()],
         browserName: result.browser.name,
         browserVersion: result.browser.version,
         browserMajor: result.browser.major,
