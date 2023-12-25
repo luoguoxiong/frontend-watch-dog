@@ -1,16 +1,16 @@
 import * as sequelize from 'sequelize';
-import { Application } from 'typings/app';
-import { PublicTimeIn } from './type';
-export interface AppModelIn extends PublicTimeIn {
+export interface AppModelIn {
   /** 应用AppId */
   appId:string
   /** 创建用户Id */
   createId:number
   /** app使用状态 */
   status: 0 | 1
+  createdAt?: string
+  updatedAt?:string
 }
 
-export const appModel:sequelize.ModelAttributes = {
+export const AppModel:sequelize.ModelAttributes = {
   id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   appId: {
     type: sequelize.STRING,
@@ -35,8 +35,4 @@ export const appModel:sequelize.ModelAttributes = {
     type: sequelize.DATE,
     comment: '更新日期',
   },
-};
-
-export default (app:Application):sequelize.ModelCtor<sequelize.Model<AppModelIn>> => {
-  return app.model.define('app', appModel);
 };

@@ -7,30 +7,46 @@ type AnyClass = new (...args: any[]) => any;
 type AnyFunc<T = any> = (...args: any[]) => T;
 type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
-import ExportApp from '../../../app/service/app';
-import ExportEs from '../../../app/service/es';
-import ExportPerformance from '../../../app/service/performance';
-import ExportReport from '../../../app/service/report';
-import ExportTrafficStats from '../../../app/service/trafficStats';
-import ExportType from '../../../app/service/type';
 import ExportElasticsearchIndex from '../../../app/service/elasticsearch/index';
-import ExportElasticsearchPages from '../../../app/service/elasticsearch/pages';
-import ExportElasticsearchTrafficStats from '../../../app/service/elasticsearch/trafficStats';
-import ExportElasticsearchType from '../../../app/service/elasticsearch/type';
+import ExportKafukaIndex from '../../../app/service/kafuka/index';
+import ExportKafukaReport from '../../../app/service/kafuka/report';
+import ExportKafukaType from '../../../app/service/kafuka/type';
+import ExportElasticsearchPagesIndex from '../../../app/service/elasticsearch/pages/index';
+import ExportElasticsearchPagesType from '../../../app/service/elasticsearch/pages/type';
+import ExportElasticsearchTrafficStatsIndex from '../../../app/service/elasticsearch/trafficStats/index';
+import ExportElasticsearchTrafficStatsType from '../../../app/service/elasticsearch/trafficStats/type';
+import ExportMysqlAppIndex from '../../../app/service/mysql/app/index';
+import ExportMysqlAppType from '../../../app/service/mysql/app/type';
+import ExportMysqlTrafficsIndex from '../../../app/service/mysql/traffics/index';
+import ExportMysqlTrafficsType from '../../../app/service/mysql/traffics/type';
 
 declare module 'egg' {
   interface IService {
-    app: AutoInstanceType<typeof ExportApp>;
-    es: AutoInstanceType<typeof ExportEs>;
-    performance: AutoInstanceType<typeof ExportPerformance>;
-    report: AutoInstanceType<typeof ExportReport>;
-    trafficStats: AutoInstanceType<typeof ExportTrafficStats>;
-    type: AutoInstanceType<typeof ExportType>;
     elasticsearch: {
       index: AutoInstanceType<typeof ExportElasticsearchIndex>;
-      pages: AutoInstanceType<typeof ExportElasticsearchPages>;
-      trafficStats: AutoInstanceType<typeof ExportElasticsearchTrafficStats>;
-      type: AutoInstanceType<typeof ExportElasticsearchType>;
+      pages: {
+        index: AutoInstanceType<typeof ExportElasticsearchPagesIndex>;
+        type: AutoInstanceType<typeof ExportElasticsearchPagesType>;
+      }
+      trafficStats: {
+        index: AutoInstanceType<typeof ExportElasticsearchTrafficStatsIndex>;
+        type: AutoInstanceType<typeof ExportElasticsearchTrafficStatsType>;
+      }
+    }
+    kafuka: {
+      index: AutoInstanceType<typeof ExportKafukaIndex>;
+      report: AutoInstanceType<typeof ExportKafukaReport>;
+      type: AutoInstanceType<typeof ExportKafukaType>;
+    }
+    mysql: {
+      app: {
+        index: AutoInstanceType<typeof ExportMysqlAppIndex>;
+        type: AutoInstanceType<typeof ExportMysqlAppType>;
+      }
+      traffics: {
+        index: AutoInstanceType<typeof ExportMysqlTrafficsIndex>;
+        type: AutoInstanceType<typeof ExportMysqlTrafficsType>;
+      }
     }
   }
 }

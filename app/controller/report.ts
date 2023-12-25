@@ -1,5 +1,5 @@
 import { Controller } from 'egg';
-import { PageModelIn } from '@/app/model/pages';
+import { PageModelIn } from '@/app/service/elasticsearch/pages/type';
 import { BluBiuResponseCode } from '@/app/extend/context.type';
 import UAParser from 'ua-parser-js';
 import { getUserIp } from '@/app/utils';
@@ -16,13 +16,12 @@ export default class ReportController extends Controller {
     if (isOk) {
       const parser = new UAParser();
       const agent = ctx.headers['user-agent'];
-      const createIndex = () => Math.floor(Math.random() * 4);
       const ip = getUserIp(ctx);
       parser.setUA(agent);
       const result = parser.getResult();
       const querys = {
         ...query,
-        ip: [ ip, '192.168.104.101', '192.168.104.102', '192.168.104.103' ][createIndex()],
+        ip,
         browserName: result.browser.name,
         browserVersion: result.browser.version,
         browserMajor: result.browser.major,

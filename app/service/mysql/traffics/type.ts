@@ -1,7 +1,6 @@
 import * as sequelize from 'sequelize';
-import { PublicTimeIn } from './type';
 
-export interface TrafficModelIn extends PublicTimeIn {
+export interface TrafficModelIn {
   /** 应用AppId */
   appId:string
   /** 统计类型 1 分时统计 2 按日统计 */
@@ -14,6 +13,8 @@ export interface TrafficModelIn extends PublicTimeIn {
   uniqueVisitors:number
   /** ip 访问数量 */
   uniqueIPsCount:number
+  createdAt?: string
+  updatedAt?:string
 }
 
 export const TrafficModel:sequelize.ModelAttributes = {

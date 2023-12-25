@@ -1,8 +1,7 @@
 import { Controller } from 'egg';
 export default class ReportController extends Controller {
   public async index() {
-    const { app } = this;
-    await app.model.App.create({
+    await this.service.mysql.app.index.insertData({
       appId: 'luoguoxiong001',
       status: 1,
       createId: 1,

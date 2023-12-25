@@ -1,5 +1,5 @@
 import { KafkaClientOptions } from 'kafka-node'
-import { Kafka } from '@/app/kafka'
+import { Kafka } from '@/app/service/kafuka'
 import {Client,ClientOptions} from '@elastic/elasticsearch'
 
 declare module 'egg' {
