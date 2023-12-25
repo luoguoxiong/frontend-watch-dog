@@ -2,6 +2,9 @@ import { Service } from 'egg';
 
 import { cacheConfig } from '@/app/utils';
 
+import fs from 'node:fs';
+import path from 'node:path';
+
 const pageEsIndexIscCreateConfig = cacheConfig();
 
 export default class PagesEsService extends Service {
@@ -101,5 +104,33 @@ export default class PagesEsService extends Service {
     } catch (error) {
       this.app.logger.error(error);
     }
+  }
+
+  async analyzePageUv(appId) {
+    const { body } = await this.app.esClient.search({
+      index: this.getEsIndexName(appId),
+      body: {
+        size: 0,
+        aggs: {
+          grouped_data: {
+            terms: {
+              field: 'pageUrl.keyword', // 第一个字段
+              size: 2147483647,
+            },
+            aggs: {
+              ip: {
+                terms: {
+                  field: 'ip.keyword', // 第一个字段
+                  size: 2147483647,
+                },
+              },
+            },
+          },
+        },
+        track_total_hits: true,
+      },
+    });
+    fs.writeFileSync(path.join(__dirname, './test.json'), JSON.stringify(body.aggregations.grouped_data.buckets));
+
   }
 }
