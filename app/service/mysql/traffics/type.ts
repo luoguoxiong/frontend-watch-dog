@@ -13,6 +13,8 @@ export interface TrafficModelIn {
   uniqueVisitors:number
   /** ip 访问数量 */
   uniqueIPsCount:number
+  /** 统计时间 */
+  statisticsTime: Date
   createdAt?: string
   updatedAt?:string
 }
@@ -45,6 +47,10 @@ export const TrafficModel:sequelize.ModelAttributes = {
   uniqueIPsCount: {
     type: sequelize.STRING(),
     comment: 'IP 访问数量',
+  },
+  statisticsTime: {
+    type: sequelize.DATE,
+    comment: '统计的开始时间',
   },
   createdAt: {
     type: sequelize.DATE,

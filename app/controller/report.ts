@@ -12,7 +12,7 @@ export default class ReportController extends Controller {
         pageUrl: 'string',
       }, ctx.query);
     const query = ctx.query as any as PageModelIn;
-    const isOk = await service.app.checkAppIdStatus(query.appId);
+    const isOk = await service.mysql.app.index.checkAppStatus(query.appId);
     if (isOk) {
       const parser = new UAParser();
       const agent = ctx.headers['user-agent'];
@@ -30,7 +30,7 @@ export default class ReportController extends Controller {
         deviceVendor: result.device.vendor,
         deviceModel: result.device.model,
       };
-      service.report.sendMessgeToKafka(querys);
+      service.kafuka.report.sendMessgeToKafka(querys);
       ctx.success();
     } else {
       ctx.result(BluBiuResponseCode.APPIDNOUSE);

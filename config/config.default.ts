@@ -3,7 +3,7 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
-  config.trafficStatsScheduleMin = '0 */2 * * * *';
+  config.trafficStatsScheduleMin = '0 */1 * * * *';
 
   config.trafficStatsScheduleDay = '0 0 */24 * * *';
 
@@ -30,6 +30,11 @@ export default (appInfo: EggAppInfo) => {
   config.cors = {
     origin: '*',
     allowMethods: 'GET,PUT,POST,DELETE',
+  };
+
+  config.appIndexName = {
+    page_traffics: 'page_traffics_yourAppId',
+    page_report: 'page_report_yourAppId',
   };
 
   // the return config will combines to EggAppConfig

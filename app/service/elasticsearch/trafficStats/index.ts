@@ -24,6 +24,7 @@ export default class TrafficStatsService extends Service {
             this.service.mysql.traffics.index.insertData({
               appId,
               type: 1,
+              statisticsTime: new Date(beginTime),
               ...item,
             });
           }
@@ -52,6 +53,7 @@ export default class TrafficStatsService extends Service {
             this.service.mysql.traffics.index.insertData({
               appId,
               type: 2,
+              statisticsTime: new Date(beginTime),
               ...item,
             });
           }

@@ -11,6 +11,7 @@ import ExportElasticsearchIndex from '../../../app/service/elasticsearch/index';
 import ExportKafukaIndex from '../../../app/service/kafuka/index';
 import ExportKafukaReport from '../../../app/service/kafuka/report';
 import ExportKafukaType from '../../../app/service/kafuka/type';
+import ExportRedisTest from '../../../app/service/redis/test';
 import ExportElasticsearchPagesIndex from '../../../app/service/elasticsearch/pages/index';
 import ExportElasticsearchPagesType from '../../../app/service/elasticsearch/pages/type';
 import ExportElasticsearchTrafficStatsIndex from '../../../app/service/elasticsearch/trafficStats/index';
@@ -37,6 +38,9 @@ declare module 'egg' {
       index: AutoInstanceType<typeof ExportKafukaIndex>;
       report: AutoInstanceType<typeof ExportKafukaReport>;
       type: AutoInstanceType<typeof ExportKafukaType>;
+    }
+    redis: {
+      test: AutoInstanceType<typeof ExportRedisTest>;
     }
     mysql: {
       app: {

@@ -13,14 +13,18 @@ export const getUserIp = (ctx:Context) => {
 
 
 export const cacheConfig = () => {
-  const isInit = {};
+  const cacheData = new Map<string, any>();
+
   return {
-    set(key:string, value:any) {
-      isInit[key] = value;
+    set(key: string, value: any) {
+      cacheData.set(key, value);
     },
-    get(key:string) {
-      return isInit[key];
+    get(key: string) {
+      return cacheData.get(key);
     },
   };
 };
 
+export const createIndexName = (baseName:string, appId:string) => {
+  return baseName.replace('yourAppId', appId);
+};

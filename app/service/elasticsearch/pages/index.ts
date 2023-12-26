@@ -1,29 +1,15 @@
 import { Service } from 'egg';
 
-import { cacheConfig } from '@/app/utils';
-
-const pageEsIndexIscCreateConfig = cacheConfig();
+import { createIndexName } from '@/app/utils';
 
 export default class PagesEsService extends Service {
 
-  private getEsIndexName = (appId:string) => `page-report-${appId}`;
+  private getEsIndexName = (appId:string) => createIndexName(this.app.config.appIndexName.page_report, appId);
 
-  private async checkIndex(appId:string) {
-    const esIndexName = this.getEsIndexName(appId);
-    const isExistInCache = pageEsIndexIscCreateConfig.get(esIndexName);
-    if (isExistInCache) return true;
-
-    const indexExists = await this.app.esClient.indices.exists({ index: esIndexName });
-    if (indexExists) return true;
-    await this.createIndex(esIndexName);
-    pageEsIndexIscCreateConfig.set(esIndexName, true);
-    return true;
-  }
-
-  private async createIndex(indexName:string) {
+  async createIndex(appId:string) {
     try {
       const { body } = await this.app.esClient.indices.create({
-        index: indexName,
+        index: this.getEsIndexName(appId),
         body: {
           mappings: {
             properties: {
@@ -48,7 +34,7 @@ export default class PagesEsService extends Service {
               fetchTime: { type: 'integer' },
               reirectTime: { type: 'integer' },
               requestTime: { type: 'integer' },
-              '@timestamp': { type: 'date', format: 'yyyy-MM-dd HH:mm:ss' },
+              '@timestamp': { type: 'date' },
             },
           },
           // 定义索引的设置 例如分片数、副本数等
@@ -63,8 +49,6 @@ export default class PagesEsService extends Service {
 
   async saveReportData(appId:string, reportData:any) {
     try {
-      await this.checkIndex(appId);
-
       return await this.app.esClient.index({
         index: this.getEsIndexName(appId),
         op_type: 'create', // 创建自增Id
@@ -80,7 +64,6 @@ export default class PagesEsService extends Service {
 
   async getReportData(appId:string) {
     try {
-      await this.checkIndex(appId);
       const { body: initialResponse } = await this.app.esClient.search({
         index: this.getEsIndexName(appId),
         // scroll: '1m', // 设置滚动时间

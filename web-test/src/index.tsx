@@ -119,7 +119,7 @@ const testTask = ()=>{
 const apiUrl = 'http://localhost:7001/report';
 
 const params:PageModelIn = {
-  appId: 'luoguoxiong001',
+  appId: 'luoguoxiong002',
   isFirst: Math.random()>0.5?true:false,
   origin:location.origin,
   pageUrl: `/${Math.floor(Math.random() * 100) + 1}`,
@@ -154,12 +154,14 @@ fetch(urlWithParams,{method:"get"})
     console.error('Fetch error:', error);
   });
 }
-let index = 0
-const id = setInterval(()=>{
-  index++
-  if(index===201) clearInterval(id) 
-  testTask()
-},100)
+// let index = 0
+// const id = setInterval(()=>{
+//   index++
+//   // if(index===201) clearInterval(id) 
+//   testTask()
+// },1000)
+
+testTask()
 
 setTimeout(() => {
   ReactDOM.render(<div>111</div>,document.getElementById("root"))

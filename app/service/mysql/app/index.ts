@@ -1,51 +1,30 @@
 import { Service } from 'egg';
 
-import { cacheConfig } from '@/app/utils';
-
-import { isExitTable } from '@/app/utils/mysql';
-
 import * as sequelize from 'sequelize';
 
 import { AppModel, AppModelIn } from './type';
 
-const mysqlModelIsInitConfig = cacheConfig();
-
 export default class TrafficMysqlService extends Service {
-
-  private getMysqlTableName = () => 'app';
-
-  private async checkMysqlModel() {
-    const tableName = this.getMysqlTableName();
-    const isExistInCache = mysqlModelIsInitConfig.get(tableName);
-    if (isExistInCache) return true;
-    const indexExists = await isExitTable(this.app.model, tableName);
-    if (indexExists) return true;
-    await this.createTable();
-    mysqlModelIsInitConfig.set(tableName, true);
-    return true;
+  private async getModel():Promise<sequelize.ModelCtor<sequelize.Model<AppModelIn>>> {
+    const model = this.app.model.define('app', AppModel);
+    return model;
   }
 
-  private async createTable() {
+  async createApp(data:AppModelIn) {
+    const t = await this.app.model.transaction();
     try {
-      const model = this.app.model.define(this.getMysqlTableName(), AppModel);
-      await model.sync();
-      return model;
+      const model = await this.getModel();
+      await model.create({
+        ...data,
+        status: 1,
+      });
+      await this.service.mysql.traffics.index.createTable(data.appId);
+      t.commit();
     } catch (error) {
-      throw error;
+      t.rollback();
     }
   }
 
-  private async getModel():Promise<sequelize.ModelCtor<sequelize.Model<AppModelIn>>> {
-    await this.checkMysqlModel();
-    return this.app.model.define(this.getMysqlTableName(), AppModel);
-  }
-
-  async insertData(data:AppModelIn) {
-    const model = await this.getModel();
-    await model.create({
-      ...data,
-    });
-  }
   async getIsUseApps():Promise<string[]|undefined> {
     try {
       const model = await this.getModel();
@@ -58,5 +37,18 @@ export default class TrafficMysqlService extends Service {
     } catch (error) {
       this.app.logger.error(error);
     }
+  }
+  async checkAppStatus(appId:string):Promise<boolean> {
+    const model = await this.getModel();
+    const data = await model.findOne({
+      where: {
+        appId,
+      },
+    });
+    return data?.getDataValue('status') === 1;
+  }
+  async getList() {
+    const model = await this.getModel();
+    return await model.findAll();
   }
 }

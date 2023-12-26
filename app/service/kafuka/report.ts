@@ -1,6 +1,6 @@
 import { Service } from 'egg';
 import { Topics } from '@/app/service/kafuka/type';
-import { PageModelIn } from '@/app/model/pages';
+import { PageModelIn } from '@/app/service/elasticsearch/pages/type';
 export default class ReportService extends Service {
   async useKafkaConsume() {
     this.app.kafka.consumer(Topics.TopicWeb, async message => {

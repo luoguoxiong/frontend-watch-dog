@@ -38,3 +38,7 @@ npm start
 [sequelize-cli](https://sequelize.org/docs/v7/cli/)
 
 [kafka-node](https://github.com/SOHU-Co/kafka-node)
+
+## 业务逻辑
+
+1. 创建应用 -> 创建page_traffics_appId表、在redis缓存该应用status 1

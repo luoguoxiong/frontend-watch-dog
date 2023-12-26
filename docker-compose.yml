@@ -32,3 +32,7 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - I18N_LOCALE=zh-CN
+  redis: 
+    image: redis:3.2
+    ports: 
+      - "6379:6379"
