@@ -65,7 +65,7 @@ const LoginPage = () => {
               setShow(false);
             }}>
             <div className={css['login-body']} >
-              <div className={css.title}>{type === ActionType.Login ? '登录系统' : '注册账号'}</div>
+              <div className={css.title}>{type === ActionType.Login ? '登录BLUBIU系统' : '注册BLUBIU账号'}</div>
               <Input
                 style={{ margin: '20px 0', height: 40 }}
                 placeholder="请输入账号"
