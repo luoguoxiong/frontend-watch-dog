@@ -154,7 +154,7 @@ fetch(urlWithParams,{method:"get"})
     console.error('Fetch error:', error);
   });
 }
-// let index = 0
+let index = 0
 // const id = setInterval(()=>{
 //   index++
 //   // if(index===201) clearInterval(id) 
