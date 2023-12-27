@@ -13,12 +13,15 @@ services:
     ports:
       - "2181:2181"
   kafka:
-    image: wurstmeister/kafka:2.12-2.0.1
+    image: wurstmeister/kafka
     ports:
       - "9092:9092"
     environment:
+      KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT_MS: 30000
       KAFKA_ADVERTISED_HOST_NAME: ${hostIP}
       KAFKA_ZOOKEEPER_CONNECT: ${hostIP}:2181
+    depends_on:
+      - zookeeper
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     ports:
