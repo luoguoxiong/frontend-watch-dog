@@ -1,27 +1,29 @@
 import { Service } from 'egg';
-
 import * as sequelize from 'sequelize';
-
 import { AppModel, AppModelIn } from './type';
 
-export default class TrafficMysqlService extends Service {
+export default class AppMysqlService extends Service {
   private async getModel():Promise<sequelize.ModelCtor<sequelize.Model<AppModelIn>>> {
-    const model = this.app.model.define('app', AppModel);
+    const tableName = 'app';
+    const model = this.app.model.define(tableName, AppModel);
+    const isExist = await this.service.redis.cache.checkIndexIsExists(tableName);
+    if (!isExist) {
+      await model.sync();
+      await this.service.redis.cache.setIndex(tableName);
+    }
     return model;
   }
 
   async createApp(data:AppModelIn) {
-    const t = await this.app.model.transaction();
     try {
       const model = await this.getModel();
+      await this.service.redis.cache.setIndex(data.appId);
       await model.create({
         ...data,
         status: 1,
       });
-      await this.service.mysql.traffics.index.createTable(data.appId);
-      t.commit();
     } catch (error) {
-      t.rollback();
+      this.app.logger.error(error);
     }
   }
 
@@ -38,14 +40,19 @@ export default class TrafficMysqlService extends Service {
       this.app.logger.error(error);
     }
   }
+
   async checkAppStatus(appId:string):Promise<boolean> {
+    const isInCache = await this.service.redis.cache.checkIndexIsExists(appId);
+    if (isInCache) return true;
     const model = await this.getModel();
     const data = await model.findOne({
       where: {
         appId,
       },
     });
-    return data?.getDataValue('status') === 1;
+    const isExist = data?.getDataValue('status') === 1;
+    await this.service.redis.cache.setIndex(appId);
+    return isExist;
   }
   async getList() {
     const model = await this.getModel();

@@ -7,17 +7,15 @@ export default class TrafficMysqlService extends Service {
 
   private getMysqlTableName = (appId:string) => createIndexName(this.app.config.appIndexName.page_traffics, appId);
 
-  async createTable(appId:string) {
-    try {
-      const model = this.app.model.define(this.getMysqlTableName(appId), TrafficModel);
-      await model.sync();
-    } catch (error) {
-      throw error;
-    }
-  }
-
   private async getModel(appId:string):Promise<sequelize.ModelCtor<sequelize.Model<TrafficModelIn>>> {
-    return this.app.model.define(this.getMysqlTableName(appId), TrafficModel);
+    const tableName = this.getMysqlTableName(appId);
+    const model = this.app.model.define(tableName, TrafficModel);
+    const isExist = await this.service.redis.cache.checkIndexIsExists(tableName);
+    if (!isExist) {
+      await model.sync();
+      await this.service.redis.cache.setIndex(tableName);
+    }
+    return model;
   }
 
   async insertData(data:TrafficModelIn) {

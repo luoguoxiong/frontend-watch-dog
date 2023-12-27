@@ -6,8 +6,7 @@ export default class ReportController extends Controller {
       status: 1,
       createId: 1,
     });
-    // await this.service.elasticsearch.pages.index.createIndex('luoguoxiong002');
-    this.service.redis.test.checkAppStatus();
+    await this.service.elasticsearch.pages.index.createIndex('luoguoxiong002');
     this.ctx.success();
   }
 }

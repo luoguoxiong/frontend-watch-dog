@@ -4,7 +4,6 @@ import { creatJwtToken } from '@/app/utils/jwt';
 import dayjs from 'dayjs';
 export default class DesktopController extends Controller {
   public async login() {
-    this.service.redis.test.checkAppStatus();
     this.ctx.success();
   }
   public async register() {

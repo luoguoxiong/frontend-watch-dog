@@ -3,7 +3,7 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
-  config.trafficStatsScheduleMin = '0 */1 * * * *';
+  config.trafficStatsScheduleMin = '0 */30 * * * *';
 
   config.trafficStatsScheduleDay = '0 0 */24 * * *';
 

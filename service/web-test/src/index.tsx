@@ -155,11 +155,11 @@ fetch(urlWithParams,{method:"get"})
   });
 }
 let index = 0
-// const id = setInterval(()=>{
-//   index++
-//   // if(index===201) clearInterval(id) 
-//   testTask()
-// },1000)
+const id = setInterval(()=>{
+  index++
+  // if(index===201) clearInterval(id) 
+  testTask()
+},500)
 
 testTask()
 
