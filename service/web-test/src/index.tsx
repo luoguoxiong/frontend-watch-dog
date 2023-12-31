@@ -159,7 +159,7 @@ const id = setInterval(()=>{
   index++
   // if(index===201) clearInterval(id) 
   testTask()
-},500)
+},100)
 
 testTask()
 

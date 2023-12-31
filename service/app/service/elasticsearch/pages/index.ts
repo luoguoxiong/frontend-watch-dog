@@ -102,7 +102,7 @@ export default class PagesEsService extends Service {
         aggs: {
           grouped_data: {
             terms: {
-              field: 'pageUrl.keyword', // 第一个字段
+              field: 'pageUrl', // 第一个字段
               size: 2147483647,
             },
             aggs: {},
@@ -111,8 +111,8 @@ export default class PagesEsService extends Service {
         query: {
           range: {
             '@timestamp': {
-              gte: new Date(beginTime).getTime(),
-              lte: new Date(endTime).getTime(),
+              gte: new Date(beginTime),
+              lte: new Date(endTime),
             },
           },
         },
@@ -123,7 +123,7 @@ export default class PagesEsService extends Service {
       esQuery.body.aggs.grouped_data.aggs = {
         data: {
           terms: {
-            field: `${groupKey}.keyword`, // 第一个字段
+            field: `${groupKey}`, // 第一个字段
             size: 2147483647,
           },
         },

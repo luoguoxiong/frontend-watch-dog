@@ -6,6 +6,7 @@ export default (app: Application) => {
   router.get('/performance/getPagesPerformance', controller.performance.getPagesPerformance);
   router.get('/app', controller.app.index);
 
-  router.get('/api/desktop/login', controller.desktop.login);
-  router.get('/api/desktop/register', controller.desktop.register);
+  router.post('/api/desktop/login', controller.desktop.login);
+  router.post('/api/desktop/register', controller.desktop.register);
+  router.get('/api/desktop/getUserInfo', controller.desktop.getUserInfo);
 };

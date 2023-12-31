@@ -1,32 +1,34 @@
 import * as sequelize from 'sequelize';
-export interface AppModelIn {
-  /** 应用AppId */
-  appId:string
-  /** 创建用户Id */
-  createId:number
-  /** app使用状态 */
+export interface UserModelIn {
+  /** 用户ID */
+  id?:number
+  /** 登录账号 */
+  account:string
+  /** 加密登录密码 */
+  encPassword:string
+  /** 账号状态 */
   status: 0 | 1
   createdAt?: string
   updatedAt?:string
 }
 
-export const AppModel:sequelize.ModelAttributes = {
+export const UserModel:sequelize.ModelAttributes = {
   id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-  appId: {
+  account: {
     type: sequelize.STRING,
     allowNull: false,
     unique: true,
-    comment: '应用AppId',
+    comment: '登录账号',
   },
-  createId: {
-    type: sequelize.INTEGER,
-    defaultValue: false,
+  encPassword: {
+    type: sequelize.STRING,
     allowNull: false,
-    comment: '创建人用户ID',
+    comment: '加密登录密码',
   },
   status: {
     type: sequelize.INTEGER(),
-    comment: 'app使用状态',
+    defaultValue: 1,
+    comment: '账号状态',
   },
   createdAt: {
     type: sequelize.DATE,

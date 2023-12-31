@@ -1,23 +1,36 @@
 
-import React from 'react';
-const Login = React.lazy(() => import('@/src/pages/login'));
-const Home = React.lazy(() => import('@/src/pages/home'));
-const TrafficStats = React.lazy(() => import('@/src/pages/trafficStats'));
-export const routes = [
+import React, { Suspense, lazy, ComponentType } from 'react';
+import { RouteObject } from 'react-router-dom';
+
+const lazyLoad = (dynamicImport: () => Promise<{ default: ComponentType<any> }>) => {
+  const Component = lazy(dynamicImport);
+  return (
+    <Suspense fallback={'加载中...'}>
+      <Component />
+    </Suspense>
+  );
+};
+export const routes: RouteObject[] = [
   {
     path: '/login',
-    element: Login,
+    element: lazyLoad(() => import('../pages/login')),
   },
   {
-    path: '/home',
-    element: Home,
+    path: '/',
+    element: lazyLoad(() => import('../pages/home')),
+    children: [{
+      path: '/',
+      element: lazyLoad(() => import('../pages/trafficStats')),
+    },
+    {
+      path: '/*',
+      element: lazyLoad(() => import('@/src/components/notFound')),
+    },
+    ],
   },
-];
-
-export const subRoutes = [
   {
-    path: '/home/trafficStats',
-    element: TrafficStats,
+    path: '*',
+    element: lazyLoad(() => import('@/src/components/notFound')),
   },
 ];
 

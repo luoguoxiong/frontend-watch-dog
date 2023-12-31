@@ -1,37 +1,15 @@
 import React from 'react';
 import './app.css';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { NotFound } from '@/src/components';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { routes } from '@/src/router';
-
+import { store } from '@/src/models/store';
+const router = createBrowserRouter(routes);
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={<Navigate to="/home" />} />
-        {
-          routes.map((item) => <Route
-            path={item.path}
-            key={item.path}
-            element={
-              <React.Suspense fallback="加载中...">
-                <item.element />
-              </React.Suspense>
-            }
-          />)
-        }
-        <Route
-          path="*"
-          element={
-            <React.Suspense fallback="加载中...">
-              <NotFound />
-            </React.Suspense>
-          }
-        />
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   );
 }
 

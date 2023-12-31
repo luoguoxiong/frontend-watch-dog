@@ -20,16 +20,17 @@ export default (appInfo: EggAppInfo) => {
   };
 
   config.security = {
-    domainWhiteList: [ 'http://192.168.104.105:18090', 'http://localhost:7001' ],
+    domainWhiteList: [ 'http://192.168.104.105:8080', 'http://localhost:8080' ],
     csrf: {
       enable: false,
-      ignore: '/api/v1/report/**',
+      ignore: '/api/desktop/**',
     },
   };
 
   config.cors = {
     origin: '*',
-    allowMethods: 'GET,PUT,POST,DELETE',
+    credentials: true,
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
 
   config.appIndexName = {

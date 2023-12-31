@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TrafficStats = (props) => (
-  <div>TrafficStats</div>
+  <div style={{ height: '200vh' }}>TrafficStats</div>
 );
 
 export default TrafficStats;

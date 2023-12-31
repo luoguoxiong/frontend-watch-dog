@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "es2016"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "baseUrl": ".",
     "jsx": "react",

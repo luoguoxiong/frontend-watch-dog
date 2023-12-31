@@ -1,12 +1,17 @@
 import React, { useState }from 'react';
-import { Input } from 'antd';
-import css from './index.module.scss';
-
+import { Input, message as Message, Modal } from 'antd';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import css from './index.module.less';
+import { login, register } from '@/src/api/index';
+import { Dispatch } from '@/src/models/store';
 enum ActionType{
   Login = 0,
   Regist
 }
 const LoginPage = () => {
+  const dispatch = useDispatch<Dispatch>();
+  const navigate = useNavigate();
   const [type, setType] = useState(ActionType.Login);
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
@@ -30,11 +35,36 @@ const LoginPage = () => {
     });
   };
 
-  const toSubmit = (type: ActionType) => {
+  const toLogin = async() => {
+    await login({
+      account: form.user,
+      password: form.pwd,
+    });
+    await dispatch.user.getUserInfo();
+    navigate('/');
+  };
+
+
+
+  const toSubmit = async(type: ActionType) => {
+    const { user, pwd } = form;
+    const reg = /^[a-zA-Z0-9]{6,10}$/;
+    if(!reg.test(user) || !reg.test(pwd)){
+      return Message.error('请输入长度6~10，只包含数字和字母的账号和密码');
+    }
     if(type === ActionType.Login){
-      // todoLogin
+      toLogin();
     }else{
-      // todoRegist
+      await register({
+        account: form.user,
+        password: form.pwd,
+      });
+      Modal.confirm({
+        content: '立即登录？',
+        onOk: async() => {
+          toLogin();
+        },
+      });
     }
   };
   return (

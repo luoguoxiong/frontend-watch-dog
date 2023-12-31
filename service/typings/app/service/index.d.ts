@@ -20,6 +20,8 @@ import ExportMysqlAppIndex from '../../../app/service/mysql/app/index';
 import ExportMysqlAppType from '../../../app/service/mysql/app/type';
 import ExportMysqlTrafficsIndex from '../../../app/service/mysql/traffics/index';
 import ExportMysqlTrafficsType from '../../../app/service/mysql/traffics/type';
+import ExportMysqlUserIndex from '../../../app/service/mysql/user/index';
+import ExportMysqlUserType from '../../../app/service/mysql/user/type';
 
 declare module 'egg' {
   interface IService {
@@ -50,6 +52,10 @@ declare module 'egg' {
       traffics: {
         index: AutoInstanceType<typeof ExportMysqlTrafficsIndex>;
         type: AutoInstanceType<typeof ExportMysqlTrafficsType>;
+      }
+      user: {
+        index: AutoInstanceType<typeof ExportMysqlUserIndex>;
+        type: AutoInstanceType<typeof ExportMysqlUserType>;
       }
     }
   }
