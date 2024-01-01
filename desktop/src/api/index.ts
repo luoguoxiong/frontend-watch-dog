@@ -41,6 +41,8 @@ http.interceptors.response.use(({ data, status }) => {
 
 export const login = async(params: LoginRegsiterIn): BluBiuResponse<any> => await http.post('/login', params);
 
+export const loginOut = async(): BluBiuResponse<any> => await http.post('/loginOut');
+
 export const register = async(params: LoginRegsiterIn): BluBiuResponse<any> => await http.post('/register', params);
 
 export const getUserInfo = async(): BluBiuResponse<UserInfo> => await http.get('/getUserInfo');

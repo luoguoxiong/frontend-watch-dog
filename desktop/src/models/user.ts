@@ -1,5 +1,4 @@
 import { createModel } from '@rematch/core';
-import { message as Message } from 'antd';
 import type { RootModel } from '.';
 import { getUserInfo } from '@/src/api';
 
@@ -10,6 +9,12 @@ const userModel = createModel<RootModel>()({
     isLoading: true,
   },
   reducers: {
+    loginOut(){
+      return {
+        userInfo: {} as UserInfo,
+        isLoading: false,
+      };
+    },
     setUserInfo(state, payload: Partial<UserInfo>) {
       return {
         ...state,

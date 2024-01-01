@@ -12,6 +12,7 @@
   "devDependencies": {
     "@hulljs/cli": "0.8.0",
     "@hulljs/eslint-config-hull-app": "^0.1.0",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20.10.5",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.2.18",
@@ -22,6 +23,7 @@
     "@rematch/core": "^2.2.0",
     "antd": "^5.12.5",
     "axios": "^1.6.2",
+    "classnames": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",

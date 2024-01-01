@@ -71,4 +71,10 @@ export default class DesktopController extends Controller {
       this.app.logger.error(error);
     }
   }
+  async loginOut() {
+    this.ctx.cookies.set('BLUBIUTOKEN', null, {
+      expires: dayjs().add(-1, 'day').toDate(),
+    });
+    this.ctx.success();
+  }
 }
