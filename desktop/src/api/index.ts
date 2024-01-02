@@ -46,3 +46,5 @@ export const loginOut = async(): BluBiuResponse<any> => await http.post('/loginO
 export const register = async(params: LoginRegsiterIn): BluBiuResponse<any> => await http.post('/register', params);
 
 export const getUserInfo = async(): BluBiuResponse<UserInfo> => await http.get('/getUserInfo');
+
+export const getAppList = async(): BluBiuResponse<UserInfo> => await http.get('/getAppList');

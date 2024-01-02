@@ -10,4 +10,6 @@ export default (app: Application) => {
   router.post('/api/desktop/loginOut', controller.desktop.loginOut);
   router.post('/api/desktop/register', controller.desktop.register);
   router.get('/api/desktop/getUserInfo', controller.desktop.getUserInfo);
+
+  router.get('/api/desktop/getAppList', controller.app.getAppList);
 };

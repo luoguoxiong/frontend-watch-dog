@@ -2,6 +2,10 @@ import * as sequelize from 'sequelize';
 export interface AppModelIn {
   /** 应用AppId */
   appId:string
+  /** 应用类型 */
+  appName: string
+  /** 应用类型 */
+  appType: number
   /** 创建用户Id */
   createId:number
   /** app使用状态 */
@@ -18,6 +22,16 @@ export const AppModel:sequelize.ModelAttributes = {
     unique: true,
     comment: '应用AppId',
   },
+  appName: {
+    type: sequelize.STRING,
+    allowNull: false,
+    comment: '应用名称',
+  },
+  appType: {
+    type: sequelize.INTEGER(),
+    allowNull: false,
+    comment: 'app类型',
+  },
   createId: {
     type: sequelize.INTEGER,
     defaultValue: false,
@@ -26,6 +40,7 @@ export const AppModel:sequelize.ModelAttributes = {
   },
   status: {
     type: sequelize.INTEGER(),
+    allowNull: false,
     comment: 'app使用状态',
   },
   createdAt: {

@@ -3,31 +3,46 @@ import { Layout, Menu, Modal } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import cls from 'classnames';
 import { MenuUnfoldOutlined, MenuFoldOutlined, PoweroffOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import stylels from './index.module.less';
 import { loginOut } from '@/src/api';
 import logoPng from '@/src/images/logo.png';
-import { checkLoginStatus } from '@/src/components/checkLoginStatus';
+import { checkAppStatus } from '@/src/components/checkAppStatus';
 import { munuRouters } from '@/src/router';
-import { Dispatch } from '@/src/models/store';
+import { RootState } from '@/src/models/store';
 const { Sider } = Layout;
 
-const menus = munuRouters.map(
-  (item) => ({
-    key: item.path,
-    icon: React.createElement(item.icon),
-    label: item.name,
-  }),
-);
+
 
 function Home() {
   const [collapsed, setCollapsed] = useState(false);
 
-  const dispatch = useDispatch<Dispatch>();
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { apps, isLoading } = useSelector((state: RootState) => state.app);
+
+  const menus = React.useMemo(() => {
+    if(isLoading){
+      return [];
+    }
+    let menus;
+    if(apps.length === 0){
+      menus = munuRouters.filter(((item) => item.path === '/'));
+    }else{
+      menus = munuRouters;
+    }
+    return menus.map(
+      (item) => ({
+        key: item.path,
+        icon: React.createElement(item.icon),
+        label: item.name,
+      }),
+    );
+  }, [apps, isLoading]);
+
   const leftSideWidth = collapsed ? 80 : 255;
+
   return (
     <div
       className={stylels.content}>
@@ -136,4 +151,4 @@ function Home() {
 
 
 
-export default checkLoginStatus(Home);
+export default checkAppStatus(Home);

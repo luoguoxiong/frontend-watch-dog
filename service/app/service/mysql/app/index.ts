@@ -54,8 +54,12 @@ export default class AppMysqlService extends Service {
     await this.service.redis.cache.setIndex(appId);
     return isExist;
   }
-  async getList() {
+  async getList(userId:number) {
     const model = await this.getModel();
-    return await model.findAll();
+    return await model.findAll({
+      where: {
+        createId: userId,
+      },
+    });
   }
 }

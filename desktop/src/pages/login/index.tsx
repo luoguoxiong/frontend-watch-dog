@@ -40,7 +40,6 @@ const LoginPage = () => {
       account: form.user,
       password: form.pwd,
     });
-    await dispatch.user.getUserInfo();
     navigate('/');
   };
 

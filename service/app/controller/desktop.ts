@@ -1,7 +1,8 @@
 import { Controller } from 'egg';
 import { encryptPassword, comparePassword } from '@/app/utils/bcrypt';
-import { creatJwtToken, getJwtTokenMsg } from '@/app/utils/jwt';
+import { creatJwtToken } from '@/app/utils/jwt';
 import { BluBiuResponseCode } from '@/app/extend/context.type';
+import { getCookieMessge } from '@/app/utils/getCookieMessge';
 import dayjs from 'dayjs';
 export default class DesktopController extends Controller {
   public async login() {
@@ -54,19 +55,15 @@ export default class DesktopController extends Controller {
   }
   async getUserInfo() {
     try {
-      const token = this.ctx.cookies.get('BLUBIUTOKEN');
-      if (!token) {
-        return this.ctx.result(BluBiuResponseCode.NOLOGIN);
+      const userId = await getCookieMessge(this.ctx);
+      if (userId) {
+        const results = await this.service.mysql.user.index.findUser({
+          id: userId,
+          status: 1,
+        });
+        if (!results) return this.ctx.result(BluBiuResponseCode.NOTFOUNDACCOUNT);
+        this.ctx.success(results);
       }
-      const data = await getJwtTokenMsg<{userId:number}>(token);
-
-      if (!data.userId) return this.ctx.result(BluBiuResponseCode.NOTFOUNDACCOUNT);
-      const results = await this.service.mysql.user.index.findUser({
-        id: data.userId,
-        status: 1,
-      });
-      if (!results) return this.ctx.result(BluBiuResponseCode.NOTFOUNDACCOUNT);
-      this.ctx.success(results);
     } catch (error) {
       this.app.logger.error(error);
     }
