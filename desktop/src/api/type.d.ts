@@ -16,4 +16,8 @@ interface UserInfo{
   updatedAt?: string;
 }
 
+interface CreateAppIn{
+  appType: number;
+  appName: string;
+}
 

@@ -12,8 +12,6 @@ import { munuRouters } from '@/src/router';
 import { RootState } from '@/src/models/store';
 const { Sider } = Layout;
 
-
-
 function Home() {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -134,7 +132,7 @@ function Home() {
                   cancelText: '取消',
                   onOk: async() => {
                     await loginOut();
-                    dispatch.user.loginOut();
+                    dispatch.user.resetUserInfo();
                   },
                 });
               }}

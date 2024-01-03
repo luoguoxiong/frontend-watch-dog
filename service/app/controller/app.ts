@@ -1,16 +1,7 @@
 import { Controller } from 'egg';
 import { getCookieMessge } from '@/app/utils/getCookieMessge';
+import { v4 as uuidv4 } from 'uuid';
 export default class ReportController extends Controller {
-  public async index() {
-    await this.service.mysql.app.index.createApp({
-      appId: 'luoguoxiong002',
-      status: 1,
-      createId: 1,
-    });
-    await this.service.elasticsearch.pages.index.createIndex('luoguoxiong002');
-    this.ctx.success();
-  }
-
   async getAppList() {
     try {
       const userId = await getCookieMessge(this.ctx);
@@ -24,14 +15,25 @@ export default class ReportController extends Controller {
   }
 
   async createApp() {
-    const { appType } = this.ctx.request.body;
-    await this.service.mysql.app.index.createApp({
-      appId: 'luoguoxiong002',
-      status: 1,
-      createId: 1,
-      appType,
-    });
-    await this.service.elasticsearch.pages.index.createIndex('luoguoxiong002');
-    this.ctx.success();
+    try {
+      const { appType, appName } = this.ctx.request.body;
+      const userId = await getCookieMessge(this.ctx);
+      if (userId) {
+        console.log('uuid', uuidv4);
+
+        const appId = uuidv4();
+        await this.service.mysql.app.index.createApp({
+          appId,
+          status: 1,
+          createId: userId,
+          appType,
+          appName,
+        });
+        await this.service.elasticsearch.pages.index.createIndex(appId);
+        this.ctx.success();
+      }
+    } catch (error) {
+      this.app.logger.error(error);
+    }
   }
 }

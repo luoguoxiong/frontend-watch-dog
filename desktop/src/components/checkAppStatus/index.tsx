@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { RootState, Dispatch } from '@/src/models/store';
 import { Loading } from '@/src/components/loading';
+import { useAppStore } from '@/src/hooks';
 
 // eslint-disable-next-line react/display-name
 export const checkAppStatus = (Page: React.FunctionComponent) => () => {
@@ -11,9 +12,9 @@ export const checkAppStatus = (Page: React.FunctionComponent) => () => {
 
   const location = useLocation();
 
-  const { userInfo, isLoading } = useSelector((state: RootState) => state.user);
+  const { appDispatch, apps, isLoading } = useAppStore();
 
-  const { apps, isLoading: appLoading } = useSelector((state: RootState) => state.app);
+  const { userInfo } = useSelector((state: RootState) => state.user);
 
   React.useEffect(() => {
     dispatch.user.getUserInfo();
@@ -21,19 +22,15 @@ export const checkAppStatus = (Page: React.FunctionComponent) => () => {
 
   React.useEffect(() => {
     if(userInfo.id){
-      dispatch.app.getAppList();
+      appDispatch.getAppList();
     }
   }, [userInfo.id]);
 
-  if(isLoading){
+  if(!userInfo?.id){
     return <Loading />;
   }
 
-  if(!userInfo?.id){
-    return <Navigate to="/login" />;
-  }
-
-  if(!appLoading && apps.length === 0 && location.pathname !== '/'){
+  if(!isLoading && apps.length === 0 && location.pathname !== '/'){
     return <Navigate to="/" />;
   }
 

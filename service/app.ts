@@ -8,6 +8,5 @@ export default function(app: Application) {
     useKafka(app);
     useElasticsearch(app);
     ctx.service.kafuka.report.useKafkaConsume();
-    console.log('blibiu....');
   });
 }

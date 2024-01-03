@@ -4,7 +4,6 @@ export default (app: Application) => {
   const { router, controller } = app;
   router.get('/report', controller.report.index);
   router.get('/performance/getPagesPerformance', controller.performance.getPagesPerformance);
-  router.get('/app', controller.app.index);
 
   router.post('/api/desktop/login', controller.desktop.login);
   router.post('/api/desktop/loginOut', controller.desktop.loginOut);
@@ -12,4 +11,7 @@ export default (app: Application) => {
   router.get('/api/desktop/getUserInfo', controller.desktop.getUserInfo);
 
   router.get('/api/desktop/getAppList', controller.app.getAppList);
+  router.post('/api/desktop/createApp', controller.app.createApp);
+
+  router.get('/api/desktop/analyse/getDayActiveUsers', controller.analyse.getDayActiveUsers);
 };

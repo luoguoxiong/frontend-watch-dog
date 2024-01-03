@@ -1,8 +1,15 @@
-import React from 'react';
-import { Modal, Form, Radio, Input } from 'antd';
+import React, { useState } from 'react';
+import { Modal, Form, Radio, Input, message } from 'antd';
+import { createApp } from '@/src/api';
 import { AppTypes, AppType } from '@/src/constants';
+import { useAppStore } from '@/src/hooks';
+
 export const AddApplication = () => {
   const [form] = Form.useForm();
+
+  const { appDispatch } = useAppStore();
+
+  const [loading, setLoading] = useState(false);
 
   return (
     <Modal
@@ -10,6 +17,14 @@ export const AddApplication = () => {
       destroyOnClose
       onOk={async() => {
         await form.validateFields();
+        setLoading(true);
+        await createApp(form.getFieldsValue());
+        await appDispatch.getAppList();
+        setLoading(false);
+        message.success('应用成功创建！');
+      }}
+      okButtonProps={{
+        loading,
       }}
       title="创建应用">
 
@@ -17,13 +32,13 @@ export const AddApplication = () => {
         form={form}
       >
         <Form.Item
-          name="name"
+          name="appName"
           label="应用名称"
           rules={[{ required: true }]}>
           <Input />
         </Form.Item>
         <Form.Item
-          name="type"
+          name="appType"
           label="应用类型"
           initialValue={AppType.WEB}
           rules={[{ required: true }]}>

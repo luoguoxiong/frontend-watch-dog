@@ -44,13 +44,15 @@
     "jsonwebtoken": "^9.0.2",
     "kafka-node": "^5.0.0",
     "mysql2": "^3.6.5",
-    "ua-parser-js": "^1.0.37"
+    "ua-parser-js": "^1.0.37",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "1",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/mocha": "10",
     "@types/node": "20",
+    "@types/uuid": "^9.0.7",
     "egg-bin": "6",
     "egg-mock": "5",
     "egg-ts-helper": "^2.1.0",

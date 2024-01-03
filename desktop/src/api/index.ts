@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { message } from 'antd';
 import { config } from '@/src/config';
-import { store } from '@/src/models/store';
+
+let isShowNoLogin = false;
 
 enum BluBiuResponseCode{
   SUCCESS = 1000, // 非异常请求
@@ -26,9 +27,12 @@ http.interceptors.response.use(({ data, status }) => {
   const res = data as BluBiuRes<any>;
 
   if(res.code === BluBiuResponseCode.NOLOGIN || res.code === BluBiuResponseCode.NOTFOUNDACCOUNT){
-    store.dispatch.user.setLoading(false);
-    message.error(res.message);
-    throw Error(res.message);
+    if(!isShowNoLogin){
+      location.href = '/login';
+      message.error(res.message);
+      isShowNoLogin = true;
+      throw Error(res.message);
+    }
   }
 
   if(res.code !== BluBiuResponseCode.SUCCESS){
@@ -48,3 +52,6 @@ export const register = async(params: LoginRegsiterIn): BluBiuResponse<any> => a
 export const getUserInfo = async(): BluBiuResponse<UserInfo> => await http.get('/getUserInfo');
 
 export const getAppList = async(): BluBiuResponse<UserInfo> => await http.get('/getAppList');
+
+export const createApp = async(params: CreateAppIn): BluBiuResponse<any> => await http.post('/createApp', params);
+
