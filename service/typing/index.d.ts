@@ -1,9 +1,10 @@
-import { KafkaClientOptions } from 'kafka-node'
-import { Kafka } from '@/app/service/kafuka'
-import {Client,ClientOptions} from '@elastic/elasticsearch'
+import { KafkaClientOptions } from 'kafka-node';
+import { Kafka } from '@/app/service/kafuka';
+import { Client, ClientOptions } from '@elastic/elasticsearch';
+import { any } from 'sequelize/types/lib/operators';
 declare module 'egg' {
   interface Application {
-    kafka:  Kafka;
+    kafka: Kafka;
     esClient:Client
   }
 
@@ -12,3 +13,5 @@ declare module 'egg' {
     esClient:ClientOptions
   }
 }
+
+declare module 'ip6'

@@ -14,4 +14,7 @@ export default (app: Application) => {
   router.post('/api/desktop/createApp', controller.app.createApp);
 
   router.get('/api/desktop/analyse/getDayActiveUsers', controller.analyse.getDayActiveUsers);
+  router.get('/api/desktop/analyse/getWebVisitTop', controller.analyse.getWebVisitTop);
+  router.get('/api/desktop/analyse/getNewUsers', controller.analyse.getNewUsers);
+  router.get('/api/desktop/analyse/getAllUsers', controller.analyse.getAllUsers);
 };

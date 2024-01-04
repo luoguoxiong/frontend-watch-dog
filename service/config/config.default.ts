@@ -38,6 +38,8 @@ export default (appInfo: EggAppInfo) => {
     page_report: 'page_report_yourAppId',
   };
 
+  config.amapKey = '3d206482f787217632fca7ab2ac83266';
+
   // the return config will combines to EggAppConfig
   return {
     ...config,

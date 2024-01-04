@@ -8,7 +8,7 @@ class RedisDayActiveUsersService extends Service {
   }
 
   async getDayActiceUsers(appId:string, dateString?:string) {
-    return await this.app.redis.pfcount(this.getKeyName(appId, dateString || dayjs().format('YYYY-MM-DD')));
+    return await this.app.redis.pfcount(this.getKeyName(appId, dayjs(dateString).format('YYYY-MM-DD')));
   }
 }
 

@@ -12,8 +12,9 @@ import ExportKafukaIndex from '../../../app/service/kafuka/index';
 import ExportKafukaReport from '../../../app/service/kafuka/report';
 import ExportKafukaType from '../../../app/service/kafuka/type';
 import ExportRedisCache from '../../../app/service/redis/cache';
+import ExportRedisDayNewUsers from '../../../app/service/redis/dayNewUsers';
 import ExportRedisEveryDayActiveUsers from '../../../app/service/redis/everyDayActiveUsers';
-import ExportRedisPageUrl from '../../../app/service/redis/pageUrl';
+import ExportRedisTop from '../../../app/service/redis/top';
 import ExportElasticsearchPagesIndex from '../../../app/service/elasticsearch/pages/index';
 import ExportElasticsearchPagesType from '../../../app/service/elasticsearch/pages/type';
 import ExportElasticsearchTrafficStatsIndex from '../../../app/service/elasticsearch/trafficStats/index';
@@ -45,8 +46,9 @@ declare module 'egg' {
     }
     redis: {
       cache: AutoInstanceType<typeof ExportRedisCache>;
+      dayNewUsers: AutoInstanceType<typeof ExportRedisDayNewUsers>;
       everyDayActiveUsers: AutoInstanceType<typeof ExportRedisEveryDayActiveUsers>;
-      pageUrl: AutoInstanceType<typeof ExportRedisPageUrl>;
+      top: AutoInstanceType<typeof ExportRedisTop>;
     }
     mysql: {
       app: {
