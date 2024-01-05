@@ -10,10 +10,10 @@ export default class TrafficMysqlService extends Service {
   private async getModel(appId:string):Promise<sequelize.ModelCtor<sequelize.Model<TrafficModelIn>>> {
     const tableName = this.getMysqlTableName(appId);
     const model = this.app.model.define(tableName, TrafficModel);
-    const isExist = await this.service.redis.cache.checkIndexIsExists(tableName);
+    const isExist = await this.service.redis.cache.getTableIsCreate(tableName);
     if (!isExist) {
       await model.sync();
-      await this.service.redis.cache.setIndex(tableName);
+      await this.service.redis.cache.setTableIsCreate(tableName);
     }
     return model;
   }

@@ -51,7 +51,14 @@ export const register = async(params: LoginRegsiterIn): BluBiuResponse<any> => a
 
 export const getUserInfo = async(): BluBiuResponse<UserInfo> => await http.get('/getUserInfo');
 
-export const getAppList = async(): BluBiuResponse<UserInfo> => await http.get('/getAppList');
+export const getAppList = async(): BluBiuResponse<AppInfo[]> => await http.get('/getAppList');
 
 export const createApp = async(params: CreateAppIn): BluBiuResponse<any> => await http.post('/createApp', params);
 
+export const getDayActiveUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getDayActiveUsers', { params });
+
+export const getWebVisitTop = async(params: AnalyseReq): BluBiuResponse<Options[]> => await http.get('/analyse/getWebVisitTop', { params });
+
+export const getNewUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getNewUsers', { params });
+
+export const getAllUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getAllUsers', { params });

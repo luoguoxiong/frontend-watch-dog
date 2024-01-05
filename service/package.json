@@ -45,8 +45,7 @@
     "jsonwebtoken": "^9.0.2",
     "kafka-node": "^5.0.0",
     "mysql2": "^3.6.5",
-    "ua-parser-js": "^1.0.37",
-    "uuid": "^9.0.1"
+    "ua-parser-js": "^1.0.37"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "1",

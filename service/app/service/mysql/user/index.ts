@@ -6,10 +6,10 @@ export default class AppMysqlService extends Service {
   private async getModel():Promise<sequelize.ModelCtor<sequelize.Model<UserModelIn>>> {
     const tableName = 'user';
     const model = this.app.model.define(tableName, UserModel);
-    const isExist = await this.service.redis.cache.checkIndexIsExists(tableName);
+    const isExist = await this.service.redis.cache.getTableIsCreate(tableName);
     if (!isExist) {
       await model.sync();
-      await this.service.redis.cache.setIndex(tableName);
+      await this.service.redis.cache.setTableIsCreate(tableName);
     }
     return model;
   }

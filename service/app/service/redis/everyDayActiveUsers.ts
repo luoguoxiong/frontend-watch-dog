@@ -1,7 +1,7 @@
 import { Service } from 'egg';
 import dayjs from 'dayjs';
 class RedisDayActiveUsersService extends Service {
-  private getKeyName = (appId:string, dateString:string) => `${appId}-${dateString}-activeUsers`;
+  private getKeyName = (appId:string, dateString:string) => `activeUsers-${dateString}-${appId}`;
 
   async addUsers(appId:string, userId:string) {
     await this.app.redis.pfadd(this.getKeyName(appId, dayjs().format('YYYY-MM-DD')), userId);

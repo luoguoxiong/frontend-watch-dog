@@ -44,6 +44,10 @@ export const routes: RouteObject[] = [
     ],
   },
   {
+    path: '/test',
+    element: lazyLoad(() => import('../pages/home')),
+  },
+  {
     path: '*',
     element: lazyLoad(() => import('@/src/components/notFound')),
   },

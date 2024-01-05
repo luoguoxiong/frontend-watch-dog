@@ -12,7 +12,7 @@ export default class ReportController extends Controller {
         pageUrl: 'string',
       }, ctx.query);
     const query = ctx.query as any as PageModelIn;
-    const isOk = await service.mysql.app.index.checkAppStatus(query.appId);
+    const isOk = await service.redis.cache.getAppIsUse(query.appId);
     if (isOk) {
       const parser = new UAParser();
       const agent = ctx.headers['user-agent'];

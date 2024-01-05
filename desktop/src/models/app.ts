@@ -4,7 +4,7 @@ import { getAppList } from '@/src/api';
 
 const userModel = createModel<RootModel>()({
   state: {
-    apps: [],
+    apps: [] as AppInfo[],
     isLoading: true,
   },
   reducers: {

@@ -4,7 +4,11 @@ import { createApp } from '@/src/api';
 import { AppTypes, AppType } from '@/src/constants';
 import { useAppStore } from '@/src/hooks';
 
-export const AddApplication = () => {
+interface AddApplicationIn{
+  open: boolean;
+  onClose: () => void;
+}
+export const AddApplication: React.FC<AddApplicationIn> = ({ open, onClose }) => {
   const [form] = Form.useForm();
 
   const { appDispatch } = useAppStore();
@@ -13,7 +17,7 @@ export const AddApplication = () => {
 
   return (
     <Modal
-      open
+      open={open}
       destroyOnClose
       onOk={async() => {
         await form.validateFields();
@@ -22,7 +26,9 @@ export const AddApplication = () => {
         await appDispatch.getAppList();
         setLoading(false);
         message.success('应用成功创建！');
+        onClose();
       }}
+      onCancel={onClose}
       okButtonProps={{
         loading,
       }}

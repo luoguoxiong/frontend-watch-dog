@@ -8,7 +8,7 @@ interface TopRes {
 }
 
 class RedisTopService extends Service {
-  private getKeyName = (appId:string, type:TopKeys) => `${appId}-${type}-top`;
+  private getKeyName = (appId:string, type:TopKeys) => `top-${type}-${appId}`;
 
   /**
    * 获取指定应用程序的排行榜数据

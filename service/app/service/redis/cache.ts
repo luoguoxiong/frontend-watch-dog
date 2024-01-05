@@ -1,14 +1,17 @@
 import { Service } from 'egg';
 
 class RedisCacheService extends Service {
-  async checkIndexIsExists(tableNmae:string) {
-    return await this.app.redis.get(tableNmae) === '1';
+  async getTableIsCreate(tableNmae:string) {
+    return await this.app.redis.hget('tableIsCreate', tableNmae) === '1';
   }
-  async setIndex(indexName:string) {
-    await this.app.redis.set(indexName, '1');
+  async setTableIsCreate(tableName:string) {
+    await this.app.redis.hset('tableIsCreate', tableName, '1');
   }
-  async deleteIndex(indexName:string) {
-    await this.app.redis.del(indexName);
+  async getAppIsUse(appId:string) {
+    return await this.app.redis.hget('apps', appId) === '1';
+  }
+  async updateAppStatus(appId:string, isUse:boolean) {
+    await this.app.redis.hset('apps', appId, isUse ? '1' : '0');
   }
 }
 

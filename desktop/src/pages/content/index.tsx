@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Modal } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import cls from 'classnames';
 import { MenuUnfoldOutlined, MenuFoldOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import stylels from './index.module.less';
 import { loginOut } from '@/src/api';
 import logoPng from '@/src/images/logo.png';
-import { checkAppStatus } from '@/src/components/checkAppStatus';
+import { checkAppStatus } from '@/src/components';
 import { munuRouters } from '@/src/router';
 import { RootState } from '@/src/models/store';
 const { Sider } = Layout;
@@ -17,6 +17,10 @@ function Home() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { pathname } = useLocation();
+
+  const [openMenuKey, setKey] = useState(pathname);
 
   const { apps, isLoading } = useSelector((state: RootState) => state.app);
 
@@ -47,50 +51,6 @@ function Home() {
       <div
         className={stylels.left}
         style={{ width: leftSideWidth }}>
-        <Sider
-          breakpoint="lg"
-          style={{ width: leftSideWidth, maxWidth: leftSideWidth }}
-          collapsedWidth="0"
-          collapsed={collapsed}
-          collapsible
-          trigger={null}
-          onCollapse={(value) => setCollapsed(value)}
-        >
-          <div
-            className={stylels['left-wrap']}
-            style={{ width: leftSideWidth }}>
-            {
-              !collapsed
-                ? <div className={stylels.logo}>
-                  <img
-                    src={logoPng}
-                    alt=""/>
-                  <span>前端监控平台</span>
-                </div>
-                : <div className={stylels['single-logo']}>
-                  <img
-                    src={logoPng}
-                    alt=""/>
-                </div>
-            }
-
-            <div className={stylels['menu-wrap']}>
-              <Menu
-                theme="dark"
-                style={{ width: leftSideWidth, fontSize: 16 }}
-                mode="inline"
-                defaultSelectedKeys={['4']}
-                onSelect={(info) => {
-                  navigate(info.key);
-                }}
-                items={menus} />
-            </div>
-          </div>
-        </Sider>
-      </div>
-      <div
-        className={stylels.right}
-        style={{ width: `calc(100vh - ${leftSideWidth}px)` }}>
         <svg
           className={cls(stylels.prefixCircle, stylels.top)}
           width="35"
@@ -111,6 +71,47 @@ function Home() {
             fill="#4684ff"
             stroke="#4684ff" />
         </svg>
+        {
+          <div className={stylels.logo}>
+            <div className={stylels['logo-content']}>
+              <img
+                src={logoPng}
+                alt=""/>
+              <span>前端监控平台</span>
+            </div>
+          </div>
+        }
+        <div className={stylels['menu-wrap']}>
+          <Sider
+            breakpoint="lg"
+            style={{ width: leftSideWidth, maxWidth: leftSideWidth }}
+            collapsed={collapsed}
+            collapsible
+            trigger={null}
+            onCollapse={(value) => setCollapsed(value)}
+          >
+            <Menu
+              selectedKeys={[openMenuKey]}
+              onClick={
+                (val) => {
+                  setKey(val.key);
+                }
+              }
+              theme="dark"
+              style={{ width: leftSideWidth, fontSize: 16 }}
+              mode="inline"
+              defaultSelectedKeys={['4']}
+              onSelect={(info) => {
+                navigate(info.key);
+              }}
+              items={menus} />
+          </Sider>
+        </div>
+      </div>
+      <div
+        className={stylels.right}
+        style={{ width: `calc(100vw - ${leftSideWidth}px)`, marginLeft: leftSideWidth }}>
+
         <div className={stylels['right-wrap']}>
           <div className={stylels.header} >
             {

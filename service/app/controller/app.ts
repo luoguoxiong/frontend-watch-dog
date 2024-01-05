@@ -1,6 +1,6 @@
 import { Controller } from 'egg';
 import { getCookieMessge } from '@/app/utils/getCookieMessge';
-import { v4 as uuidv4 } from 'uuid';
+import { generateShortUUID } from '@/app/utils';
 export default class ReportController extends Controller {
   async getAppList() {
     try {
@@ -19,9 +19,7 @@ export default class ReportController extends Controller {
       const { appType, appName } = this.ctx.request.body;
       const userId = await getCookieMessge(this.ctx);
       if (userId) {
-        console.log('uuid', uuidv4);
-
-        const appId = uuidv4();
+        const appId = generateShortUUID();
         await this.service.mysql.app.index.createApp({
           appId,
           status: 1,
@@ -30,6 +28,7 @@ export default class ReportController extends Controller {
           appName,
         });
         await this.service.elasticsearch.pages.index.createIndex(appId);
+        await this.service.redis.cache.updateAppStatus(appId, true);
         this.ctx.success();
       }
     } catch (error) {

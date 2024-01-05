@@ -21,3 +21,24 @@ interface CreateAppIn{
   appName: string;
 }
 
+interface AppInfo{
+  id: number;
+  appId: string;
+  appName: string;
+  createId: number;
+  appType: number;
+  status: number;
+}
+
+type TopKeys = 'webVisit' | 'browser' | 'deviceVendor' | 'city' | 'osName';
+
+interface AnalyseReq{
+  appId: string;
+  date?: string;
+  top?: TopKeys;
+}
+
+interface Options{
+  label: string;
+  value: string|number;
+}

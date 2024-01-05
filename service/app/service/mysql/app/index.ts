@@ -6,10 +6,10 @@ export default class AppMysqlService extends Service {
   private async getModel():Promise<sequelize.ModelCtor<sequelize.Model<AppModelIn>>> {
     const tableName = 'app';
     const model = this.app.model.define(tableName, AppModel);
-    const isExist = await this.service.redis.cache.checkIndexIsExists(tableName);
+    const isExist = await this.service.redis.cache.getTableIsCreate(tableName);
     if (!isExist) {
       await model.sync();
-      await this.service.redis.cache.setIndex(tableName);
+      await this.service.redis.cache.setTableIsCreate(tableName);
     }
     return model;
   }
@@ -17,7 +17,6 @@ export default class AppMysqlService extends Service {
   async createApp(data:AppModelIn) {
     try {
       const model = await this.getModel();
-      await this.service.redis.cache.setIndex(data.appId);
       await model.create({
         ...data,
         status: 1,
@@ -42,7 +41,7 @@ export default class AppMysqlService extends Service {
   }
 
   async checkAppStatus(appId:string):Promise<boolean> {
-    const isInCache = await this.service.redis.cache.checkIndexIsExists(appId);
+    const isInCache = await this.service.redis.cache.getAppIsUse(appId);
     if (isInCache) return true;
     const model = await this.getModel();
     const data = await model.findOne({
@@ -51,7 +50,7 @@ export default class AppMysqlService extends Service {
       },
     });
     const isExist = data?.getDataValue('status') === 1;
-    await this.service.redis.cache.setIndex(appId);
+    await this.service.redis.cache.updateAppStatus(appId, isExist);
     return isExist;
   }
   async getList(userId:number) {
