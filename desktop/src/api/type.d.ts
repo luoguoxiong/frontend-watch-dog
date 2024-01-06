@@ -21,6 +21,12 @@ interface CreateAppIn{
   appName: string;
 }
 
+interface UpdateAppInfo{
+  appId: string;
+  id: number;
+  status: number;
+}
+
 interface AppInfo{
   id: number;
   appId: string;

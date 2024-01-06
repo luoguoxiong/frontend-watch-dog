@@ -14,7 +14,7 @@ export default class AppMysqlService extends Service {
     return model;
   }
 
-  async createApp(data:AppModelIn) {
+  async createApp(data:Omit<AppModelIn, 'id'>) {
     try {
       const model = await this.getModel();
       await model.create({
@@ -53,11 +53,23 @@ export default class AppMysqlService extends Service {
     await this.service.redis.cache.updateAppStatus(appId, isExist);
     return isExist;
   }
+
   async getList(userId:number) {
     const model = await this.getModel();
     return await model.findAll({
       where: {
         createId: userId,
+      },
+    });
+  }
+
+  async updateAppStatus(id:number, status:0 | 1) {
+    const model = await this.getModel();
+    return await model.update({
+      status,
+    }, {
+      where: {
+        id,
       },
     });
   }

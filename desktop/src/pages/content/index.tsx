@@ -1,39 +1,38 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, Menu, Modal, Select, Button } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import cls from 'classnames';
-import { MenuUnfoldOutlined, MenuFoldOutlined, PoweroffOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { MenuUnfoldOutlined, MenuFoldOutlined, PoweroffOutlined, PlusCircleFilled } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
 import stylels from './index.module.less';
 import { loginOut } from '@/src/api';
 import logoPng from '@/src/images/logo.png';
-import { checkAppStatus } from '@/src/components';
-import { munuRouters } from '@/src/router';
-import { RootState } from '@/src/models/store';
+import { checkAppStatus, AddApplication } from '@/src/components';
+import { munuRouters, hasAppRouters } from '@/src/router';
+import { useAppStore } from '@/src/hooks';
 const { Sider } = Layout;
 
 function Home() {
   const [collapsed, setCollapsed] = useState(false);
 
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setKey(location.pathname);
+  }, [location]);
 
   const { pathname } = useLocation();
 
   const [openMenuKey, setKey] = useState(pathname);
 
-  const { apps, isLoading } = useSelector((state: RootState) => state.app);
+  const { apps, active, showAddModal, appDispatch } = useAppStore();
 
   const menus = React.useMemo(() => {
-    if(isLoading){
-      return [];
-    }
-    let menus;
-    if(apps.length === 0){
-      menus = munuRouters.filter(((item) => item.path === '/'));
-    }else{
-      menus = munuRouters;
-    }
+    const menus = apps.length === 0 ? munuRouters : [...munuRouters, ...hasAppRouters];
     return menus.map(
       (item) => ({
         key: item.path,
@@ -41,7 +40,7 @@ function Home() {
         label: item.name,
       }),
     );
-  }, [apps, isLoading]);
+  }, [apps.length]);
 
   const leftSideWidth = collapsed ? 80 : 255;
 
@@ -114,17 +113,39 @@ function Home() {
 
         <div className={stylels['right-wrap']}>
           <div className={stylels.header} >
-            {
-              collapsed
-                ? <MenuUnfoldOutlined
-                  onClick={() => {
-                    setCollapsed(!collapsed);
-                  }} />
-                : <MenuFoldOutlined
-                  onClick={() => {
-                    setCollapsed(!collapsed);
-                  }} />
-            }
+            <span>
+              {
+                collapsed
+                  ? <MenuUnfoldOutlined
+                    onClick={() => {
+                      setCollapsed(!collapsed);
+                    }} />
+                  : <MenuFoldOutlined
+                    onClick={() => {
+                      setCollapsed(!collapsed);
+                    }} />
+              }
+              {
+                apps.length > 0 && (
+                  <Select
+                    className={stylels.appSelect}
+                    onChange={(val) => {
+                      appDispatch.updateActive(val);
+                    }}
+                    value={active}>
+                    {apps.map((item) => <Select.Option
+                      key={item.id}
+                      value={item.appId}>{item.appName}</Select.Option>)}
+                  </Select>
+                )
+              }
+              <Button
+                type="primary"
+                onClick={() => {
+                  appDispatch.updateAddModalStatus(true);
+                }}
+                icon={<PlusCircleFilled />}>创建应用</Button>
+            </span>
             <PoweroffOutlined
               onClick={() => {
                 Modal.confirm({
@@ -134,6 +155,7 @@ function Home() {
                   onOk: async() => {
                     await loginOut();
                     dispatch.user.resetUserInfo();
+                    navigate('/login');
                   },
                 });
               }}
@@ -144,6 +166,11 @@ function Home() {
           </div>
         </div>
       </div>
+      <AddApplication
+        open={showAddModal}
+        onClose={() => {
+          appDispatch.updateAddModalStatus(false);
+        }} />
     </div>
   );
 }
