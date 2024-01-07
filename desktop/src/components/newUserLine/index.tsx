@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, memo } from 'react';
-import * as echarts from 'echarts';
+import React, { useEffect, memo } from 'react';
 import styles from './index.module.less';
+import { useEchart } from '@/src/hooks';
 interface LineIn{
   data: number[];
 }
 export const LineChart: React.FC<LineIn> = ({ data }) => {
-  const ref = useRef();
+  const { ref, setOption } = useEchart();
   useEffect(() => {
-    if(ref.current && data.length > 0){
-      const chart = echarts.init(ref.current);
+    if( data.length > 0){
       const option = {
         grid: {
           top: 2,
@@ -38,7 +37,7 @@ export const LineChart: React.FC<LineIn> = ({ data }) => {
           },
         ],
       };
-      chart.setOption(option);
+      setOption(option);
     }
   }, [ref.current, data]);
   return (
@@ -48,4 +47,4 @@ export const LineChart: React.FC<LineIn> = ({ data }) => {
   );
 };
 
-export const Line = memo(LineChart, (prev, next) => prev !== next);
+export const NewUserLine = memo(LineChart, (prev, next) => prev !== next);

@@ -24,7 +24,7 @@ export const munuRouters = [
 export const hasAppRouters = [
   {
     path: '/visitorStats',
-    name: '应用概览',
+    name: '流量分析',
     icon: BarChartOutlined,
     element: lazyLoad(() => import('../pages/visitorStats')),
   },
@@ -44,13 +44,13 @@ export const hasAppRouters = [
     path: '/topAnalyse',
     name: 'Top分析',
     icon: OrderedListOutlined,
-    element: lazyLoad(() => import('../pages/visitorStats')),
+    element: lazyLoad(() => import('../pages/topAnalyse')),
   },
   {
     path: '/geographicalDistribution',
     name: '地域分布',
     icon: RadarChartOutlined,
-    element: lazyLoad(() => import('../pages/visitorStats')),
+    element: lazyLoad(() => import('../pages/geographicalDistribution')),
   },
 ];
 
