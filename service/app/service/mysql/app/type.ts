@@ -1,5 +1,6 @@
 import * as sequelize from 'sequelize';
 export interface AppModelIn {
+  id?:number,
   /** 应用AppId */
   appId:string
   /** 应用类型 */

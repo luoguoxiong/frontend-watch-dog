@@ -55,6 +55,8 @@ export const getAppList = async(): BluBiuResponse<AppInfo[]> => await http.get('
 
 export const createApp = async(params: CreateAppIn): BluBiuResponse<any> => await http.post('/createApp', params);
 
+export const updateAppStatus = async(params: UpdateAppInfo): BluBiuResponse<any> => await http.post('/updateAppStatus', params);
+
 export const getDayActiveUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getDayActiveUsers', { params });
 
 export const getWebVisitTop = async(params: AnalyseReq): BluBiuResponse<Options[]> => await http.get('/analyse/getWebVisitTop', { params });

@@ -24,6 +24,8 @@
     "antd": "^5.12.5",
     "axios": "^1.6.2",
     "classnames": "^2.5.1",
+    "dayjs": "^1.11.10",
+    "echarts": "^5.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",

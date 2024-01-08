@@ -22,7 +22,7 @@ export const checkAppStatus = (Page: React.FunctionComponent) => () => {
 
   React.useEffect(() => {
     if(userInfo.id){
-      appDispatch.getAppList();
+      appDispatch.getAppListOnce();
     }
   }, [userInfo.id]);
 

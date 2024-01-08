@@ -35,4 +35,18 @@ export default class ReportController extends Controller {
       this.app.logger.error(error);
     }
   }
+
+  async updateAppStatus() {
+    try {
+      const { id, status, appId } = this.ctx.request.body;
+      const userId = await getCookieMessge(this.ctx);
+      if (userId) {
+        await this.service.mysql.app.index.updateAppStatus(id, status);
+        await this.service.redis.cache.updateAppStatus(appId, status === 1);
+        this.ctx.success();
+      }
+    } catch (error) {
+      this.app.logger.error(error);
+    }
+  }
 }
