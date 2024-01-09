@@ -24,4 +24,18 @@ export default class TrafficMysqlService extends Service {
       ...data,
     });
   }
+
+  async getTrafficData(appId:string, { beginTime, endTime, type, pageUrl }) {
+    const model = await this.getModel(appId);
+    return await model.findAll({
+      where: {
+        appId,
+        type,
+        pageUrl,
+        statisticsTime: {
+          [sequelize.Op.between]: [ beginTime, endTime ],
+        },
+      },
+    });
+  }
 }

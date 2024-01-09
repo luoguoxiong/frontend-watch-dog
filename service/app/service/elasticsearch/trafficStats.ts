@@ -9,9 +9,9 @@ export default class TrafficStatsService extends Service {
   async getTrafficStatsMinutes() {
     try {
       const interval = parser.parseExpression(this.app.config.trafficStatsScheduleMin);
-      const endTime = interval.prev().getTime();
+      const endTime = new Date().getTime();
       const beginTime = interval.prev().getTime();
-      this.getAllAppTrafficStats(
+      await this.getAllAppTrafficStats(
         {
           beginTime,
           endTime,
@@ -24,10 +24,18 @@ export default class TrafficStatsService extends Service {
             this.service.mysql.traffics.index.insertData({
               appId,
               type: 1,
-              statisticsTime: new Date(beginTime),
+              statisticsTime: new Date(endTime),
               ...item,
             });
           }
+        },
+        async (trafficStatsRes, appId) => {
+          this.service.mysql.traffics.index.insertData({
+            appId,
+            type: 1,
+            statisticsTime: new Date(endTime),
+            ...trafficStatsRes,
+          });
         },
       );
     } catch (error) {
@@ -38,7 +46,7 @@ export default class TrafficStatsService extends Service {
   async getTrafficStatsDays() {
     try {
       const interval = parser.parseExpression(this.app.config.trafficStatsScheduleDay);
-      const endTime = interval.prev().getTime();
+      const endTime = new Date().getTime();
       const beginTime = interval.prev().getTime();
       this.getAllAppTrafficStats(
         {
@@ -53,10 +61,18 @@ export default class TrafficStatsService extends Service {
             this.service.mysql.traffics.index.insertData({
               appId,
               type: 2,
-              statisticsTime: new Date(beginTime),
+              statisticsTime: new Date(endTime),
               ...item,
             });
           }
+        },
+        async (trafficStatsRes, appId) => {
+          this.service.mysql.traffics.index.insertData({
+            appId,
+            type: 2,
+            statisticsTime: new Date(endTime),
+            ...trafficStatsRes,
+          });
         },
       );
     } catch (error) {
@@ -108,11 +124,26 @@ export default class TrafficStatsService extends Service {
    * @param {TrafficStatsTimeQuery} query - 查询条件（开始时间和结束时间）
    * @param {Function} onOk - 获取成功时的回调函数
    */
-  async getAllAppTrafficStats(query: TrafficStatsTimeQuery, onOk: (trafficStatsRes: TrafficStatsRes, appId: string) => void) {
+  async getAllAppTrafficStats(query: TrafficStatsTimeQuery,
+    onOnePageOk: (trafficStatsRes: TrafficStatsRes, appId: string) => void,
+    onSuccess:(trafficStatsRes:PageStatsResult, appId: string) => void,
+  ) {
     try {
       // 获取所有使用中的应用
       const apps = await this.service.mysql.app.index.getIsUseApps();
       if (!apps) return;
+      await Promise.all(apps.map(async appId => {
+        return this.getOnePageTrafficStats(
+          {
+            appId,
+            ...query,
+          },
+          trafficStatsRes => {
+            // 调用回调函数处理获取到的 Traffic 统计数据
+            onOnePageOk(trafficStatsRes, appId);
+          },
+        );
+      }));
       await Promise.all(apps.map(async appId => {
         return this.getTrafficStats(
           {
@@ -121,10 +152,30 @@ export default class TrafficStatsService extends Service {
           },
           trafficStatsRes => {
             // 调用回调函数处理获取到的 Traffic 统计数据
-            onOk(trafficStatsRes, appId);
+            onSuccess(trafficStatsRes, appId);
           },
         );
       }));
+    } catch (error) {
+      this.app.logger.error(error);
+    }
+  }
+
+  async getTrafficStats(query: TrafficStatsQuery, onOk: (trafficStatsRes:PageStatsResult) => void) {
+    try {
+      // 并行获取 Traffic 统计数据中的 IP、UV 和 PV
+      const [ pageViews, uniqueIPsCount, uniqueVisitors ] = await Promise.all([
+        this.service.elasticsearch.pages.analyzeAppTrafficStats(query.appId, query.beginTime, query.endTime),
+        this.service.elasticsearch.pages.analyzeAppTrafficStats(query.appId, query.beginTime, query.endTime, 'ip'),
+        this.service.elasticsearch.pages.analyzeAppTrafficStats(query.appId, query.beginTime, query.endTime, 'userId'),
+      ]);
+      // 调用回调函数处理获取到的 Traffic 统计数据
+      onOk({
+        pageUrl: '',
+        pageViews,
+        uniqueVisitors,
+        uniqueIPsCount,
+      });
     } catch (error) {
       this.app.logger.error(error);
     }
@@ -135,7 +186,7 @@ export default class TrafficStatsService extends Service {
    * @param {TrafficStatsQuery} query - 查询条件（开始时间、结束时间和应用ID）
    * @param {Function} onOk - 获取成功时的回调函数
    */
-  async getTrafficStats(query: TrafficStatsQuery, onOk: (trafficStatsRes: TrafficStatsRes) => void) {
+  async getOnePageTrafficStats(query: TrafficStatsQuery, onOk: (trafficStatsRes: TrafficStatsRes) => void) {
     try {
       // 并行获取 Traffic 统计数据中的 IP、UV 和 PV
       const [ trafficIpStats, trafficUvStats, trafficPvStats ] = await Promise.all([
@@ -156,7 +207,7 @@ export default class TrafficStatsService extends Service {
    * @return {Promise<TrafficIpStatsIn[]>} - IP 统计数据数组
    */
   async getTrafficIpCount({ appId, beginTime, endTime }: TrafficStatsQuery): Promise<TrafficStatsIn[]> {
-    return await this.service.elasticsearch.pages.index.analyzePageTrafficStats(appId, beginTime, endTime, 'ip');
+    return await this.service.elasticsearch.pages.analyzePageTrafficStats(appId, beginTime, endTime, 'ip');
   }
 
   /**
@@ -165,7 +216,7 @@ export default class TrafficStatsService extends Service {
    * @return {Promise<TrafficUvStatsIn[]>} - UV 统计数据数组
    */
   async getTrafficUvCount({ appId, beginTime, endTime }: TrafficStatsQuery): Promise<TrafficStatsIn[]> {
-    return await this.service.elasticsearch.pages.index.analyzePageTrafficStats(appId, beginTime, endTime, 'userId');
+    return await this.service.elasticsearch.pages.analyzePageTrafficStats(appId, beginTime, endTime, 'userId');
   }
 
   /**
@@ -174,6 +225,6 @@ export default class TrafficStatsService extends Service {
    * @return {Promise<TrafficPvStatsIn[]>} - PV 统计数据数组
    */
   async getTrafficPvCount({ appId, beginTime, endTime }: TrafficStatsQuery): Promise<TrafficStatsIn[]> {
-    return await this.service.elasticsearch.pages.index.analyzePageTrafficStats(appId, beginTime, endTime);
+    return await this.service.elasticsearch.pages.analyzePageTrafficStats(appId, beginTime, endTime);
   }
 }

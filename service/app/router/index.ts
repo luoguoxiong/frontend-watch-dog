@@ -18,4 +18,7 @@ export default (app: Application) => {
   router.get('/api/desktop/analyse/getWebVisitTop', controller.analyse.getWebVisitTop);
   router.get('/api/desktop/analyse/getNewUsers', controller.analyse.getNewUsers);
   router.get('/api/desktop/analyse/getAllUsers', controller.analyse.getAllUsers);
+
+  router.get('/api/desktop/traffic/getTrafficTimes', controller.traffic.getTrafficTimes);
+  router.get('/api/desktop/traffic/getTrafficDays', controller.traffic.getTrafficDays);
 };

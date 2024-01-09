@@ -1,5 +1,5 @@
 import { Controller } from 'egg';
-import { PageModelIn } from '@/app/service/elasticsearch/pages/type';
+import { PageModelIn } from '@/app/service/elasticsearch/type';
 import { BluBiuResponseCode } from '@/app/extend/context.type';
 import UAParser from 'ua-parser-js';
 import { getUserIp } from '@/app/utils';

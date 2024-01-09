@@ -27,7 +27,7 @@ export default class ReportController extends Controller {
           appType,
           appName,
         });
-        await this.service.elasticsearch.pages.index.createIndex(appId);
+        await this.service.elasticsearch.pages.createIndex(appId);
         await this.service.redis.cache.updateAppStatus(appId, true);
         this.ctx.success();
       }
