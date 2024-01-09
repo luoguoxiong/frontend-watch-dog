@@ -9,7 +9,7 @@ export default (app:Application) => {
       immediate: false,
     },
     async task(ctx:Context) {
-      ctx.service.elasticsearch.trafficStats.index.getTrafficStatsDays();
+      ctx.service.elasticsearch.trafficStats.getTrafficStatsDays();
     },
   };
 };

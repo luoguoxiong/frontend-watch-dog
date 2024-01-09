@@ -3,7 +3,7 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 
-  config.trafficStatsScheduleMin = '0 */30 * * * *';
+  config.trafficStatsScheduleMin = '0 */60 * * * *';
 
   config.trafficStatsScheduleDay = '0 0 */24 * * *';
 
@@ -20,7 +20,7 @@ export default (appInfo: EggAppInfo) => {
   };
 
   config.security = {
-    domainWhiteList: [ 'http://192.168.104.105:8080', 'http://localhost:8080' ],
+    domainWhiteList: [ 'http://192.168.104.105:8080', 'http://localhost:8081' ],
     csrf: {
       enable: false,
       ignore: '/api/desktop/**',

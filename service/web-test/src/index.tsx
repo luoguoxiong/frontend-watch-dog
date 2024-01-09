@@ -119,11 +119,11 @@ const testTask = ()=>{
 const apiUrl = 'http://localhost:7001/report';
 
 const params:PageModelIn = {
-  appId: 'pzjxaj0g1704367718001',
+  appId: 'o2enuvi11704704441919',
   isFirst: Math.random()>0.5?true:false,
   origin:location.origin,
   pageUrl: `/${Math.floor(Math.random() * 100) + 1}`,
-  userId:`${Math.floor(Math.random() * 100) + 1}`,
+  userId:`${Math.floor(Math.random() * 10000) + 1}`,
   loadTime:10,
   dnsTime:20,
   tcpTime:30,

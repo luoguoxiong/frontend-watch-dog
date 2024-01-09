@@ -8,6 +8,9 @@ type AnyFunc<T = any> = (...args: any[]) => T;
 type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
 import ExportElasticsearchIndex from '../../../app/service/elasticsearch/index';
+import ExportElasticsearchPages from '../../../app/service/elasticsearch/pages';
+import ExportElasticsearchTrafficStats from '../../../app/service/elasticsearch/trafficStats';
+import ExportElasticsearchType from '../../../app/service/elasticsearch/type';
 import ExportKafukaIndex from '../../../app/service/kafuka/index';
 import ExportKafukaReport from '../../../app/service/kafuka/report';
 import ExportKafukaType from '../../../app/service/kafuka/type';
@@ -15,10 +18,6 @@ import ExportRedisCache from '../../../app/service/redis/cache';
 import ExportRedisDayNewUsers from '../../../app/service/redis/dayNewUsers';
 import ExportRedisEveryDayActiveUsers from '../../../app/service/redis/everyDayActiveUsers';
 import ExportRedisTop from '../../../app/service/redis/top';
-import ExportElasticsearchPagesIndex from '../../../app/service/elasticsearch/pages/index';
-import ExportElasticsearchPagesType from '../../../app/service/elasticsearch/pages/type';
-import ExportElasticsearchTrafficStatsIndex from '../../../app/service/elasticsearch/trafficStats/index';
-import ExportElasticsearchTrafficStatsType from '../../../app/service/elasticsearch/trafficStats/type';
 import ExportMysqlAppIndex from '../../../app/service/mysql/app/index';
 import ExportMysqlAppType from '../../../app/service/mysql/app/type';
 import ExportMysqlTrafficsIndex from '../../../app/service/mysql/traffics/index';
@@ -30,14 +29,9 @@ declare module 'egg' {
   interface IService {
     elasticsearch: {
       index: AutoInstanceType<typeof ExportElasticsearchIndex>;
-      pages: {
-        index: AutoInstanceType<typeof ExportElasticsearchPagesIndex>;
-        type: AutoInstanceType<typeof ExportElasticsearchPagesType>;
-      }
-      trafficStats: {
-        index: AutoInstanceType<typeof ExportElasticsearchTrafficStatsIndex>;
-        type: AutoInstanceType<typeof ExportElasticsearchTrafficStatsType>;
-      }
+      pages: AutoInstanceType<typeof ExportElasticsearchPages>;
+      trafficStats: AutoInstanceType<typeof ExportElasticsearchTrafficStats>;
+      type: AutoInstanceType<typeof ExportElasticsearchType>;
     }
     kafuka: {
       index: AutoInstanceType<typeof ExportKafukaIndex>;

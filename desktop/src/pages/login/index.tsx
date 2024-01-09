@@ -36,34 +36,42 @@ const LoginPage = () => {
   };
 
   const toLogin = async() => {
-    await login({
-      account: form.user,
-      password: form.pwd,
-    });
-    navigate('/');
+    try {
+      await login({
+        account: form.user,
+        password: form.pwd,
+      });
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
 
   const toSubmit = async(type: ActionType) => {
-    const { user, pwd } = form;
-    const reg = /^[a-zA-Z0-9]{6,10}$/;
-    if(!reg.test(user) || !reg.test(pwd)){
-      return Message.error('请输入长度6~10，只包含数字和字母的账号和密码');
-    }
-    if(type === ActionType.Login){
-      toLogin();
-    }else{
-      await register({
-        account: form.user,
-        password: form.pwd,
-      });
-      Modal.confirm({
-        content: '立即登录？',
-        onOk: async() => {
-          toLogin();
-        },
-      });
+    try {
+      const { user, pwd } = form;
+      const reg = /^[a-zA-Z0-9]{6,10}$/;
+      if(!reg.test(user) || !reg.test(pwd)){
+        return Message.error('请输入长度6~10，只包含数字和字母的账号和密码');
+      }
+      if(type === ActionType.Login){
+        toLogin();
+      }else{
+        await register({
+          account: form.user,
+          password: form.pwd,
+        });
+        Modal.confirm({
+          content: '立即登录？',
+          onOk: async() => {
+            toLogin();
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (

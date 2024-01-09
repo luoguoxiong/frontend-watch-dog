@@ -8,6 +8,7 @@ import ExportApp from '../../../app/controller/app';
 import ExportDesktop from '../../../app/controller/desktop';
 import ExportPerformance from '../../../app/controller/performance';
 import ExportReport from '../../../app/controller/report';
+import ExportTraffic from '../../../app/controller/traffic';
 
 declare module 'egg' {
   interface IController {
@@ -16,5 +17,6 @@ declare module 'egg' {
     desktop: ExportDesktop;
     performance: ExportPerformance;
     report: ExportReport;
+    traffic: ExportTraffic;
   }
 }
