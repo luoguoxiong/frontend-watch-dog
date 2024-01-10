@@ -16,7 +16,7 @@ export const useAppInfo = (appId: string) => {
   const getLastWeekActiveUsers = async(appId: string) => {
     const week = [];
     let day = 7;
-    while(day > 0){
+    while(day >= 0){
       week.push(getDayActiveUsers({ appId, date: dayjs().add(-day, 'day').format('YYYY-MM-DD') }));
       day--;
     }

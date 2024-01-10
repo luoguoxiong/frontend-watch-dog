@@ -26,6 +26,10 @@ export default class PagesEsService extends Service {
               osVersion: { type: 'keyword' },
               deviceVendor: { type: 'keyword' },
               deviceModel: { type: 'keyword' },
+              ua: { type: 'keyword' },
+              province: { type: 'keyword' },
+              country: { type: 'keyword' },
+              city: { type: 'keyword' },
               loadTime: { type: 'integer' },
               dnsTime: { type: 'integer' },
               tcpTime: { type: 'integer' },
@@ -162,7 +166,7 @@ export default class PagesEsService extends Service {
             },
           },
         },
-        // track_total_hits: true,
+        track_total_hits: true,
       },
     };
     if (groupKey) {

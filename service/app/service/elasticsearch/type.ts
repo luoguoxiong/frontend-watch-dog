@@ -73,6 +73,9 @@ export interface PageModelIn {
   /** 页面重定向时间 */
   reirectTime?:number
   /** 页面请求完成时间 */
+  province?:string,
+  city?:string;
+  country?:string
   requestTime?:number
   createdAt?: string
   updatedAt?:string

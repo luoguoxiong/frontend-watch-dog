@@ -1,6 +1,5 @@
 import { Service } from 'egg';
 import { Topics } from '@/app/service/kafuka/type';
-import axios from 'axios';
 import { PageModelIn } from '@/app/service/elasticsearch/type';
 export default class ReportService extends Service {
   async useKafkaConsume() {
@@ -8,8 +7,10 @@ export default class ReportService extends Service {
       const pageMsg = JSON.parse(message.value as string) as PageModelIn;
       this.ctx.service.elasticsearch.pages.saveReportData(pageMsg.appId, pageMsg);
       this.ctx.service.redis.everyDayActiveUsers.addUsers(pageMsg.appId, `${pageMsg.userId}`);
+      this.ctx.service.redis.everyDayIps.addIps(pageMsg.appId, `${pageMsg.ip}`);
       this.ctx.service.redis.dayNewUsers.analyseDayNewUsers(pageMsg.appId, `${pageMsg.userId}`);
       this.ctx.service.redis.top.setTopData(pageMsg.appId, 'webVisit', pageMsg.pageUrl);
+      this.ctx.service.redis.everyDayPv.addPv(pageMsg.appId);
       if (pageMsg.browserName) {
         this.ctx.service.redis.top.setTopData(pageMsg.appId, 'browser', pageMsg.browserName);
       }
@@ -19,11 +20,8 @@ export default class ReportService extends Service {
       if (pageMsg.osName) {
         this.ctx.service.redis.top.setTopData(pageMsg.appId, 'osName', pageMsg.osName);
       }
-      if (pageMsg.ip !== '127.0.0.1') {
-        const { data } = await axios.get(`https://restapi.amap.com/v3/ip?ip=${pageMsg.ip}&output=json&key=${this.app.config.amapKey}`);
-        if (typeof data.province === 'string') {
-          this.ctx.service.redis.top.setTopData(pageMsg.appId, 'city', data.province);
-        }
+      if (pageMsg.province) {
+        this.ctx.service.redis.top.setTopData(pageMsg.appId, 'city', pageMsg.province);
       }
     });
   }

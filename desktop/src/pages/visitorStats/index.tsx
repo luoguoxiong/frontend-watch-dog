@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import cls from 'classnames';
 import styles from './index.module.less';
 import { LineChart } from './components/newUserLine';
@@ -10,14 +10,33 @@ import { useAppStore } from '@/src/hooks';
 import { Card } from '@/src/components';
 import downPng from '@/src/images/down.png';
 import upPng from '@/src/images/up.png';
+import { getWebVisitTop } from '@/src/api';
 const VisitorStats = () => {
   const { active } = useAppStore();
+  const [pages, setPages] = useState([]);
+  useEffect(() => {
+    getWebVisitTop({
+      appId: active,
+      type: 'webVisit',
+    }).then((res) => {
+      const page = {
+        label: '全部',
+        value: '',
+      };
+      setPages([page, ...res.data]);
+    });
+  }, []);
   return (
     <>
-      <TodayTrafficData />
+      <TodayTrafficData appId={active} />
       <UserData />
-      <TrafficTimeLine />
-      <TrafficDayLine />
+      <TrafficTimeLine
+        appId={active}
+        pages={pages} />
+      <TrafficDayLine
+        appId={active}
+        pages={pages}
+      />
     </>
   );
 };

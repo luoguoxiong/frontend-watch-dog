@@ -40,11 +40,38 @@ type TopKeys = 'webVisit' | 'browser' | 'deviceVendor' | 'city' | 'osName';
 
 interface AnalyseReq{
   appId: string;
-  date?: string;
-  top?: TopKeys;
+  type?: TopKeys;
+  top?: number;
 }
 
 interface Options{
   label: string;
   value: string|number;
+}
+
+interface TodayTrafficRes{
+  allUsers: number;
+  newUsers: [number, number];
+  pv: [number, number];
+  ip: [number, number];
+  activeUsers: [number, number];
+}
+
+interface TrafficTimesReq{
+  appId: string;
+  date: string;
+  pageUrl: string;
+}
+
+interface TrafficDaysReq{
+  appId: string;
+  pageUrl: string;
+  beginTime: string;
+  endTime: string;
+}
+
+interface TrafficTimesRes{
+  pageViews: Record<string, number>;
+  uniqueIPsCount: Record<string, number>;
+  uniqueVisitors: Record<string, number>;
 }

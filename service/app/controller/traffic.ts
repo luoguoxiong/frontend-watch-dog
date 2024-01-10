@@ -5,7 +5,7 @@ export default class TrafficController extends Controller {
   async getTrafficTimes() {
     try {
       const userId = await getCookieMessge(this.ctx);
-      if (!userId) {
+      if (userId) {
         const { appId, date, pageUrl } = this.ctx.query;
         const beginTime = dayjs(dayjs(date).format('YYYY-MM-DD 00:00:00')).valueOf();
         const endTime = dayjs(dayjs(date).format('YYYY-MM-DD 23:59:59')).valueOf();
@@ -43,13 +43,13 @@ export default class TrafficController extends Controller {
   async getTrafficDays() {
     try {
       const userId = await getCookieMessge(this.ctx);
-      if (!userId) {
+      if (userId) {
         const { appId, beginTime, endTime, pageUrl } = this.ctx.query;
         const beginTimes = dayjs(dayjs(beginTime).format('YYYY-MM-DD 00:00:00')).valueOf();
         const endTimes = dayjs(dayjs(endTime).format('YYYY-MM-DD 23:59:59')).valueOf();
         const searchPage = pageUrl || '';
         const data = await this.service.mysql.traffics.index.getTrafficData(appId, {
-          type: 1,
+          type: 2,
           pageUrl: searchPage,
           beginTime: beginTimes,
           endTime: endTimes,

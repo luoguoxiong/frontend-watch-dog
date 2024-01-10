@@ -9,7 +9,7 @@ export default class TrafficStatsService extends Service {
   async getTrafficStatsMinutes() {
     try {
       const interval = parser.parseExpression(this.app.config.trafficStatsScheduleMin);
-      const endTime = new Date().getTime();
+      const endTime = interval.prev().getTime();
       const beginTime = interval.prev().getTime();
       await this.getAllAppTrafficStats(
         {
