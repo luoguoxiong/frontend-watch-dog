@@ -31,7 +31,6 @@
     "@eggjs/tegg-plugin": "^3.5.2",
     "@eggjs/tegg-schedule-plugin": "^3.5.2",
     "@elastic/elasticsearch": "7",
-    "axios": "^1.6.3",
     "bcrypt": "^5.1.1",
     "cron-parser": "^4.9.0",
     "dayjs": "^1.11.10",

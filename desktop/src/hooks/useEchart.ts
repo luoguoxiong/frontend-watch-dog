@@ -25,5 +25,5 @@ export const useEchart = () => {
     }, 0);
   };
 
-  return { ref, setOption };
+  return { ref, setOption, chartCurrent: chartRef.current };
 };

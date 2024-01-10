@@ -1,4 +1,4 @@
-// This file is created by egg-ts-helper@1.35.1
+// This file is created by egg-ts-helper@2.1.0
 // Do not modify this file!!!!!!!!!
 /* eslint-disable */
 
@@ -17,6 +17,8 @@ import ExportKafukaType from '../../../app/service/kafuka/type';
 import ExportRedisCache from '../../../app/service/redis/cache';
 import ExportRedisDayNewUsers from '../../../app/service/redis/dayNewUsers';
 import ExportRedisEveryDayActiveUsers from '../../../app/service/redis/everyDayActiveUsers';
+import ExportRedisEveryDayIps from '../../../app/service/redis/everyDayIps';
+import ExportRedisEveryDayPv from '../../../app/service/redis/everyDayPv';
 import ExportRedisTop from '../../../app/service/redis/top';
 import ExportMysqlAppIndex from '../../../app/service/mysql/app/index';
 import ExportMysqlAppType from '../../../app/service/mysql/app/type';
@@ -42,6 +44,8 @@ declare module 'egg' {
       cache: AutoInstanceType<typeof ExportRedisCache>;
       dayNewUsers: AutoInstanceType<typeof ExportRedisDayNewUsers>;
       everyDayActiveUsers: AutoInstanceType<typeof ExportRedisEveryDayActiveUsers>;
+      everyDayIps: AutoInstanceType<typeof ExportRedisEveryDayIps>;
+      everyDayPv: AutoInstanceType<typeof ExportRedisEveryDayPv>;
       top: AutoInstanceType<typeof ExportRedisTop>;
     }
     mysql: {

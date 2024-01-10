@@ -2,7 +2,7 @@ import { Controller } from 'egg';
 import { PageModelIn } from '@/app/service/elasticsearch/type';
 import { BluBiuResponseCode } from '@/app/extend/context.type';
 import UAParser from 'ua-parser-js';
-import { getUserIp } from '@/app/utils';
+import { getUserIp, getIpAddress, crateRandomIp } from '@/app/utils';
 export default class ReportController extends Controller {
   public async index() {
     const { ctx, service } = this;
@@ -16,7 +16,9 @@ export default class ReportController extends Controller {
     if (isOk) {
       const parser = new UAParser();
       const agent = ctx.headers['user-agent'];
-      const ip = getUserIp(ctx);
+      getUserIp(ctx);
+      const ip = crateRandomIp();
+      const { province, country, city } = getIpAddress(ip);
       parser.setUA(agent);
       const result = parser.getResult();
       const querys = {
@@ -29,6 +31,10 @@ export default class ReportController extends Controller {
         osVersion: result.os.version,
         deviceVendor: result.device.vendor,
         deviceModel: result.device.model,
+        ua: result.ua,
+        province,
+        country,
+        city,
       };
       service.kafuka.report.sendMessgeToKafka(querys);
       ctx.success();

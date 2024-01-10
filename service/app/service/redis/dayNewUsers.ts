@@ -1,15 +1,14 @@
 import { Service } from 'egg';
 import dayjs from 'dayjs';
 class RedisDayNewUsersService extends Service {
-  private getKeyName = (appId:string, dateString:string) => `dayNewUsers-${appId}-${dateString}`;
+  private getKeyName = (appId:string, dateString:string) => `${appId}-dayNewUsers-${dateString}`;
 
   async analyseDayNewUsers(appId:string, userId:string) {
-    const isHas = await this.app.redis.sismember(`allUsers-${appId}`, userId);
+    const isHas = await this.app.redis.sismember(`${appId}-allUsers`, userId);
     if (!isHas) {
       const key = this.getKeyName(appId, dayjs().format('YYYY-MM-DD'));
-      const todayNewUsers = await this.app.redis.get(key);
-      await this.app.redis.set(key, todayNewUsers ? `${Number(todayNewUsers) + 1}` : 1);
-      await this.app.redis.sadd(`allUsers-${appId}`, [ userId ]);
+      await this.app.redis.sadd(`${appId}-allUsers`, [ userId ]);
+      await this.app.redis.incr(key);
     }
   }
 
@@ -18,7 +17,7 @@ class RedisDayNewUsersService extends Service {
   }
 
   async getAllUsers(appId:string) {
-    return await this.app.redis.scard(`allUsers-${appId}`);
+    return await this.app.redis.scard(`${appId}-allUsers`);
   }
 }
 

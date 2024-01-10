@@ -64,3 +64,9 @@ export const getWebVisitTop = async(params: AnalyseReq): BluBiuResponse<Options[
 export const getNewUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getNewUsers', { params });
 
 export const getAllUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getAllUsers', { params });
+
+export const getTodayTraffic = async(appId: string): BluBiuResponse<TodayTrafficRes> => await http.get('/analyse/getTodayTraffic', { params: { appId } });
+
+export const getTrafficTimes = async(params: TrafficTimesReq): BluBiuResponse<TrafficTimesRes> => await http.get('/traffic/getTrafficTimes', { params });
+
+export const getTrafficDays = async(params: TrafficDaysReq): BluBiuResponse<TrafficTimesRes> => await http.get('/traffic/getTrafficDays', { params });
