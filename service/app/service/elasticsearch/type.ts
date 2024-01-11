@@ -35,11 +35,13 @@ export interface PageModelIn {
   /** 应用AppId */
   appId:string
   /** 是否是首屏 0 否 1 是 */
-  isFirst:0 | 1
+  isFirst: boolean
   /** 访问Url路径 */
   pageUrl:string
   /** 访问的域名 */
   origin?:string
+  /** 模拟用户ID */
+  markUserId?:string
   /** 用户ID */
   userId?:string
   /** ip地址 */
@@ -58,25 +60,24 @@ export interface PageModelIn {
   deviceVendor?:string
   /** 设备模型 */
   deviceModel?:string
-  /** 页面加时长 */
-  loadTime?:number
   /** 页面Dns解析时长 */
   dnsTime?:number
   /** 页面TCP链接时长 */
   tcpTime?:number
   /** 页面白屏时间 */
   whiteTime?:number
-  /** dom渲染时间 */
-  domTime?:number
-  /** 页面准备时间 */
-  fetchTime?:number
-  /** 页面重定向时间 */
-  reirectTime?:number
+  /** 首次内容 */
+  fcp?:number;
+  /** 首字节时间 */
+  ttfb?:number;
+  /** 最大内容绘制 */
+  lcp?:number;
+  /** 用户首次与页面交互 */
+  fid?:number
   /** 页面请求完成时间 */
   province?:string,
   city?:string;
   country?:string
-  requestTime?:number
   createdAt?: string
   updatedAt?:string
 }

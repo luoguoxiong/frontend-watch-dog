@@ -167,8 +167,11 @@ export default class TrafficStatsService extends Service {
       const [ pageViews, uniqueIPsCount, uniqueVisitors ] = await Promise.all([
         this.service.elasticsearch.pages.analyzeAppTrafficStats(query.appId, query.beginTime, query.endTime),
         this.service.elasticsearch.pages.analyzeAppTrafficStats(query.appId, query.beginTime, query.endTime, 'ip'),
-        this.service.elasticsearch.pages.analyzeAppTrafficStats(query.appId, query.beginTime, query.endTime, 'userId'),
+        this.service.elasticsearch.pages.analyzeAppTrafficStats(query.appId, query.beginTime, query.endTime, 'markUserId'),
       ]);
+      if (pageViews === 0 && uniqueIPsCount === 0 && uniqueVisitors === 0) {
+        return;
+      }
       // 调用回调函数处理获取到的 Traffic 统计数据
       onOk({
         pageUrl: '',
@@ -216,7 +219,7 @@ export default class TrafficStatsService extends Service {
    * @return {Promise<TrafficUvStatsIn[]>} - UV 统计数据数组
    */
   async getTrafficUvCount({ appId, beginTime, endTime }: TrafficStatsQuery): Promise<TrafficStatsIn[]> {
-    return await this.service.elasticsearch.pages.analyzePageTrafficStats(appId, beginTime, endTime, 'userId');
+    return await this.service.elasticsearch.pages.analyzePageTrafficStats(appId, beginTime, endTime, 'markUserId');
   }
 
   /**

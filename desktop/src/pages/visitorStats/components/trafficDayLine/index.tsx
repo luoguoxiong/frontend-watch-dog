@@ -185,7 +185,6 @@ export const TrafficDayLine: React.FC<TrafficTimeLine> = ({ appId, pages }) => {
             }}
             onChange={(value) => {
               setDate(value);
-              getData();
             }} />
         </>
       }

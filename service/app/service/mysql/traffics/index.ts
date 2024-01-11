@@ -9,13 +9,30 @@ export default class TrafficMysqlService extends Service {
 
   private async getModel(appId:string):Promise<sequelize.ModelCtor<sequelize.Model<TrafficModelIn>>> {
     const tableName = this.getMysqlTableName(appId);
-    const model = this.app.model.define(tableName, TrafficModel);
-    const isExist = await this.service.redis.cache.getTableIsCreate(tableName);
-    if (!isExist) {
-      await model.sync();
-      await this.service.redis.cache.setTableIsCreate(tableName);
-    }
+    const model = this.app.model.define(tableName, TrafficModel, {
+      indexes: [
+        {
+          unique: true,
+          fields: [ 'statisticsTime', 'pageUrl', 'appId', 'type' ],
+          name: 'unique_combination', // 可选的索引名称
+        },
+      ],
+    });
     return model;
+  }
+
+  async createTrafficTable(appId:string) {
+    const tableName = this.getMysqlTableName(appId);
+    const model = this.app.model.define(tableName, TrafficModel, {
+      indexes: [
+        {
+          unique: true,
+          fields: [ 'statisticsTime', 'pageUrl', 'appId', 'type' ],
+          name: 'unique_combination', // 可选的索引名称
+        },
+      ],
+    });
+    await model.sync();
   }
 
   async insertData(data:TrafficModelIn) {

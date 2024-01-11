@@ -57,9 +57,7 @@ export const createApp = async(params: CreateAppIn): BluBiuResponse<any> => awai
 
 export const updateAppStatus = async(params: UpdateAppInfo): BluBiuResponse<any> => await http.post('/updateAppStatus', params);
 
-export const getDayActiveUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getDayActiveUsers', { params });
-
-export const getWebVisitTop = async(params: AnalyseReq): BluBiuResponse<Options[]> => await http.get('/analyse/getWebVisitTop', { params });
+export const getWebVisitTop = async(params: TopReq): BluBiuResponse<Options[]> => await http.get('/analyse/getWebVisitTop', { params });
 
 export const getNewUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getNewUsers', { params });
 
@@ -70,3 +68,7 @@ export const getTodayTraffic = async(appId: string): BluBiuResponse<TodayTraffic
 export const getTrafficTimes = async(params: TrafficTimesReq): BluBiuResponse<TrafficTimesRes> => await http.get('/traffic/getTrafficTimes', { params });
 
 export const getTrafficDays = async(params: TrafficDaysReq): BluBiuResponse<TrafficTimesRes> => await http.get('/traffic/getTrafficDays', { params });
+
+export const getDayActiveUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getDayActiveUsers', { params });
+
+export const getActiveUsers = async(params: AnalyseReq): BluBiuResponse<Options[]> => await http.get('/analyse/getActiveUsers', { params });
