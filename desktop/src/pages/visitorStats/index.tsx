@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import cls from 'classnames';
-import styles from './index.module.less';
-import { LineChart } from './components/newUserLine';
 import { TodayTrafficData } from './components/todayTrafficData';
 import { UserData } from './components/userData';
 import { TrafficTimeLine } from './components/trafficTimeLine';
 import { TrafficDayLine } from './components/trafficDayLine';
 import { useAppStore } from '@/src/hooks';
-import { Card } from '@/src/components';
-import downPng from '@/src/images/down.png';
-import upPng from '@/src/images/up.png';
 import { getWebVisitTop } from '@/src/api';
 const VisitorStats = () => {
   const { active } = useAppStore();
@@ -29,7 +23,7 @@ const VisitorStats = () => {
   return (
     <>
       <TodayTrafficData appId={active} />
-      <UserData />
+      <UserData appId={active}/>
       <TrafficTimeLine
         appId={active}
         pages={pages} />

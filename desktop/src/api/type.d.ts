@@ -40,6 +40,12 @@ type TopKeys = 'webVisit' | 'browser' | 'deviceVendor' | 'city' | 'osName';
 
 interface AnalyseReq{
   appId: string;
+  date?: string;
+  beginTime?: string;
+  endTime?: string;
+}
+interface TopReq{
+  appId: string;
   type?: TopKeys;
   top?: number;
 }

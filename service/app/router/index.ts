@@ -15,6 +15,7 @@ export default (app: Application) => {
   router.post('/api/desktop/updateAppStatus', controller.app.updateAppStatus);
 
   router.get('/api/desktop/analyse/getDayActiveUsers', controller.analyse.getDayActiveUsers);
+  router.get('/api/desktop/analyse/getActiveUsers', controller.analyse.getActiveUsers);
   router.get('/api/desktop/analyse/getWebVisitTop', controller.analyse.getWebVisitTop);
   router.get('/api/desktop/analyse/getNewUsers', controller.analyse.getNewUsers);
   router.get('/api/desktop/analyse/getAllUsers', controller.analyse.getAllUsers);
