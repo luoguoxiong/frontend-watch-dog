@@ -1,87 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { onCLS, onFID, onLCP, onFCP, onTTFB } from 'web-vitals/attribution';
-
-const reportWebVitals = (onPerfEntry) => {
-  if (onPerfEntry && onPerfEntry instanceof Function) {
-    /** 首次内容绘制 */
-    onFCP(onPerfEntry);
-    /** 首字节时间 */
-    onTTFB(onPerfEntry);
-    /** 最大内容绘制 */
-    onLCP(onPerfEntry);
-    /** 用户首次与页面交互 */
-    onFID(onPerfEntry);
-  }
-};
-reportWebVitals(console.log);
-
-function getPerformanceMetrics() {
-  if (window.performance && window.performance.timing) {
-    const timing = window.performance.timing;
-    const navigationStart = timing.navigationStart;
-
-    // 白屏时间
-    const blankScreenTime = timing.domComplete - navigationStart;
-
-    // TTFP (Time To First Paint)
-    const firstPaint = 'performance' in window &&
-      'timing' in window.performance &&
-      'chrome' in window.performance.timing
-      ? window.performance.timing.firstPaint || 0
-      : 0;
-    const ttfp = firstPaint - navigationStart;
-
-    // TTFB (Time To First Byte)
-    const ttfb = timing.responseStart - navigationStart;
-
-    // 页面加载时间
-    const pageLoadTime = timing.loadEventEnd - navigationStart;
-
-    // 页面渲染时间
-    const pageRenderTime = timing.domComplete - navigationStart;
-
-    // FCP (First Contentful Paint)
-    const fcp = timing.domContentLoadedEventEnd - navigationStart;
-
-    // LCP (Largest Contentful Paint)
-    const lcp = Math.max(
-      timing.loadEventEnd - navigationStart,
-      timing.domContentLoadedEventEnd - navigationStart,
-      timing.domComplete - navigationStart
-    );
-
-    // CLS (Cumulative Layout Shift)
-    const clsEntries = performance.getEntriesByType('layout-shift');
-    const cls = clsEntries.reduce((sum, entry) => sum + entry.value, 0);
-
-    // FID (First Input Delay)
-    const fidEntries = performance.getEntriesByType('first-input');
-    const fid = fidEntries.length > 0 ? fidEntries[0].processingStart - fidEntries[0].startTime : 0;
-
-    // 返回性能指标对象
-    return {
-      blankScreenTime,
-      ttfp,
-      ttfb,
-      pageLoadTime,
-      pageRenderTime,
-      fcp,
-      lcp,
-      cls,
-      fid,
-    };
-  } else {
-    console.error('Navigation Timing API is not supported.');
-    return null;
-  }
-}
-
-// 使用方法
-const performanceMetrics = getPerformanceMetrics();
-if (performanceMetrics) {
-  console.log('Performance Metrics:', performanceMetrics);
-}
+import { Monitor } from '../sdk';
 
 export interface PageModelIn {
   /** 应用AppId */
@@ -173,13 +92,66 @@ const testTask = () => {
       console.error('Fetch error:', error);
     });
 };
-let index = 0;
-const id = setInterval(() => {
-  index++;
-  // if(index===201) clearInterval(id)
-  testTask();
-}, 10);
 
-testTask();
+import('./app.css').then();
+const index = 0;
+// const id = setInterval(() => {
+//   index++;
+//   // if(index===201) clearInterval(id)
+//   testTask();
+// }, 10);
 
-// 在页面开始加载时记录时间戳
+// testTask();
+new Monitor({
+  appId: 'wmyz',
+  cacheMax: 1,
+  webVitalsTimeouts: 1000,
+  report: (data) => {
+    console.log(data);
+  },
+});
+
+
+// 代码异常
+const a = [{ a: 1 }, { a: [] }];
+const script = document.createElement('script');
+script.src = 'https://stest.com';
+document.body.appendChild(script);
+// ===============
+a.map((item) => {
+  item.a.map((temp) => {
+    console.log(temp);
+  });
+});
+// fetch 监听异常
+// fetch('/api/abc', {
+//   method: 'get',
+// }).then((res) => {
+//   console.log('res', res);
+// });
+// ========================
+
+// xmlhttp请求异常
+const xhr2 = new XMLHttpRequest();
+
+// xhr2.open('get', 'http://sdss.com/sdsdsd/api/abc', true);
+// xhr2.onreadystatechange = (ev) => {
+//   console.log('111',11);
+// };
+// // xhr2.open('post', '/desktop');
+// xhr2.setRequestHeader('header', '1');
+// // xhr2.open("get", "/api/abc2", true);
+// xhr2.send('?a=2');
+// ====================
+
+// prmoise 异常
+// const promiseTest = () => new Promise((res, rej) => {
+//   rej('错误');
+// });
+// promiseTest().then((res) => {
+//   console.log(res);
+// });
+
+ReactDOM.render(<div>2323</div>, document.getElementById('root'));
+
+
