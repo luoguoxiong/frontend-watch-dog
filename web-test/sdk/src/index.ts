@@ -1,112 +1,16 @@
 import { onFID, onLCP, onFCP, onTTFB } from 'web-vitals/attribution';
-import { getXmlHttpSend } from './utils';
-interface PageMsg {
-  /** 是否是首屏 */
-  isFirst: boolean;
-  /** 域名 */
-  domain: string;
-  /** 请求参数 */
-  query: string;
-  /** 网页链接 */
-  pageUrl: string;
-}
-
-interface PageStatusReportMsg{
-  type: 'pageStatus';
-  /** 页面停留时间 */
-  residence: number;
-  /** 用户点击栈 */
-  actionClickStack: string[];
-}
-
-interface PerfamceReportMsg{
-  type: 'performance';
-  /** 页面Dns解析时长 */
-  dnsTime: number;
-  /** 页面TCP链接时长 */
-  tcpTime: number;
-  /** 页面白屏时间 */
-  whiteTime: number;
-  /** 首次内容 */
-  fcp: number;
-  /** 首字节时间 */
-  ttfb: number;
-  /** 最大内容绘制 */
-  lcp: number;
-  /** 用户首次与页面交互 */
-  fid: number;
-}
-
-interface ResourceStatus{
-  /** 资源链接 */
-  resource: string;
-  /** 资源请求耗时 */
-  duration: number;
-  /** 资源大小 */
-  size: number;
-  /** 资源类型 */
-  type: string;
-}
-
-type ResourceReportMsg = {
-  type: 'resource';
-  rescources: ResourceStatus[];
-}
-
-type RequestReportMsg = {
-  type: 'request';
-  url: string;
-  method: string;
-  reqHeaders: string;
-  reqBody: string;
-  status: number;
-  requestType: 'done' | 'error' | 'timeout';
-  cost: number;
-}
-
-type JsErrorReportMsg = {
-  type: 'jsError';
-  message: string;
-  colno: number;
-  lineno: number;
-  stack: string;
-  filename: string;
-}
-
-type LoadResourceErrorReportMsg = {
-  type: 'loadResourceError';
-  resourceType: string;
-  resourceUrl: string;
-}
-
-export type ReportItem =(
-  | PerfamceReportMsg
-  | ResourceReportMsg
-  | PageStatusReportMsg
-  | RequestReportMsg
-  | JsErrorReportMsg
-  | LoadResourceErrorReportMsg
-) & PageMsg & {
-  userTimeStamp?: number;
-};
-
-interface MonitorConfig{
-  appId: string;
-  cacheMax: number;
-  webVitalsTimeouts?: number;
-  report: (data: ReportItem[]) => void;
-}
+import { _history } from './history';
 
 export class Monitor {
   config: MonitorConfig;
 
   performance: PerfamceReportMsg;
 
-  curPage: PageMsg;
-
   firstPageMsg: PageMsg;
 
-  resourceStatus: ResourceStatus[];
+  lastPageMsg: PageMsg;
+
+  curPageStatus: PageStatus;
 
   reportStack: ReportItem[];
 
@@ -115,6 +19,7 @@ export class Monitor {
       webVitalsTimeouts: 5000,
       ...config,
     };
+
     this.performance = {
       type: 'performance',
       dnsTime: -1,
@@ -126,46 +31,116 @@ export class Monitor {
       fid: -1,
     };
 
-    this.curPage = this.firstPageMsg = {
+    this.firstPageMsg = {
       isFirst: true,
-      pageUrl: location.pathname,
+      pageUrl: location.hash || location.pathname,
       domain: location.host,
       query: location.search,
     };
 
     this.reportStack = [];
 
-    this.resourceStatus = [];
+    this.caughtError();
+
+    this.resetXmlHttp();
+
+    this.resetFetch();
+
+    this.catchRouterChange();
+
+    this.lastPageMsg = this.getPageMsg();
+
+    this.curPageStatus = {
+      inTime: new Date().getTime(),
+      leaveTime: 0,
+      residence: 0,
+    };
 
     const startTime = window.performance.now();
-    this.caughtError();
-    this.resetXmlHttp();
-    this.resetFetch();
-    window.onload = async() => {
+    window.addEventListener('load', async() => {
       const endTime = window.performance.now();
       this.performance.whiteTime = endTime - startTime;
-      this.resourceStatus = this.getEnteries();
       this.toReport({
         type: 'resource',
         ...this.firstPageMsg,
         rescources: this.getEnteries(),
       });
       await this.getWebPerformance();
-    };
+    });
+
+    window.addEventListener('click', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const getTagMsg = (tag) => {
+        if(tag){
+          const className = tag.getAttribute('class');
+          const id = tag.getAttribute('id');
+          const tagName = tag.tagName.toLocaleLowerCase();
+          return `${tagName}${id ? `#${id}` : ''}${className ? `.${className}` : ''}`;
+        }
+      };
+
+      const track = [getTagMsg(target)];
+      let curTarget = event.target as any;
+      while(curTarget && curTarget.parentNode !== document){
+        track.unshift(getTagMsg(curTarget.parentNode));
+        curTarget = curTarget.parentNode;
+      }
+
+      this.toReport({
+        type: 'click',
+        clickElement: track.join('>'),
+        ...this.getPageMsg(),
+      });
+    }, true);
   }
+
+  getPageMsg = () => {
+    const isHash = location.hash && location.hash !== '';
+    return {
+      pageUrl: isHash ? location.hash : location.pathname,
+      domain: location.host,
+      query: location.search,
+    };
+  };
+
+  private catchRouterChange = () => {
+    const dealWithPageInfo = () => {
+      const curTime = new Date().getTime();
+      const lastPageStatus = {
+        ...this.curPageStatus,
+        leaveTime: curTime,
+        residence: curTime - this.curPageStatus.inTime,
+      };
+      this.curPageStatus = {
+        inTime: curTime,
+        leaveTime: 0,
+        residence: 0,
+      };
+      this.toReport({
+        type: 'pageStatus',
+        ...this.lastPageMsg,
+        ...lastPageStatus,
+      });
+      this.lastPageMsg = this.getPageMsg();
+    };
+    _history.addEventListener(() => {
+      dealWithPageInfo();
+    });
+    window.addEventListener('hashchange', () => {
+      dealWithPageInfo();
+    });
+  };
+
 
   private toReport(data: ReportItem){
     data.userTimeStamp = new Date().getTime();
     this.reportStack.push(data);
-    const { report, cacheMax } = this.config;
-    if(cacheMax <= this.reportStack.length){
-      const reportData = this.reportStack.splice(0, cacheMax);
-      report(reportData);
-    }
+    const { api } = this.config;
+    const img = document.createElement('img');
+    img.src = `${api}?data=${encodeURIComponent(JSON.stringify(data))}`;
   }
 
-  // 获取页面性能指标
-  async getWebPerformance() {
+  private async getWebPerformance() {
     const [{ domainLookupEnd, domainLookupStart, connectEnd, connectStart }] = window.performance.getEntriesByType('navigation');
     this.performance.dnsTime = domainLookupEnd - domainLookupStart;
     this.performance.tcpTime = connectEnd - connectStart;
@@ -178,10 +153,16 @@ export class Monitor {
         resolve(data.value);
       });
     });
-    this.performance.fcp = await getWebvitals(onFCP);
-    this.performance.ttfb = await getWebvitals(onTTFB);
-    this.performance.lcp = await getWebvitals(onLCP);
-    this.performance.fid = await getWebvitals(onFID);
+    const [fcp, ttfp, lcp, fid] = await Promise.all([
+      getWebvitals(onFCP),
+      getWebvitals(onTTFB),
+      getWebvitals(onLCP),
+      getWebvitals(onFID),
+    ]);
+    this.performance.fcp = fcp;
+    this.performance.ttfb = ttfp;
+    this.performance.lcp = lcp;
+    this.performance.fid = fid;
     this.toReport({
       type: 'performance',
       ...this.firstPageMsg,
@@ -189,8 +170,7 @@ export class Monitor {
     });
   }
 
-  // 获取资源加载时间
-  getEnteries() {
+  private getEnteries() {
     const resources = window.performance.getEntriesByType('resource');
     return resources.map((item) => ({
       resource: item.name,
@@ -199,16 +179,15 @@ export class Monitor {
       type: item.initiatorType,
     }));
   }
-  // 捕获异常
-  caughtError() {
+
+  private caughtError() {
     const monitor = this;
     window.addEventListener(
       'error',
       (error: ErrorEvent | Event) => {
         if(error instanceof ErrorEvent){
-          console.log(error);
           monitor.toReport({
-            ...monitor.curPage,
+            ...monitor.getPageMsg(),
             type: 'jsError',
             message: error.message,
             stack: error.error.stack,
@@ -219,7 +198,7 @@ export class Monitor {
         }else{
           const { type, target } = error as any;
           monitor.toReport({
-            ...monitor.curPage,
+            ...monitor.getPageMsg(),
             type: 'loadResourceError',
             resourceType: type,
             resourceUrl: target.src,
@@ -229,15 +208,16 @@ export class Monitor {
       true
     );
 
-    // 捕获promise reject
     window.addEventListener('unhandledrejection', (error) => {
-      error.preventDefault();
-      console.log(error);
-      return true;
+      this.toReport({
+        type: 'rejectError',
+        reason: error.reason.toString(),
+        ...monitor.getPageMsg(),
+      });
     });
   }
-  // 重写xmlhttp请求
-  resetXmlHttp() {
+
+  private resetXmlHttp() {
     if (!window.XMLHttpRequest) return;
     const xmlhttp = window.XMLHttpRequest;
 
@@ -271,7 +251,7 @@ export class Monitor {
       };
 
       xml.send = function(args: Document | XMLHttpRequestBodyInit){
-        config.reqBody = getXmlHttpSend(args);
+        config.reqBody = JSON.stringify(args);
         return originSend.apply(xml, [args]);
       };
 
@@ -283,7 +263,7 @@ export class Monitor {
           config.requestType = this.status === 0 ? 'error' : 'done';
           monitor.toReport({
             type: 'request',
-            ...monitor.curPage,
+            ...monitor.getPageMsg(),
             ...config,
           });
         }
@@ -298,7 +278,7 @@ export class Monitor {
         config.reqHeaders = JSON.stringify(requestHeader);
         monitor.toReport({
           type: 'request',
-          ...monitor.curPage,
+          ...monitor.getPageMsg(),
           ...config,
         });
       });
@@ -309,15 +289,15 @@ export class Monitor {
         config.reqHeaders = JSON.stringify(requestHeader);
         monitor.toReport({
           type: 'request',
-          ...monitor.curPage,
+          ...monitor.getPageMsg(),
           ...config,
         });
       });
       return originOpen.apply(this, args);
     };
   }
-  // 重写fetch请求
-  resetFetch() {
+
+  private resetFetch() {
     const _oldFetch = window.fetch;
     window.fetch = (...args) => {
       const [url, { method, headers, body }] = args;
@@ -327,7 +307,7 @@ export class Monitor {
         url: url as string,
         method: method,
         reqHeaders: headers ? JSON.stringify(headers) : '',
-        reqBody: body ? getXmlHttpSend(body) : '',
+        reqBody: body ? JSON.stringify(body) : '',
         status: 0,
         requestType: 'done',
         cost: 0,
@@ -342,7 +322,7 @@ export class Monitor {
             data.requestType = res.ok ? 'done' : 'error';
             this.toReport({
               type: 'request',
-              ...this.curPage,
+              ...this.getPageMsg(),
               ...data,
             });
             resolve(res);
@@ -354,7 +334,7 @@ export class Monitor {
             data.requestType = 'error';
             this.toReport({
               type: 'request',
-              ...this.curPage,
+              ...this.getPageMsg(),
               ...data,
             });
             reject(error);

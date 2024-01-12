@@ -1,7 +1,11 @@
-import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { Monitor } from '../sdk';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 
+import { Monitor } from '../sdk/src';
+import App from './App';
+
+// 监听 hashchange 事件，当 URL 中的哈希部分发生变化时触发
 export interface PageModelIn {
   /** 应用AppId */
   appId: string;
@@ -104,25 +108,22 @@ const index = 0;
 // testTask();
 new Monitor({
   appId: 'wmyz',
-  cacheMax: 1,
-  webVitalsTimeouts: 1000,
-  report: (data) => {
-    console.log(data);
-  },
+  api: 'http://localhost:7001/test',
+  webVitalsTimeouts: 10000,
 });
 
 
 // 代码异常
-const a = [{ a: 1 }, { a: [] }];
-const script = document.createElement('script');
-script.src = 'https://stest.com';
-document.body.appendChild(script);
+// const a = [{ a: 1 }, { a: [] }];
+// const script = document.createElement('script');
+// script.src = 'https://stest.com';
+// document.body.appendChild(script);
 // ===============
-a.map((item) => {
-  item.a.map((temp) => {
-    console.log(temp);
-  });
-});
+// a.map((item) => {
+//   item.a.map((temp) => {
+//     console.log(temp);
+//   });
+// });
 // fetch 监听异常
 // fetch('/api/abc', {
 //   method: 'get',
@@ -132,26 +133,27 @@ a.map((item) => {
 // ========================
 
 // xmlhttp请求异常
-const xhr2 = new XMLHttpRequest();
+// const xhr2 = new XMLHttpRequest();
 
-// xhr2.open('get', 'http://sdss.com/sdsdsd/api/abc', true);
 // xhr2.onreadystatechange = (ev) => {
 //   console.log('111',11);
 // };
 // // xhr2.open('post', '/desktop');
+// xhr2.open("get", "/api/abc2", true);
 // xhr2.setRequestHeader('header', '1');
-// // xhr2.open("get", "/api/abc2", true);
-// xhr2.send('?a=2');
+// xhr2.send();
 // ====================
 
 // prmoise 异常
-// const promiseTest = () => new Promise((res, rej) => {
-//   rej('错误');
-// });
-// promiseTest().then((res) => {
-//   console.log(res);
-// });
+const promiseTest = () => new Promise((res, rej) => {
+  rej(12);
+});
+promiseTest().then((res) => {
+  console.log(res);
+});
 
-ReactDOM.render(<div>2323</div>, document.getElementById('root'));
-
-
+ReactDOM.render( <React.StrictMode>
+  <BrowserRouter basename="/">
+    <App />
+  </BrowserRouter>
+                 </React.StrictMode>, document.getElementById('root'));
