@@ -58,7 +58,7 @@
     "egg-ts-helper": "^2.1.0",
     "eslint": "8",
     "eslint-config-egg": "13",
-    "sequelize": "6.6.2",
+    "sequelize": "6.29.0",
     "sequelize-cli": "6.6.2",
     "typescript": "~5.2.2"
   },
