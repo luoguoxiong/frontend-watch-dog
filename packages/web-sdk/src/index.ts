@@ -3,33 +3,32 @@ import { _history } from './history';
 import { generateShortUUID } from './utils';
 
 export class Monitor {
-  config: MonitorConfig;
+  static config: MonitorConfig;
 
-  performance: PerfamceReportMsg;
+  private performance: PerfamceReportMsg;
 
-  firstPageMsg: PageMsg;
+  private firstPageMsg: PageMsg;
 
-  lastPageMsg: PageMsg;
+  private lastPageMsg: PageMsg;
 
-  curPageStatus: PageStatus;
+  private curPageStatus: PageStatus;
 
-  reportStack: ReportItem[];
+  private reportStack: ReportItem[];
 
-  markUserId: string;
+  private markUserId: string;
 
-  userId: string;
+  static userId: string;
 
   constructor(config: MonitorConfig){
-    this.config = config;
-    const markUserId = window.localStorage.getItem(`web-watch-dog-markUserId-${this.config.appId}`);
+    Monitor.config = config;
+    const markUserId = window.localStorage.getItem(`web-watch-dog-markUserId-${Monitor.config.appId}`);
     if(markUserId){
       this.markUserId = markUserId;
     }else{
-      window.localStorage.setItem(`web-watch-dog-markUserId-${this.config.appId}`, generateShortUUID());
+      window.localStorage.setItem(`web-watch-dog-markUserId-${Monitor.config.appId}`, generateShortUUID());
     }
-    generateShortUUID();
 
-    this.userId = window.localStorage.getItem(`web-watch-dog-userId-${this.config.appId}`);
+    Monitor.userId = window.localStorage.getItem(`web-watch-dog-userId-${Monitor.config.appId}`);
 
     this.performance = {
       type: 'performance',
@@ -68,6 +67,7 @@ export class Monitor {
     };
 
     const startTime = window.performance.now();
+
     window.addEventListener('load', async() => {
       const endTime = window.performance.now();
       this.performance.whiteTime = endTime - startTime;
@@ -105,14 +105,14 @@ export class Monitor {
     }, true);
 
     window.onbeforeunload = () => {
-      const { api } = this.config;
+      const { api } = Monitor.config;
       const img = document.createElement('img');
       const curTime = new Date().getTime();
       this.reportStack.push({
         type: 'pageStatus',
         userTimeStamp: new Date().getTime(),
         markUserId: this.markUserId,
-        userId: this.userId,
+        userId: Monitor.userId,
         ...this.lastPageMsg,
         ...{
           ...this.curPageStatus,
@@ -164,9 +164,9 @@ export class Monitor {
   private toReport(data: ReportItem){
     data.userTimeStamp = new Date().getTime();
     data.markUserId = this.markUserId;
-    data.userId = this.userId;
+    data.userId = Monitor.userId;
     this.reportStack.push(data);
-    const { api, cacheMax } = this.config;
+    const { api, cacheMax } = Monitor.config;
     if(this.reportStack.length === cacheMax){
       const img = document.createElement('img');
       img.src = `${api}?data=${encodeURIComponent(JSON.stringify(this.reportStack))}`;
@@ -181,7 +181,7 @@ export class Monitor {
     const getWebvitals = (fn: (data: any) => void): Promise<number> => new Promise((resolve) => {
       const timerId = setTimeout(() => {
         resolve(-1);
-      }, this.config.webVitalsTimeouts);
+      }, Monitor.config.webVitalsTimeouts);
       fn((data) => {
         clearTimeout(timerId);
         resolve(data.value);
@@ -377,8 +377,8 @@ export class Monitor {
     };
   }
 
-  public setUserId(userId: string){
-    window.localStorage.setItem(`web-watch-dog-userId-${this.config.appId}`, userId);
+  static setUserId(userId: string){
+    window.localStorage.setItem(`web-watch-dog-userId-${Monitor.config.appId}`, userId);
   }
 }
 

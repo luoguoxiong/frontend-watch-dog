@@ -6,7 +6,8 @@
     "jsx": "react",
     "paths": {
       "@/src/*": ["./src/*"]
-    }
+    },
+    "declaration": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

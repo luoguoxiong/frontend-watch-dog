@@ -17,6 +17,7 @@
     "source-map-loader": "^4.0.2"
   },
   "dependencies": {
+    "@frontend-watch-dog/web-sdk": "workspace:^0.0.1",
     "node-fetch": "^3.3.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
