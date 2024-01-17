@@ -1,6 +1,6 @@
 import { Controller } from 'egg';
-import { getCookieMessge } from '@/app/utils/getCookieMessge';
 import dayjs from 'dayjs';
+import { getCookieMessge } from '@/app/utils/getCookieMessge';
 export default class TrafficController extends Controller {
   async getTrafficTimes() {
     try {
@@ -16,9 +16,9 @@ export default class TrafficController extends Controller {
           beginTime,
           endTime,
         });
-        const pageViews:any = {};
-        const uniqueIPsCount:any = {};
-        const uniqueVisitors:any = {};
+        const pageViews: any = {};
+        const uniqueIPsCount: any = {};
+        const uniqueVisitors: any = {};
         const max = 24;
         let index = 0;
         while (index < max) {
@@ -28,7 +28,7 @@ export default class TrafficController extends Controller {
           uniqueIPsCount[horus] = 0;
           uniqueVisitors[horus] = 0;
         }
-        data.forEach(item => {
+        data.forEach((item) => {
           const lable = dayjs(item.getDataValue('statisticsTime')).format('HH:00');
           pageViews[lable] = item.getDataValue('pageViews');
           uniqueIPsCount[lable] = item.getDataValue('uniqueIPsCount');
@@ -54,9 +54,9 @@ export default class TrafficController extends Controller {
           beginTime: beginTimes,
           endTime: endTimes,
         });
-        const pageViews:any = {};
-        const uniqueIPsCount:any = {};
-        const uniqueVisitors:any = {};
+        const pageViews: any = {};
+        const uniqueIPsCount: any = {};
+        const uniqueVisitors: any = {};
         const max = endTimes;
         let index = beginTimes;
         while (index < max) {
@@ -66,7 +66,7 @@ export default class TrafficController extends Controller {
           uniqueVisitors[dateStr] = 0;
           index = dayjs(dayjs(index)).add(1, 'day').valueOf();
         }
-        data.forEach(item => {
+        data.forEach((item) => {
           const lable = dayjs(item.getDataValue('statisticsTime')).format('YYYY-MM-DD');
           pageViews[lable] = item.getDataValue('pageViews');
           uniqueIPsCount[lable] = item.getDataValue('uniqueIPsCount');

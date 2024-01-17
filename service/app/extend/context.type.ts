@@ -11,7 +11,7 @@ export enum BluBiuResponseCode{
   NOLOGIN = 1005,
   NOTFOUNDACCOUNT = 1006
 }
-export const responseMsg:ResponseMsg = {
+export const responseMsg: ResponseMsg = {
   [BluBiuResponseCode.SUCCESS]: '',
   [BluBiuResponseCode.QUERYERROR]: '请求参数错误',
   [BluBiuResponseCode.APPIDNOUSE]: 'APPID错误或者AppID未启用',

@@ -1,7 +1,7 @@
 import { Context } from 'egg';
 import IP2Region from 'ip2region';
 
-export const getUserIp = (ctx:Context) => {
+export const getUserIp = (ctx: Context) => {
   const res = (ctx.req.headers['x-forwarded-for'] ||
   ctx.req.headers['x-real-ip'] ||
   ctx.req.headers.remote_addr ||
@@ -20,7 +20,7 @@ export const crateRandomIp = () => {
   return ip;
 };
 
-export const getIpAddress = (ip:string) => {
+export const getIpAddress = (ip: string) => {
   const ip2Region = new IP2Region();
   const ipAdress = ip2Region.search(ip);
   return { province: ipAdress?.province, city: ipAdress?.city, country: ipAdress?.country };
@@ -40,9 +40,7 @@ export const cacheConfig = () => {
   };
 };
 
-export const createIndexName = (baseName:string, appId:string) => {
-  return baseName.replace('yourAppId', appId);
-};
+export const createIndexName = (baseName: string, appId: string) => baseName.replace('yourAppId', appId);
 
 export const generateShortUUID = () => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';

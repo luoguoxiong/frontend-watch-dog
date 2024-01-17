@@ -1,4 +1,4 @@
-// This file is created by egg-ts-helper@1.35.1
+// This file is created by egg-ts-helper@2.1.0
 // Do not modify this file!!!!!!!!!
 /* eslint-disable */
 
@@ -9,6 +9,8 @@ type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
 import ExportElasticsearchIndex from '../../../app/service/elasticsearch/index';
 import ExportElasticsearchPages from '../../../app/service/elasticsearch/pages';
+import ExportElasticsearchReport from '../../../app/service/elasticsearch/report';
+import ExportElasticsearchReportType from '../../../app/service/elasticsearch/reportType';
 import ExportElasticsearchTrafficStats from '../../../app/service/elasticsearch/trafficStats';
 import ExportElasticsearchType from '../../../app/service/elasticsearch/type';
 import ExportKafukaIndex from '../../../app/service/kafuka/index';
@@ -32,6 +34,8 @@ declare module 'egg' {
     elasticsearch: {
       index: AutoInstanceType<typeof ExportElasticsearchIndex>;
       pages: AutoInstanceType<typeof ExportElasticsearchPages>;
+      report: AutoInstanceType<typeof ExportElasticsearchReport>;
+      reportType: AutoInstanceType<typeof ExportElasticsearchReportType>;
       trafficStats: AutoInstanceType<typeof ExportElasticsearchTrafficStats>;
       type: AutoInstanceType<typeof ExportElasticsearchType>;
     }

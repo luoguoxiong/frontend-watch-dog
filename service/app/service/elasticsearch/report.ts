@@ -2,7 +2,7 @@ import { Service } from 'egg';
 
 import { createIndexName } from '@/app/utils';
 
-export default class PagesEsService extends Service {
+export default class ReportEsService extends Service {
 
   private getEsIndexName = (appId: string) => createIndexName(this.app.config.appIndexName.page_report, appId);
 
@@ -13,13 +13,66 @@ export default class PagesEsService extends Service {
         body: {
           mappings: {
             properties: {
-              userId: { type: 'keyword' },
-              markUserId: { type: 'keyword' },
-              pageUrl: { type: 'keyword' },
-              ip: { type: 'keyword' },
-              appId: { type: 'keyword' },
               isFirst: { type: 'boolean' },
-              origin: { type: 'keyword' },
+              domain: { type: 'keyword' },
+              pageUrl: { type: 'keyword' },
+              type: { type: 'keyword' },
+              /** 点击事件 */
+              clickElement: { type: 'keyword' },
+              /** 性能相关 */
+              dnsTime: { type: 'keyword' },
+              tcpTime: { type: 'keyword' },
+              whiteTime: { type: 'keyword' },
+              fcp: { type: 'keyword' },
+              ttfb: { type: 'keyword' },
+              lcp: { type: 'keyword' },
+              fid: { type: 'keyword' },
+              /** 资源加载相关 */
+              rescources: {
+                type: 'nested', // 使用nested类型来表示数组对象
+                properties: {
+                  resource: {
+                    'type': 'keyword',
+                  },
+                  duration: {
+                    'type': 'keyword',
+                  },
+                  size: {
+                    'type': 'keyword',
+                  },
+                  type: {
+                    'type': 'keyword',
+                  },
+                },
+              },
+              /** 接口请求相关 */
+              url: { type: 'keyword' },
+              method: { type: 'keyword' },
+              reqHeaders: { type: 'keyword' },
+              reqBody: { type: 'keyword' },
+              requestType: { type: 'keyword' },
+              status: { type: 'keyword' },
+              cost: { type: 'keyword' },
+              /** js错误相关 */
+              message: { type: 'keyword' },
+              colno: { type: 'keyword' },
+              lineno: { type: 'keyword' },
+              stack: { type: 'keyword' },
+              filename: { type: 'keyword' },
+              /** 资源加载错误相关 */
+              resourceType: { type: 'keyword' },
+              resourceUrl: { type: 'keyword' },
+              /** Reject错误相关 */
+              reason: { type: 'keyword' },
+              /** 页面状态相关 */
+              inTime: { type: 'keyword' },
+              leaveTime: { type: 'keyword' },
+              residence: { type: 'keyword' },
+              /** 用户相关 */
+              userTimeStamp: { type: 'keyword' },
+              markUserId: { type: 'keyword' },
+              userId: { type: 'keyword' },
+              /** 设备相关信息 */
               browserName: { type: 'keyword' },
               browserVersion: { type: 'keyword' },
               browserMajor: { type: 'keyword' },
@@ -28,16 +81,11 @@ export default class PagesEsService extends Service {
               deviceVendor: { type: 'keyword' },
               deviceModel: { type: 'keyword' },
               ua: { type: 'keyword' },
+              /** 地理位置相关 */
+              ip: { type: 'keyword' },
               province: { type: 'keyword' },
               country: { type: 'keyword' },
               city: { type: 'keyword' },
-              dnsTime: { type: 'integer' },
-              tcpTime: { type: 'integer' },
-              whiteTime: { type: 'integer' },
-              fcp: { type: 'integer' },
-              ttfb: { type: 'integer' },
-              lcp: { type: 'integer' },
-              fid: { type: 'integer' },
               '@timestamp': { type: 'date' },
             },
           },
@@ -66,39 +114,10 @@ export default class PagesEsService extends Service {
     }
   }
 
-  async getReportData(appId: string) {
-    try {
-      const { body: initialResponse } = await this.app.esClient.search({
-        index: this.getEsIndexName(appId),
-        // scroll: '1m', // 设置滚动时间
-        body: {
-          // from: 2, // 起始记录索引，从第一条记录开始
-          aggs: {
-            grouped_data: {
-              terms: {
-                field: 'pageUrl.keyword', // 第一个字段
-                size: 2147483647,
-              },
-              aggs: {
-                data: {
-                  terms: {
-                    field: 'userId.keyword', // 第一个字段
-                    size: 2147483647,
-                  },
-                },
-              },
-            },
-          },
-          track_total_hits: true,
-        },
-      });
-      return initialResponse;
-    } catch (error) {
-      this.app.logger.error(error);
-    }
-  }
 
   async analyzePageTrafficStats(appId: string, beginTime: number, endTime: number, groupKey?: string) {
+    console.log(beginTime, endTime);
+
     const esQuery = {
       index: this.getEsIndexName(appId),
       body: {
@@ -113,11 +132,24 @@ export default class PagesEsService extends Service {
           },
         },
         query: {
-          range: {
-            '@timestamp': {
-              gte: new Date(beginTime),
-              lte: new Date(endTime),
-            },
+          'bool': {
+            'must': [
+              {
+                'term': {
+                  'type': 'pageStatus',
+                },
+              },
+            ],
+            'filter': [
+              {
+                'range': {
+                  '@timestamp': {
+                    gte: new Date(beginTime),
+                    lte: new Date(endTime),
+                  },
+                },
+              },
+            ],
           },
         },
         track_total_hits: true,
@@ -155,11 +187,24 @@ export default class PagesEsService extends Service {
         size: 0,
         aggs: {},
         query: {
-          range: {
-            '@timestamp': {
-              gte: new Date(beginTime),
-              lte: new Date(endTime),
-            },
+          'bool': {
+            'must': [
+              {
+                'term': {
+                  'type': 'pageStatus',
+                },
+              },
+            ],
+            'filter': [
+              {
+                'range': {
+                  '@timestamp': {
+                    gte: new Date(beginTime),
+                    lte: new Date(endTime),
+                  },
+                },
+              },
+            ],
           },
         },
         track_total_hits: true,

@@ -1,21 +1,21 @@
 import * as sequelize from 'sequelize';
 export interface AppModelIn {
-  id?:number,
+  id?: number;
   /** 应用AppId */
-  appId:string
+  appId: string;
   /** 应用类型 */
-  appName: string
+  appName: string;
   /** 应用类型 */
-  appType: number
+  appType: number;
   /** 创建用户Id */
-  createId:number
+  createId: number;
   /** app使用状态 */
-  status: 0 | 1
-  createdAt?: string
-  updatedAt?:string
+  status: 0 | 1;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export const AppModel:sequelize.ModelAttributes = {
+export const AppModel: sequelize.ModelAttributes = {
   id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   appId: {
     type: sequelize.STRING,

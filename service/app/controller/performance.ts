@@ -8,8 +8,6 @@ export default class PerformanceController extends Controller {
     this.ctx.success({
       data,
       data2,
-      datas: data2.reduce((prev, cur) => {
-        return prev + cur.count;
-      }, 0) });
+      datas: data2.reduce((prev, cur) => prev + cur.count, 0) });
   }
 }

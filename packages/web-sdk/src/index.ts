@@ -25,7 +25,9 @@ export class Monitor {
     if(markUserId){
       this.markUserId = markUserId;
     }else{
-      window.localStorage.setItem(`web-watch-dog-markUserId-${Monitor.config.appId}`, generateShortUUID());
+      const id = generateShortUUID();
+      window.localStorage.setItem(`web-watch-dog-markUserId-${Monitor.config.appId}`, id );
+      this.markUserId = id;
     }
 
     Monitor.userId = window.localStorage.getItem(`web-watch-dog-userId-${Monitor.config.appId}`);
@@ -43,9 +45,8 @@ export class Monitor {
 
     this.firstPageMsg = {
       isFirst: true,
-      pageUrl: location.hash || location.pathname,
+      pageUrl: location.href,
       domain: location.host,
-      query: location.search,
     };
 
     this.reportStack = [];
@@ -110,6 +111,7 @@ export class Monitor {
       const curTime = new Date().getTime();
       this.reportStack.push({
         type: 'pageStatus',
+        appId: Monitor.config.appId,
         userTimeStamp: new Date().getTime(),
         markUserId: this.markUserId,
         userId: Monitor.userId,
@@ -120,18 +122,14 @@ export class Monitor {
           residence: curTime - this.curPageStatus.inTime,
         },
       });
-      img.src = `${api}?data=${encodeURIComponent(JSON.stringify(this.reportStack))}`;
+      img.src = `${api}?data=${encodeURIComponent(JSON.stringify(this.reportStack))}&appId=${Monitor.config.appId}`;
     };
   }
 
-  private getPageMsg = () => {
-    const isHash = location.hash && location.hash !== '';
-    return {
-      pageUrl: isHash ? location.hash : location.pathname,
-      domain: location.host,
-      query: location.search,
-    };
-  };
+  private getPageMsg = () => ({
+    pageUrl: location.href,
+    domain: location.host,
+  });
 
   private catchRouterChange = () => {
     const dealWithPageInfo = () => {
@@ -165,11 +163,12 @@ export class Monitor {
     data.userTimeStamp = new Date().getTime();
     data.markUserId = this.markUserId;
     data.userId = Monitor.userId;
+    data.appId = Monitor.config.appId,
     this.reportStack.push(data);
     const { api, cacheMax } = Monitor.config;
     if(this.reportStack.length === cacheMax){
       const img = document.createElement('img');
-      img.src = `${api}?data=${encodeURIComponent(JSON.stringify(this.reportStack))}`;
+      img.src = `${api}?data=${encodeURIComponent(JSON.stringify(this.reportStack))}&appId=${Monitor.config.appId}`;
       this.reportStack = [];
     }
   }

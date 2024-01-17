@@ -1,3 +1,3 @@
 export enum Topics {
-  TopicWeb='topic_webzz'
+  TopicReport='topic_report'
 }

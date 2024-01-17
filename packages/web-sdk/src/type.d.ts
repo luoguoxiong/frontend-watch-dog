@@ -3,8 +3,6 @@ interface PageMsg {
   isFirst?: boolean;
   /** 域名 */
   domain: string;
-  /** 请求参数 */
-  query: string;
   /** 网页链接 */
   pageUrl: string;
 }
@@ -16,9 +14,6 @@ interface PageStatus{
   leaveTime: number;
   /** 页面停留时间 */
   residence: number;
-}
-interface PageStatusReportMsg extends PageStatus{
-  type: 'pageStatus';
 }
 
 interface ClickReportMsg{
@@ -91,6 +86,10 @@ type RejectErrorReportMsg = {
   reason: 'string';
 }
 
+interface PageStatusReportMsg extends PageStatus{
+  type: 'pageStatus';
+}
+
 type ReportItem =(
   | PerfamceReportMsg
   | ResourceReportMsg
@@ -104,6 +103,7 @@ type ReportItem =(
   userTimeStamp?: number;
   markUserId?: string;
   userId?: string;
+  appId?: string;
 };
 
 

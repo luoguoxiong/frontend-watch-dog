@@ -3,7 +3,7 @@ import * as sequelize from 'sequelize';
 import { AppModel, AppModelIn } from './type';
 
 export default class AppMysqlService extends Service {
-  private async getModel():Promise<sequelize.ModelCtor<sequelize.Model<AppModelIn>>> {
+  private async getModel(): Promise<sequelize.ModelCtor<sequelize.Model<AppModelIn>>> {
     const tableName = 'app';
     const model = this.app.model.define(tableName, AppModel);
     const isExist = await this.service.redis.cache.getTableIsCreate(tableName);
@@ -14,7 +14,7 @@ export default class AppMysqlService extends Service {
     return model;
   }
 
-  async createApp(data:Omit<AppModelIn, 'id'>) {
+  async createApp(data: Omit<AppModelIn, 'id'>) {
     try {
       const model = await this.getModel();
       await model.create({
@@ -26,7 +26,7 @@ export default class AppMysqlService extends Service {
     }
   }
 
-  async getIsUseApps():Promise<string[]|undefined> {
+  async getIsUseApps(): Promise<string[]|undefined> {
     try {
       const model = await this.getModel();
       const result = await model.findAll({
@@ -34,13 +34,13 @@ export default class AppMysqlService extends Service {
           status: 1,
         },
       });
-      return result.map(item => item.getDataValue('appId'));
+      return result.map((item) => item.getDataValue('appId'));
     } catch (error) {
       this.app.logger.error(error);
     }
   }
 
-  async checkAppStatus(appId:string):Promise<boolean> {
+  async checkAppStatus(appId: string): Promise<boolean> {
     const isInCache = await this.service.redis.cache.getAppIsUse(appId);
     if (isInCache) return true;
     const model = await this.getModel();
@@ -54,7 +54,7 @@ export default class AppMysqlService extends Service {
     return isExist;
   }
 
-  async getList(userId:number) {
+  async getList(userId: number) {
     const model = await this.getModel();
     return await model.findAll({
       where: {
@@ -63,7 +63,7 @@ export default class AppMysqlService extends Service {
     });
   }
 
-  async updateAppStatus(id:number, status:0 | 1) {
+  async updateAppStatus(id: number, status: 0 | 1) {
     const model = await this.getModel();
     return await model.update({
       status,

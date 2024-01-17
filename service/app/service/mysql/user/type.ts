@@ -1,18 +1,18 @@
 import * as sequelize from 'sequelize';
 export interface UserModelIn {
   /** 用户ID */
-  id?:number
+  id?: number;
   /** 登录账号 */
-  account:string
+  account: string;
   /** 加密登录密码 */
-  encPassword:string
+  encPassword: string;
   /** 账号状态 */
-  status: 0 | 1
-  createdAt?: string
-  updatedAt?:string
+  status: 0 | 1;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export const UserModel:sequelize.ModelAttributes = {
+export const UserModel: sequelize.ModelAttributes = {
   id: { type: sequelize.INTEGER, primaryKey: true, autoIncrement: true },
   account: {
     type: sequelize.STRING,

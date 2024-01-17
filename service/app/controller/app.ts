@@ -28,7 +28,7 @@ export default class ReportController extends Controller {
           appName,
         });
         await this.service.mysql.traffics.index.createTrafficTable(appId);
-        await this.service.elasticsearch.pages.createIndex(appId);
+        await this.service.elasticsearch.report.createIndex(appId);
         await this.service.redis.cache.updateAppStatus(appId, true);
         this.ctx.success();
       }

@@ -1,9 +1,9 @@
 import { Controller } from 'egg';
+import dayjs from 'dayjs';
 import { encryptPassword, comparePassword } from '@/app/utils/bcrypt';
 import { creatJwtToken } from '@/app/utils/jwt';
 import { BluBiuResponseCode } from '@/app/extend/context.type';
 import { getCookieMessge } from '@/app/utils/getCookieMessge';
-import dayjs from 'dayjs';
 export default class DesktopController extends Controller {
   public async login() {
     const { account, password } = this.ctx.request.body;
