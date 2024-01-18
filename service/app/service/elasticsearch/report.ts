@@ -20,13 +20,13 @@ export default class ReportEsService extends Service {
               /** 点击事件 */
               clickElement: { type: 'keyword' },
               /** 性能相关 */
-              dnsTime: { type: 'keyword' },
-              tcpTime: { type: 'keyword' },
-              whiteTime: { type: 'keyword' },
-              fcp: { type: 'keyword' },
-              ttfb: { type: 'keyword' },
-              lcp: { type: 'keyword' },
-              fid: { type: 'keyword' },
+              dnsTime: { type: 'double' },
+              tcpTime: { type: 'double' },
+              whiteTime: { type: 'double' },
+              fcp: { type: 'double' },
+              ttfb: { type: 'double' },
+              lcp: { type: 'double' },
+              fid: { type: 'double' },
               /** 资源加载相关 */
               rescources: {
                 type: 'nested', // 使用nested类型来表示数组对象
@@ -35,10 +35,10 @@ export default class ReportEsService extends Service {
                     'type': 'keyword',
                   },
                   duration: {
-                    'type': 'keyword',
+                    'type': 'double',
                   },
                   size: {
-                    'type': 'keyword',
+                    'type': 'double',
                   },
                   type: {
                     'type': 'keyword',
@@ -65,9 +65,9 @@ export default class ReportEsService extends Service {
               /** Reject错误相关 */
               reason: { type: 'keyword' },
               /** 页面状态相关 */
-              inTime: { type: 'keyword' },
-              leaveTime: { type: 'keyword' },
-              residence: { type: 'keyword' },
+              inTime: { type: 'double' },
+              leaveTime: { type: 'double' },
+              residence: { type: 'double' },
               /** 用户相关 */
               userTimeStamp: { type: 'keyword' },
               markUserId: { type: 'keyword' },

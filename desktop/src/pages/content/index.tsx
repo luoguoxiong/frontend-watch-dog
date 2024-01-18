@@ -25,6 +25,12 @@ function Home() {
     setKey(location.pathname);
   }, [location]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setCollapsed(true);
+    }, 10);
+  }, []);
+
   const { pathname } = useLocation();
 
   const [openMenuKey, setKey] = useState(pathname);

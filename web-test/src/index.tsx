@@ -6,7 +6,7 @@ import { Monitor } from '@frontend-watch-dog/web-sdk';
 import App from './App';
 
 new Monitor({
-  appId: 'defsl3251705405014261',
+  appId: 'lqsxg8fk1705492465989',
   api: 'http://localhost:7001/report',
   cacheMax: 1,
   webVitalsTimeouts: 10000,

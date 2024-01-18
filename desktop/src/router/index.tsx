@@ -32,7 +32,7 @@ export const hasAppRouters = [
     path: '/performance',
     name: '性能分析',
     icon: ThunderboltOutlined,
-    element: lazyLoad(() => import('../pages/visitorStats')),
+    element: lazyLoad(() => import('../pages/performance')),
   },
   {
     path: '/health',
