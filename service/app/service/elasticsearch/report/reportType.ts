@@ -5,8 +5,6 @@ interface PageMsg {
   domain: string;
   /** 网页链接 */
   pageUrl: string;
-  /** 请求参数 */
-  query: string;
 }
 
 interface PageStatus{
@@ -39,7 +37,6 @@ interface PerfamceReportMsg{
   lcp: number;
   /** 用户首次与页面交互 */
   fid: number;
-  /** 资源加载数据 */
   rescources: ResourceStatus[];
 }
 
@@ -53,7 +50,6 @@ interface ResourceStatus{
   /** 资源类型 */
   type: string;
 }
-
 type RequestReportMsg = {
   type: 'request';
   url: string;
@@ -89,7 +85,30 @@ interface PageStatusReportMsg extends PageStatus{
   type: 'pageStatus';
 }
 
-type ReportItem =(
+interface UaMsg{
+  /** 浏览器名称 */
+  browserName?: string;
+  /** 浏览器版本号 */
+  browserVersion?: string;
+  /** 浏览器主版本 */
+  browserMajors?: string;
+  /** 系统名称 */
+  osName?: string;
+  /** 系统版本号 */
+  osVersion?: string;
+  /** 设备名称 */
+  deviceVendor?: string;
+  /** 设备模型 */
+  deviceModel?: string;
+  ua?: string;
+}
+interface IpMsg{
+  ip?: string;
+  province?: string;
+  city?: string;
+  country?: string;
+}
+export type ReportItem =(
   | PerfamceReportMsg
   | PageStatusReportMsg
   | RequestReportMsg
@@ -98,25 +117,18 @@ type ReportItem =(
   | RejectErrorReportMsg
   | ClickReportMsg
 ) & PageMsg & {
-  userTimeStamp?: number;
-  markUserId?: string;
-  userId?: string;
-  appId?: string;
-};
-
-
-interface MonitorConfig{
+  userTimeStamp: number;
+  markUserId: string;
+  userId: string;
   appId: string;
-  cacheMax: number;
-  webVitalsTimeouts?: number;
-  api: string;
-}
-interface Historys {
-  back(): void;
-  forward(): void;
-  go(delta?: number): void;
-  pushState(data: any, title: string, url?: string | null): void;
-  replaceState(data: any, title: string, url?: string | null): void;
-}
+} & UaMsg & IpMsg;
 
-type Listener = () => void
+export interface SearchPerformanceReq{
+  from: number | undefined;
+  size: number | undefined;
+  pageUrl?: string | undefined;
+  beginTime?: Date | undefined;
+  endTime?: Date | undefined;
+  /** 1:1s以内 2:1~2s 3:2~3s 4:3s以上 */
+  whiteTime?: 1 | 2 | 3 | 4 | undefined;
+}

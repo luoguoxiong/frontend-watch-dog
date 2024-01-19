@@ -1,2 +1,2 @@
-export { AvgData } from './avgData';
-export { ShowTime } from './showTime';
+export { AvgAppData } from './avgAppData';
+export { AvgPageData } from './avgPageData';

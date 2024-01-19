@@ -81,3 +81,36 @@ interface TrafficTimesRes{
   uniqueIPsCount: Record<string, number>;
   uniqueVisitors: Record<string, number>;
 }
+
+
+interface PerformanceInPage{
+  key: string;
+  doc_count: number;
+}
+
+type PerformanceInValue = Record<string, {
+  value: number;
+}>
+
+interface GetPerformanceReq{
+  appId: string;
+  from: number | undefined;
+  size: number | undefined;
+  pageUrl?: string | undefined;
+  beginTime?: Date | undefined;
+  endTime?: Date | undefined;
+  /** 1:1s以内 2:1~2s 3:2~3s 4:3s以上 */
+  whiteTime?: 1 | 2 | 3 | 4 | undefined;
+}
+
+
+type PaginationData<T> ={
+  '_id': 'NIa1H40Bx791ks39qTfs';
+  '_source': T;
+}
+interface Pagination<T>{
+  total: number;
+  data: PaginationData<T>[];
+}
+
+type GetPerformanceRes = Pagination<PerfamceReportMsg & PublicMsg>

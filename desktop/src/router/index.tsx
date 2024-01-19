@@ -1,7 +1,7 @@
 
 import React, { Suspense, lazy, ComponentType } from 'react';
 import { RouteObject } from 'react-router-dom';
-import { AppstoreOutlined, BarChartOutlined, OrderedListOutlined, RadarChartOutlined, MedicineBoxOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, BarChartOutlined, OrderedListOutlined, FileSearchOutlined, RadarChartOutlined, MedicineBoxOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { Loading } from '@/src/components/loading';
 const lazyLoad = (dynamicImport: () => Promise<{ default: ComponentType<any> }>) => {
   const Component = lazy(dynamicImport);
@@ -33,6 +33,12 @@ export const hasAppRouters = [
     name: '性能分析',
     icon: ThunderboltOutlined,
     element: lazyLoad(() => import('../pages/performance')),
+  },
+  {
+    path: '/performanceSearch',
+    name: '首屏查询',
+    icon: FileSearchOutlined,
+    element: lazyLoad(() => import('../pages/performanceSearch')),
   },
   {
     path: '/health',

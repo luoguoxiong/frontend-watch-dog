@@ -9,3 +9,22 @@ export const generateShortUUID = () => {
 
   return shortUUID + Date.now();
 };
+
+export const getUrlQuery = () => {
+  const isHash = location.hash;
+  if(isHash){
+    const link = location.hash.replace('#', '');
+    const [pageUrl, query] = link.split('?');
+    return {
+      pageUrl,
+      query: query || '',
+      domain: location.host,
+    };
+  }else{
+    return {
+      query: location.search.replace('?', '') || '',
+      pageUrl: location.pathname,
+      domain: location.host,
+    };
+  }
+};

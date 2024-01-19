@@ -1,6 +1,6 @@
 import { Controller } from 'egg';
 import UAParser from 'ua-parser-js';
-import { ReportItem } from '@/app/service/elasticsearch/reportType';
+import { ReportItem } from '@/app/service/elasticsearch/report/reportType';
 import { BluBiuResponseCode } from '@/app/extend/context.type';
 import { getUserIp, getIpAddress } from '@/app/utils';
 export default class ReportController extends Controller {

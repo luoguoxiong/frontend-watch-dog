@@ -46,7 +46,7 @@ export default class TrafficStatsService extends Service {
   async getTrafficStatsDays() {
     try {
       const interval = parser.parseExpression(this.app.config.trafficStatsScheduleDay);
-      const endTime = new Date().getTime();
+      const endTime = interval.prev().getTime();
       const beginTime = interval.prev().getTime();
       this.getAllAppTrafficStats(
         {
@@ -206,7 +206,7 @@ export default class TrafficStatsService extends Service {
    * @return {Promise<TrafficIpStatsIn[]>} - IP 统计数据数组
    */
   async getTrafficIpCount({ appId, beginTime, endTime }: TrafficStatsQuery): Promise<TrafficStatsIn[]> {
-    return await this.service.elasticsearch.report.analyzePageTrafficStats(appId, beginTime, endTime, 'ip');
+    return await this.service.elasticsearch.report.trafficStats.analyzePageTrafficStats(appId, beginTime, endTime, 'ip');
   }
 
   /**
@@ -215,7 +215,7 @@ export default class TrafficStatsService extends Service {
    * @return {Promise<TrafficUvStatsIn[]>} - UV 统计数据数组
    */
   async getTrafficUvCount({ appId, beginTime, endTime }: TrafficStatsQuery): Promise<TrafficStatsIn[]> {
-    return await this.service.elasticsearch.report.analyzePageTrafficStats(appId, beginTime, endTime, 'markUserId');
+    return await this.service.elasticsearch.report.trafficStats.analyzePageTrafficStats(appId, beginTime, endTime, 'markUserId');
   }
 
   /**
@@ -224,6 +224,6 @@ export default class TrafficStatsService extends Service {
    * @return {Promise<TrafficPvStatsIn[]>} - PV 统计数据数组
    */
   async getTrafficPvCount({ appId, beginTime, endTime }: TrafficStatsQuery): Promise<TrafficStatsIn[]> {
-    return await this.service.elasticsearch.report.analyzePageTrafficStats(appId, beginTime, endTime);
+    return await this.service.elasticsearch.report.trafficStats.analyzePageTrafficStats(appId, beginTime, endTime);
   }
 }

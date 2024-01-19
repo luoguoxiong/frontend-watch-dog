@@ -6,3 +6,5 @@ export{ AddApplication } from './addApplication';
 export { NewUserLine } from './newUserLine';
 export { Card } from './card';
 export { TopBar } from './topBar';
+export { HighlightText } from './highlightText';
+export { ShowTime } from './showTime';

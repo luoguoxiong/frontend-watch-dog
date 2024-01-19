@@ -17,7 +17,7 @@ const PerformanceRange = {
 };
 export const ShowTime: React.FC<ShowTimeIn> = ({ name, value, style }) => {
   const getScoreColor = (score: number, range: number[]) => {
-    const color = ['#44aa23', '#4dffe0', '#faad14', '#ff4d4f'];
+    const color = ['#1f8800', '#49de78', '#f9aa35', '#c33300'];
     let index = 0;
     while(index < range.length){
       if(score < range[index]){

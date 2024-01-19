@@ -9,8 +9,6 @@ type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
 import ExportElasticsearchIndex from '../../../app/service/elasticsearch/index';
 import ExportElasticsearchPages from '../../../app/service/elasticsearch/pages';
-import ExportElasticsearchReport from '../../../app/service/elasticsearch/report';
-import ExportElasticsearchReportType from '../../../app/service/elasticsearch/reportType';
 import ExportElasticsearchTrafficStats from '../../../app/service/elasticsearch/trafficStats';
 import ExportElasticsearchType from '../../../app/service/elasticsearch/type';
 import ExportKafukaIndex from '../../../app/service/kafuka/index';
@@ -22,6 +20,10 @@ import ExportRedisEveryDayActiveUsers from '../../../app/service/redis/everyDayA
 import ExportRedisEveryDayIps from '../../../app/service/redis/everyDayIps';
 import ExportRedisEveryDayPv from '../../../app/service/redis/everyDayPv';
 import ExportRedisTop from '../../../app/service/redis/top';
+import ExportElasticsearchReportIndex from '../../../app/service/elasticsearch/report/index';
+import ExportElasticsearchReportPerformance from '../../../app/service/elasticsearch/report/performance';
+import ExportElasticsearchReportReportType from '../../../app/service/elasticsearch/report/reportType';
+import ExportElasticsearchReportTrafficStats from '../../../app/service/elasticsearch/report/trafficStats';
 import ExportMysqlAppIndex from '../../../app/service/mysql/app/index';
 import ExportMysqlAppType from '../../../app/service/mysql/app/type';
 import ExportMysqlTrafficsIndex from '../../../app/service/mysql/traffics/index';
@@ -34,10 +36,14 @@ declare module 'egg' {
     elasticsearch: {
       index: AutoInstanceType<typeof ExportElasticsearchIndex>;
       pages: AutoInstanceType<typeof ExportElasticsearchPages>;
-      report: AutoInstanceType<typeof ExportElasticsearchReport>;
-      reportType: AutoInstanceType<typeof ExportElasticsearchReportType>;
       trafficStats: AutoInstanceType<typeof ExportElasticsearchTrafficStats>;
       type: AutoInstanceType<typeof ExportElasticsearchType>;
+      report: {
+        index: AutoInstanceType<typeof ExportElasticsearchReportIndex>;
+        performance: AutoInstanceType<typeof ExportElasticsearchReportPerformance>;
+        reportType: AutoInstanceType<typeof ExportElasticsearchReportReportType>;
+        trafficStats: AutoInstanceType<typeof ExportElasticsearchReportTrafficStats>;
+      }
     }
     kafuka: {
       index: AutoInstanceType<typeof ExportKafukaIndex>;

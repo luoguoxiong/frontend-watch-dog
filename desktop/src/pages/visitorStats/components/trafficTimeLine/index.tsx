@@ -26,6 +26,9 @@ export const TrafficTimeLine: React.FC<TrafficTimeLine> = ({ appId, pages }) => 
 
     const xAxis = Object.keys(pageViews);
 
+    console.log(pageViews);
+
+
     const pv = Object.values(pageViews);
 
     const uv = Object.values(uniqueVisitors);

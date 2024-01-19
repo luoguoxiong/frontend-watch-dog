@@ -72,3 +72,9 @@ export const getTrafficDays = async(params: TrafficDaysReq): BluBiuResponse<Traf
 export const getDayActiveUsers = async(params: AnalyseReq): BluBiuResponse<number> => await http.get('/analyse/getDayActiveUsers', { params });
 
 export const getActiveUsers = async(params: AnalyseReq): BluBiuResponse<Options[]> => await http.get('/analyse/getActiveUsers', { params });
+
+export const getAppAvgPerformance = async(appId: string): BluBiuResponse<PerformanceInValue> => await http.get(`/performance/getAppAvgPerformance?appId=${appId}`);
+
+export const getPageAvgPerformance = async(params: AnalyseReq): BluBiuResponse<PerformanceInPage&PerformanceInValue[][]> => await http.get('/performance/getPageAvgPerformance', { params });
+
+export const getPerformance = async(params: GetPerformanceReq): BluBiuResponse<GetPerformanceRes> => await http.get('/performance/getPerformance', { params });

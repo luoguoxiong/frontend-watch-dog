@@ -13,7 +13,6 @@ interface TrafficTimeLine{
 export const TrafficDayLine: React.FC<TrafficTimeLine> = ({ appId, pages }) => {
   const { ref, setOption } = useEchart();
 
-
   const [date, setDate] = useState<[dayjs.Dayjs, dayjs.Dayjs]>([dayjs().add(-31, 'day'), dayjs().add(-1, 'day')]);
 
   const [page, setPage] = useState('');
@@ -175,7 +174,6 @@ export const TrafficDayLine: React.FC<TrafficTimeLine> = ({ appId, pages }) => {
                 key={item.label}
                 value={item.label === '全部' ? '' : item.label}>{item.label}</Select.Option>)
             }
-
           </Select>
           <DatePicker.RangePicker
             value={date}

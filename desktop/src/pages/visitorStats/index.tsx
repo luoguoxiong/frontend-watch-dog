@@ -5,9 +5,11 @@ import { TrafficTimeLine } from './components/trafficTimeLine';
 import { TrafficDayLine } from './components/trafficDayLine';
 import { useAppStore } from '@/src/hooks';
 import { getWebVisitTop } from '@/src/api';
+
 const VisitorStats = () => {
   const { active } = useAppStore();
   const [pages, setPages] = useState([]);
+
   useEffect(() => {
     getWebVisitTop({
       appId: active,

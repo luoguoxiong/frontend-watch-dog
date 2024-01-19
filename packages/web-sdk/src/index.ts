@@ -1,6 +1,6 @@
 import { onFID, onLCP, onFCP, onTTFB } from 'web-vitals/attribution';
 import { _history } from './history';
-import { generateShortUUID } from './utils';
+import { generateShortUUID, getUrlQuery } from './utils';
 
 export class Monitor {
   static config: MonitorConfig;
@@ -34,20 +34,17 @@ export class Monitor {
 
     this.performance = {
       type: 'performance',
-      dnsTime: -1,
-      tcpTime: -1,
-      whiteTime: -1,
-      fcp: -1,
-      ttfb: -1,
-      lcp: -1,
-      fid: -1,
+      dnsTime: 0,
+      tcpTime: 0,
+      whiteTime: 0,
+      fcp: 0,
+      ttfb: 0,
+      lcp: 0,
+      fid: 0,
+      rescources: [],
     };
 
-    this.firstPageMsg = {
-      isFirst: true,
-      pageUrl: location.href,
-      domain: location.host,
-    };
+    this.firstPageMsg = Object.assign({ isFirst: true }, getUrlQuery());
 
     this.reportStack = [];
 
@@ -59,7 +56,7 @@ export class Monitor {
 
     this.catchRouterChange();
 
-    this.lastPageMsg = this.getPageMsg();
+    this.lastPageMsg = Object.assign({ isFirst: false }, getUrlQuery());
 
     this.curPageStatus = {
       inTime: new Date().getTime(),
@@ -67,17 +64,13 @@ export class Monitor {
       residence: 0,
     };
 
-    const startTime = window.performance.now();
+
 
     window.addEventListener('load', async() => {
       const endTime = window.performance.now();
-      this.performance.whiteTime = endTime - startTime;
-      this.toReport({
-        type: 'resource',
-        ...this.firstPageMsg,
-        rescources: this.getEnteries(),
-      });
-      await this.getWebPerformance();
+      const [data] = window.performance.getEntriesByType('navigation');
+      this.performance.whiteTime = endTime - data.startTime;
+      this.getWebPerformance();
     });
 
     window.addEventListener('click', (event: MouseEvent) => {
@@ -126,10 +119,7 @@ export class Monitor {
     };
   }
 
-  private getPageMsg = () => ({
-    pageUrl: location.href,
-    domain: location.host,
-  });
+  private getPageMsg = () => Object.assign({ isFirst: false }, getUrlQuery());
 
   private catchRouterChange = () => {
     const dealWithPageInfo = () => {
@@ -179,7 +169,7 @@ export class Monitor {
     this.performance.tcpTime = connectEnd - connectStart;
     const getWebvitals = (fn: (data: any) => void): Promise<number> => new Promise((resolve) => {
       const timerId = setTimeout(() => {
-        resolve(-1);
+        resolve(0);
       }, Monitor.config.webVitalsTimeouts);
       fn((data) => {
         clearTimeout(timerId);
@@ -200,6 +190,7 @@ export class Monitor {
       type: 'performance',
       ...this.firstPageMsg,
       ...this.performance,
+      rescources: this.getEnteries(),
     });
   }
 

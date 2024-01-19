@@ -37,6 +37,7 @@ interface PerfamceReportMsg{
   lcp: number;
   /** 用户首次与页面交互 */
   fid: number;
+  rescources: ResourceStatus[];
 }
 
 interface ResourceStatus{
@@ -49,12 +50,6 @@ interface ResourceStatus{
   /** 资源类型 */
   type: string;
 }
-
-type ResourceReportMsg = {
-  type: 'resource';
-  rescources: ResourceStatus[];
-}
-
 type RequestReportMsg = {
   type: 'request';
   url: string;
@@ -113,18 +108,18 @@ interface IpMsg{
   city?: string;
   country?: string;
 }
-export type ReportItem =(
-  | PerfamceReportMsg
-  | ResourceReportMsg
-  | PageStatusReportMsg
-  | RequestReportMsg
-  | JsErrorReportMsg
-  | LoadResourceErrorReportMsg
-  | RejectErrorReportMsg
-  | ClickReportMsg
-) & PageMsg & {
+interface UserMsg{
   userTimeStamp: number;
   markUserId: string;
   userId: string;
-  appId: string;
-} & UaMsg & IpMsg;
+}
+type PublicMsg = PageMsg & UserMsg & UaMsg & IpMsg
+ type ReportItem =(
+   | PerfamceReportMsg
+   | PageStatusReportMsg
+   | RequestReportMsg
+   | JsErrorReportMsg
+   | LoadResourceErrorReportMsg
+   | RejectErrorReportMsg
+   | ClickReportMsg
+ ) & PublicMsg ;

@@ -25,11 +25,11 @@ function Home() {
     setKey(location.pathname);
   }, [location]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setCollapsed(true);
-    }, 10);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setCollapsed(true);
+  //   }, 10);
+  // }, []);
 
   const { pathname } = useLocation();
 

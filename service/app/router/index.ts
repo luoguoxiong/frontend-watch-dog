@@ -3,7 +3,9 @@ import { Application } from 'egg';
 export default (app: Application) => {
   const { router, controller } = app;
   router.get('/report', controller.report.index);
-  router.get('/performance/getPagesPerformance', controller.performance.getPagesPerformance);
+  router.get('/api/desktop/performance/getAppAvgPerformance', app.middleware.verifyUser, controller.performance.getAppAvgPerformance);
+  router.get('/api/desktop/performance/getPageAvgPerformance', app.middleware.verifyUser, controller.performance.getPageAvgPerformance);
+  router.get('/api/desktop/performance/getPerformance', app.middleware.verifyUser, controller.performance.getPerformance);
 
   router.post('/api/desktop/login', controller.desktop.login);
   router.post('/api/desktop/loginOut', controller.desktop.loginOut);

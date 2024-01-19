@@ -1,11 +1,11 @@
 import { Service } from 'egg';
 import { Topics } from '@/app/service/kafuka/type';
-import { ReportItem } from '@/app/service/elasticsearch/reportType';
+import { ReportItem } from '@/app/service/elasticsearch/report/reportType';
 export default class ReportService extends Service {
   async useKafkaConsume() {
     this.app.kafka.consumer(Topics.TopicReport, async(message) => {
       const pageMsg = JSON.parse(message.value as string) as ReportItem;
-      this.ctx.service.elasticsearch.report.saveReportData(pageMsg.appId, pageMsg);
+      this.ctx.service.elasticsearch.report.index.saveReportData(pageMsg.appId, pageMsg);
       this.ctx.service.redis.everyDayPv.addPv(pageMsg.appId);
       this.ctx.service.redis.top.setTopData(pageMsg.appId, 'webVisit', pageMsg.pageUrl);
       if (pageMsg.isFirst) {

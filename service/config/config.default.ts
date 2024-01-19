@@ -5,11 +5,11 @@ export default (appInfo: EggAppInfo) => {
 
   config.trafficStatsScheduleMin = '0 */60 * * * *';
 
-  config.trafficStatsScheduleDay = '0 0 */24 * * *';
+  config.trafficStatsScheduleDay = '59 59 */23 * * *';
 
   // override config from framework / plugin
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1702282822597_3491';
+  config.keys = `${appInfo.name }_1702282822597_3491`;
 
   // add your egg config in here
   config.middleware = [];

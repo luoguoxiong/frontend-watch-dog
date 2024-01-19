@@ -19,7 +19,7 @@ export default class TrafficController extends Controller {
         const pageViews: any = {};
         const uniqueIPsCount: any = {};
         const uniqueVisitors: any = {};
-        const max = 24;
+        const max = 23;
         let index = 0;
         while (index < max) {
           index++;
