@@ -15,7 +15,7 @@ export default class PerformanceController extends Controller {
   }
 
   public async getPerformance() {
-    const { pageUrl, beginTime, endTime, whiteTime, from, size, appId } = this.ctx.query;
+    const { pageUrl, beginTime, endTime, whiteTime, from, size, appId, sorterName, sorterKey } = this.ctx.query;
     const data = await this.service.elasticsearch.report.performance.getPerformance(appId, {
       pageUrl,
       beginTime: beginTime ? new Date(beginTime) : undefined,
@@ -23,6 +23,8 @@ export default class PerformanceController extends Controller {
       whiteTime: whiteTime ? Number(whiteTime) as 1 | 2 | 3 |4 : undefined,
       from: from ? Number(from) - 1 : 1,
       size: size ? Number(size) : 10,
+      sorterName,
+      sorterKey,
     });
     this.ctx.success(data);
   }

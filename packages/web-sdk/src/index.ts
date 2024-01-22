@@ -64,8 +64,6 @@ export class Monitor {
       residence: 0,
     };
 
-
-
     window.addEventListener('load', async() => {
       const endTime = window.performance.now();
       const [data] = window.performance.getEntriesByType('navigation');
@@ -162,7 +160,6 @@ export class Monitor {
       this.reportStack = [];
     }
   }
-
   private async getWebPerformance() {
     const [{ domainLookupEnd, domainLookupStart, connectEnd, connectStart }] = window.performance.getEntriesByType('navigation');
     this.performance.dnsTime = domainLookupEnd - domainLookupStart;
@@ -176,6 +173,7 @@ export class Monitor {
         resolve(data.value);
       });
     });
+    this.performance.rescources = this.getEnteries();
     const [fcp, ttfp, lcp, fid] = await Promise.all([
       getWebvitals(onFCP),
       getWebvitals(onTTFB),
@@ -190,7 +188,6 @@ export class Monitor {
       type: 'performance',
       ...this.firstPageMsg,
       ...this.performance,
-      rescources: this.getEnteries(),
     });
   }
 

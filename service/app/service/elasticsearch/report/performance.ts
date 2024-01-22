@@ -83,11 +83,11 @@ export default class ReportPerformanceEsService extends ReportBaseEsService {
   }
 
   async getPerformance(appId: string, query: SearchPerformanceReq){
-    const { pageUrl, beginTime, endTime, whiteTime, from, size } = query;
+    const { pageUrl, beginTime, endTime, whiteTime, from, size, sorterName, sorterKey } = query;
     const esQuery = {
       index: this.getEsIndexName(appId),
       body: {
-        from,
+        from: from * size,
         size,
         'query': {
           'bool': {
@@ -104,6 +104,7 @@ export default class ReportPerformanceEsService extends ReportBaseEsService {
           },
         },
         'track_total_hits': true,
+        sort: [],
       },
     };
     const esFilters = esQuery.body.query.bool.filter as any[];
@@ -128,21 +129,30 @@ export default class ReportPerformanceEsService extends ReportBaseEsService {
       });
     }
 
-    if(whiteTime){
-      const enumWhiteTimeRange = {
-        1: [0, 1000],
-        2: [ 1001, 2000],
-        3: [2001, 3000],
-        4: [3001, 3000000],
-      };
-      const [beginTime, endTime] = enumWhiteTimeRange[whiteTime];
 
+    const enumWhiteTimeRange = {
+      1: [0, 1000],
+      2: [ 1001, 2000],
+      3: [2001, 3000],
+      4: [3001, 3000000],
+    };
+    if(whiteTime && whiteTime in enumWhiteTimeRange){
+      const [beginTime, endTime] = enumWhiteTimeRange[whiteTime];
       esFilters.push({
         'range': {
           'whiteTime': {
             'gte': beginTime,
             'lte': endTime,
           },
+        },
+      });
+    }
+
+    if(sorterName && sorterKey){
+      const sort = esQuery.body.sort as any[];
+      sort.push( {
+        [sorterName]: {
+          'order': sorterKey,
         },
       });
     }

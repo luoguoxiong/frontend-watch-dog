@@ -1,3 +1,5 @@
+
+type PerformanceInKey = 'whiteTime' | 'fcp' | 'lcp' | 'fid' |'ttfb' | 'dnsTime' | 'tcpTime';
 interface PageMsg {
   /** 是否是首屏 */
   isFirst?: boolean;

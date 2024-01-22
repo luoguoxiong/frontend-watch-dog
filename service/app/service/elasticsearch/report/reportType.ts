@@ -124,11 +124,13 @@ export type ReportItem =(
 } & UaMsg & IpMsg;
 
 export interface SearchPerformanceReq{
-  from: number | undefined;
-  size: number | undefined;
+  from: number;
+  size: number;
   pageUrl?: string | undefined;
   beginTime?: Date | undefined;
   endTime?: Date | undefined;
   /** 1:1s以内 2:1~2s 3:2~3s 4:3s以上 */
   whiteTime?: 1 | 2 | 3 | 4 | undefined;
+  sorterName: string;
+  sorterKey: string;
 }
