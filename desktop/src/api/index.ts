@@ -78,3 +78,7 @@ export const getAppAvgPerformance = async(appId: string): BluBiuResponse<Perform
 export const getPageAvgPerformance = async(params: AnalyseReq): BluBiuResponse<PerformanceInPage&PerformanceInValue[][]> => await http.get('/performance/getPageAvgPerformance', { params });
 
 export const getPerformance = async(params: GetPerformanceReq): BluBiuResponse<GetPerformanceRes> => await http.get('/performance/getPerformance', { params });
+
+export const getHttpErrorRank = async(params: AnalyseReq): BluBiuResponse<HttpErrorRankRes[]> => await http.get('/httpError/getHttpErrorRank', { params });
+
+

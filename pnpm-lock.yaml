@@ -23,6 +23,7 @@ importers:
   desktop:
     specifiers:
       '@ant-design/icons': ^5.2.6
+      '@frontend-watch-dog/web-sdk': ^0.0.1
       '@hulljs/cli': 0.8.1
       '@hulljs/eslint-config-hull-app': ^0.1.0
       '@rematch/core': ^2.2.0
@@ -34,6 +35,8 @@ importers:
       antd: ^5.12.5
       axios: ^1.6.2
       classnames: ^2.5.1
+      core-js: ^3.35.1
+      corejs: ^1.0.0
       dayjs: ^1.11.10
       echarts: ^5.4.3
       react: ^18.2.0
@@ -44,6 +47,7 @@ importers:
       redux: ^5.0.1
     dependencies:
       '@ant-design/icons': 5.2.6_biqbaboplfbrettd7655fr4n2y
+      '@frontend-watch-dog/web-sdk': link:../packages/web-sdk
       '@rematch/core': 2.2.0_redux@5.0.1
       antd: 5.12.8_biqbaboplfbrettd7655fr4n2y
       axios: 1.6.5
@@ -64,6 +68,8 @@ importers:
       '@types/react': 18.2.47
       '@types/react-dom': 18.2.18
       '@types/react-redux': 7.1.33
+      core-js: 3.35.1
+      corejs: 1.0.0
 
   packages/web-sdk:
     specifiers:
@@ -3595,7 +3601,7 @@ packages:
       '@vue/babel-plugin-jsx': 1.1.6_@babel+core@7.12.3
       babel-plugin-react-require: 3.1.3
       babel-plugin-transform-react-remove-prop-types: 0.4.24
-      core-js: 3.34.0
+      core-js: 3.35.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6261,7 +6267,7 @@ packages:
       vite: ^3.0.0
     dependencies:
       '@babel/standalone': 7.23.8
-      core-js: 3.34.0
+      core-js: 3.35.1
       magic-string: 0.26.7
       regenerator-runtime: 0.13.11
       systemjs: 6.14.3
@@ -8394,12 +8400,21 @@ packages:
     requiresBuild: true
     dev: true
 
+  /core-js/3.35.1:
+    resolution: {integrity: sha512-IgdsbxNyMskrTFxa9lWHyMwAJU5gXOPP+1yO+K59d50VLVAIDAbs7gIv705KzALModfK3ZrSZTPNpC0PQgIZuw==}
+    requiresBuild: true
+    dev: true
+
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
     dev: true
 
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
+
+  /corejs/1.0.0:
+    resolution: {integrity: sha512-jUeyZwPm8qENqBFQi9tXr3FsUWBx+hi4HF5gZij5fynw9TtQOSEX0pip1kas5sBLValsRWAQssjiwEIAAkXWdQ==}
+    dev: true
 
   /cors/2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}

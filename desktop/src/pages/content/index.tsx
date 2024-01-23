@@ -25,11 +25,11 @@ function Home() {
     setKey(location.pathname);
   }, [location]);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setCollapsed(true);
-  //   }, 10);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setCollapsed(true);
+    }, 10);
+  }, []);
 
   const { pathname } = useLocation();
 
@@ -141,7 +141,8 @@ function Home() {
                     value={active}>
                     {apps.map((item) => <Select.Option
                       key={item.id}
-                      value={item.appId}>{item.appName}</Select.Option>)}
+                      value={item.appId}>{item.appName}
+                    </Select.Option>)}
                   </Select>
                 )
               }
@@ -150,7 +151,8 @@ function Home() {
                 onClick={() => {
                   appDispatch.updateAddModalStatus(true);
                 }}
-                icon={<PlusCircleFilled />}>创建应用</Button>
+                icon={<PlusCircleFilled />}>创建应用
+              </Button>
             </span>
             <PoweroffOutlined
               onClick={() => {

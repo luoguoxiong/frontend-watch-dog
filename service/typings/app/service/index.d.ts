@@ -20,6 +20,7 @@ import ExportRedisEveryDayActiveUsers from '../../../app/service/redis/everyDayA
 import ExportRedisEveryDayIps from '../../../app/service/redis/everyDayIps';
 import ExportRedisEveryDayPv from '../../../app/service/redis/everyDayPv';
 import ExportRedisTop from '../../../app/service/redis/top';
+import ExportElasticsearchReportHttpError from '../../../app/service/elasticsearch/report/httpError';
 import ExportElasticsearchReportIndex from '../../../app/service/elasticsearch/report/index';
 import ExportElasticsearchReportPerformance from '../../../app/service/elasticsearch/report/performance';
 import ExportElasticsearchReportReportType from '../../../app/service/elasticsearch/report/reportType';
@@ -39,6 +40,7 @@ declare module 'egg' {
       trafficStats: AutoInstanceType<typeof ExportElasticsearchTrafficStats>;
       type: AutoInstanceType<typeof ExportElasticsearchType>;
       report: {
+        httpError: AutoInstanceType<typeof ExportElasticsearchReportHttpError>;
         index: AutoInstanceType<typeof ExportElasticsearchReportIndex>;
         performance: AutoInstanceType<typeof ExportElasticsearchReportPerformance>;
         reportType: AutoInstanceType<typeof ExportElasticsearchReportReportType>;

@@ -116,3 +116,13 @@ interface Pagination<T>{
 }
 
 type GetPerformanceRes = Pagination<PerfamceReportMsg & PublicMsg>
+
+interface HttpErrorRankRes{
+  doc_count: number;
+  key: {
+    method: string;
+    requestType: string;
+    type: string;
+    url: string;
+  };
+}

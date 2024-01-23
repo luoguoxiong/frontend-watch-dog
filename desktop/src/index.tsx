@@ -2,8 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
+import { Monitor } from './sdk';
 import App from '@/src/app';
 
+new Monitor({
+  appId: '66ije1on1705577187109',
+  api: 'http://localhost:7001/report',
+  cacheMax: 1,
+  webVitalsTimeouts: 10000,
+});
+
+fetch('https://developer.mozilla.org/', {
+  method: 'post',
+  body: JSON.stringify({
+    A: 2,
+  }),
+});
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(

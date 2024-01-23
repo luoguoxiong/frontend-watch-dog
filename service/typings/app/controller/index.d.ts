@@ -6,6 +6,7 @@ import 'egg';
 import ExportAnalyse from '../../../app/controller/analyse';
 import ExportApp from '../../../app/controller/app';
 import ExportDesktop from '../../../app/controller/desktop';
+import ExportHttpError from '../../../app/controller/httpError';
 import ExportPerformance from '../../../app/controller/performance';
 import ExportReport from '../../../app/controller/report';
 import ExportTest from '../../../app/controller/test';
@@ -16,6 +17,7 @@ declare module 'egg' {
     analyse: ExportAnalyse;
     app: ExportApp;
     desktop: ExportDesktop;
+    httpError: ExportHttpError;
     performance: ExportPerformance;
     report: ExportReport;
     test: ExportTest;
