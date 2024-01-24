@@ -52,7 +52,7 @@ export default class ReportBaseEsService extends Service {
               reqBody: { type: 'keyword' },
               requestType: { type: 'keyword' },
               status: { type: 'keyword' },
-              cost: { type: 'keyword' },
+              cost: { type: 'double' },
               /** js错误相关 */
               message: { type: 'keyword' },
               colno: { type: 'keyword' },

@@ -27,5 +27,6 @@ export default (app: Application) => {
   router.get('/api/desktop/traffic/getTrafficDays', controller.traffic.getTrafficDays);
 
   router.get('/api/desktop/httpError/getHttpErrorRank', controller.httpError.getHttpErrorRank);
+  router.get('/api/desktop/httpError/getHttpDoneRank', controller.httpError.getHttpDoneRank);
   router.get('/test', controller.test.index);
 };

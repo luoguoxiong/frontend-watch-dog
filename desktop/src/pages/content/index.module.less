@@ -75,11 +75,12 @@
 .header{
   height: 70px;
   background: white;
-  box-shadow: 0px 1px 5px 0px rgba(0, 21, 41, 0.51);
+  box-shadow: 0px 0px 0.8px 0px rgba(0, 21, 41, 0.51);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
+  z-index: 10;
   .appSelect{
     margin-left: 20px;
     min-width: 200px;
@@ -94,6 +95,9 @@
   height: calc(100vh - 70px);
   overflow-y: auto;
   min-width: 800px;
+  position: relative;
+}
+.page-content{
   padding: 16px;
 }
 .poweroffOutlined{

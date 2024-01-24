@@ -1,9 +1,10 @@
 import React from 'react';
-import { HttpErrorDayLine, HighFrequency } from './components';
+import { HttpErrorDayLine, HighFrequency, HttpSlow } from './components';
 const HttpError = () => (
   <>
     <HttpErrorDayLine/>
     <HighFrequency />
+    <HttpSlow />
   </>
 );
 export default HttpError;

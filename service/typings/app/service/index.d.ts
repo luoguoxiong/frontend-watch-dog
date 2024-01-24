@@ -17,6 +17,7 @@ import ExportKafukaType from '../../../app/service/kafuka/type';
 import ExportRedisCache from '../../../app/service/redis/cache';
 import ExportRedisDayNewUsers from '../../../app/service/redis/dayNewUsers';
 import ExportRedisEveryDayActiveUsers from '../../../app/service/redis/everyDayActiveUsers';
+import ExportRedisEveryDayHttpError from '../../../app/service/redis/everyDayHttpError';
 import ExportRedisEveryDayIps from '../../../app/service/redis/everyDayIps';
 import ExportRedisEveryDayPv from '../../../app/service/redis/everyDayPv';
 import ExportRedisTop from '../../../app/service/redis/top';
@@ -56,6 +57,7 @@ declare module 'egg' {
       cache: AutoInstanceType<typeof ExportRedisCache>;
       dayNewUsers: AutoInstanceType<typeof ExportRedisDayNewUsers>;
       everyDayActiveUsers: AutoInstanceType<typeof ExportRedisEveryDayActiveUsers>;
+      everyDayHttpError: AutoInstanceType<typeof ExportRedisEveryDayHttpError>;
       everyDayIps: AutoInstanceType<typeof ExportRedisEveryDayIps>;
       everyDayPv: AutoInstanceType<typeof ExportRedisEveryDayPv>;
       top: AutoInstanceType<typeof ExportRedisTop>;

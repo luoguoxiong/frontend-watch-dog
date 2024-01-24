@@ -248,9 +248,14 @@ export class Monitor {
 
     xmlhttp.prototype.open = function(...args) {
       const xml = this as XMLHttpRequest;
+      const url = args[1];
+      const method = args[0];
+      const isGet = method.toLocaleLowerCase() === 'get';
+      const reqUrl = isGet ? url.split('?')[0] : url;
+
       const config: RequestReportMsg = {
         type: 'request',
-        url: args[1],
+        url: reqUrl,
         method: args[0],
         reqHeaders: '',
         reqBody: '',
@@ -258,6 +263,8 @@ export class Monitor {
         requestType: 'done',
         cost: 0,
       };
+
+      config.reqBody = JSON.stringify(method.toLocaleLowerCase() === 'get' ? url.split('?')[1] : '');
 
       let startTime;
 

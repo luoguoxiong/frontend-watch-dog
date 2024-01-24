@@ -119,6 +119,9 @@ type GetPerformanceRes = Pagination<PerfamceReportMsg & PublicMsg>
 
 interface HttpErrorRankRes{
   doc_count: number;
+  avg_cost: {
+    value: number;
+  };
   key: {
     method: string;
     requestType: string;

@@ -170,7 +170,9 @@ function Home() {
               className={stylels.poweroffOutlined} />
           </div>
           <div className={stylels['page-wrap']}>
-            <Outlet />
+            <div className={stylels['page-content']}>
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
