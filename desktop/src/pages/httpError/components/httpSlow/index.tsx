@@ -76,6 +76,7 @@ export const HttpSlow = () => {
       title="慢响应Top50（最近7天）" >
       <Table
         sticky
+        rowKey="url"
         columns={columns}
         dataSource={data}
         pagination={{

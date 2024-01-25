@@ -83,4 +83,5 @@ export const getHttpErrorRank = async(params: AnalyseReq): BluBiuResponse<HttpEr
 
 export const getHttpDoneRank = async(params: AnalyseReq): BluBiuResponse<HttpErrorRankRes[]> => await http.get('/httpError/getHttpDoneRank', { params });
 
+export const getHttpErrorRang = async(params: AnalyseReq): BluBiuResponse<Options[]> => await http.get('/httpError/getHttpErrorRang', { params });
 

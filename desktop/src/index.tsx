@@ -6,7 +6,7 @@ import { Monitor } from './sdk';
 import App from '@/src/app';
 
 new Monitor({
-  appId: 'm2fr7hh81705989923161',
+  appId: 'ai601fyz1706089185530',
   api: 'http://localhost:7001/report',
   cacheMax: 1,
   webVitalsTimeouts: 10000,
@@ -24,7 +24,7 @@ xhr.onreadystatechange = function() {
 
 // 设置请求参数
 const params = '?param1=value1&param2=value2';
-xhr.open('get', 'your_api_url', true);
+xhr.open('get', 'http://localhost:7001/api/desktop/updateAppStatus', true);
 xhr.send(params);
 
 root.render(

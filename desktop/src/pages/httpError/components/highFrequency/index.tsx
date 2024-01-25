@@ -68,6 +68,7 @@ export const HighFrequency = () => {
       title="高频错误（最近7天）" >
       <Table
         sticky
+        rowKey="url"
         columns={columns}
         dataSource={data}
         pagination={

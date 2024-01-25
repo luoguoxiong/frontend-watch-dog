@@ -8,7 +8,7 @@ class RedisHttpErrorService extends Service {
   }
 
   async getHttpError(appId: string, dateString: string) {
-    return await this.app.redis.hget(this.getKeyName(appId), dateString) || 0;
+    return Number(await this.app.redis.hget(this.getKeyName(appId), dateString)) || 0;
   }
 }
 

@@ -256,7 +256,7 @@ export class Monitor {
       const config: RequestReportMsg = {
         type: 'request',
         url: reqUrl,
-        method: args[0],
+        method: args[0].toLocaleLowerCase(),
         reqHeaders: '',
         reqBody: '',
         status: 0,
@@ -285,10 +285,11 @@ export class Monitor {
 
       xml.addEventListener('readystatechange', function(ev: Event){
         if(this.readyState === XMLHttpRequest.DONE){
+          console.log('done', this.status, config.url);
           config.status = this.status;
           config.cost = performance.now() - startTime;
           config.reqHeaders = JSON.stringify(requestHeader);
-          config.requestType = this.status === 0 ? 'error' : 'done';
+          config.requestType = this.status < 200 || this.status >= 300 ? 'error' : 'done';
           monitor.toReport({
             type: 'request',
             ...monitor.getPageMsg(),
@@ -300,26 +301,17 @@ export class Monitor {
         startTime = performance.now();
       });
       xml.addEventListener('error', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
+        console.log('error', config.url);
+
         config.requestType = 'error';
         config.status = this.status;
         config.cost = performance.now() - startTime;
         config.reqHeaders = JSON.stringify(requestHeader);
-        monitor.toReport({
-          type: 'request',
-          ...monitor.getPageMsg(),
-          ...config,
-        });
-      });
-      xml.addEventListener('timeout', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
-        config.requestType = 'timeout';
-        config.status = this.status;
-        config.cost = performance.now() - startTime;
-        config.reqHeaders = JSON.stringify(requestHeader);
-        monitor.toReport({
-          type: 'request',
-          ...monitor.getPageMsg(),
-          ...config,
-        });
+        // monitor.toReport({
+        //   type: 'request',
+        //   ...monitor.getPageMsg(),
+        //   ...config,
+        // });
       });
       return originOpen.apply(this, args);
     };
@@ -333,7 +325,7 @@ export class Monitor {
       const data: RequestReportMsg = {
         type: 'request',
         url: url as string,
-        method: method,
+        method: method.toLocaleLowerCase(),
         reqHeaders: headers ? JSON.stringify(headers) : '',
         reqBody: body ? JSON.stringify(body) : '',
         status: 0,
