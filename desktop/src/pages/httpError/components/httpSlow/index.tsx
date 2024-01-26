@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, Table, Input } from 'antd';
+import { Table } from 'antd';
 import type { TableColumnsType } from 'antd';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router';
 import { Card } from '@/src/components';
 import { getHttpDoneRank } from '@/src/api';
 import { RootState } from '@/src/models/store';
+import { TableItem } from '@/src/components/tableItem';
 
 interface DataType {
   requestType: string;
@@ -19,14 +21,19 @@ interface DataType {
 export const HttpSlow = () => {
   const { active } = useSelector((state: RootState) => state.app);
 
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
   const [data, setData] = useState([]);
+
   const columns: TableColumnsType<DataType> = [
     {
       title: '接口URL',
       dataIndex: 'url',
       key: 'url',
       width: 200,
-      render: (val) => decodeURIComponent(val.replace(/\+/g, ' ')),
+      render: (val) => TableItem.renderUrl(val, 40, false),
     },
     {
       title: '请求方法',
@@ -45,15 +52,19 @@ export const HttpSlow = () => {
       dataIndex: 'cost',
       key: 'cost',
       width: 100,
+      render: (val) => TableItem.renderHttpCost(val),
     },
     {
       title: '操作',
       width: 120,
-      render: (_, record) => <a>查看详情</a>,
+      render: (_, record) => <a onClick={() => {
+        navigate(`/httpSearch?url=${encodeURIComponent(record.url)}&requestType=done`);
+      }}>查看详情</a>,
     },
   ];
 
   const getData = async() => {
+    setLoading(true);
     const { data } = await getHttpDoneRank({
       appId: active,
       beginTime: dayjs().add(-6, 'day').format('YYYY-MM-DD:00:00:00'),
@@ -65,6 +76,7 @@ export const HttpSlow = () => {
       ...item.key,
     }));
     setData(result);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -77,6 +89,7 @@ export const HttpSlow = () => {
       <Table
         sticky
         rowKey="url"
+        loading={loading}
         columns={columns}
         dataSource={data}
         pagination={{

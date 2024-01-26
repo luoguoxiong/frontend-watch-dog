@@ -12,3 +12,5 @@ type BluBiuRes<T> = {
 }
 
 type BluBiuResponse<T> = Promise<BluBiuRes<T>>
+
+type PerformanceInKey = 'dnsTime' | 'tcpTime' | 'whiteTime' | 'fcp' | 'ttfb' | 'lcp' | 'fid' | 'requestTime'

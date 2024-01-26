@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
+import * as loadsh from 'lodash';
 
 export const useEchart = () => {
   const ref = useRef();
@@ -9,9 +10,9 @@ export const useEchart = () => {
     if(ref.current){
       const chart = echarts.init(ref.current);
       chartRef.current = chart;
-      const resizeObserver = new ResizeObserver(() => {
+      const resizeObserver = new ResizeObserver(loadsh.throttle(() => {
         chart.resize();
-      });
+      }, 20));
       resizeObserver.observe(ref.current);
       return () => {
         resizeObserver.disconnect();

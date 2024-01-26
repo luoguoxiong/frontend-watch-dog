@@ -20,6 +20,8 @@ const PerformanceSearch = () => {
 
   const [show, setShow] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   const [pagination, setPageIn] = useState({
     current: 1,
     pageSize: defaultSize,
@@ -107,12 +109,14 @@ const PerformanceSearch = () => {
   };
 
   const search = async(searchQuery: GetPerformanceReq) => {
+    setLoading(true);
     const { data: { total, data } } = await getPerformance(searchQuery);
     setTotal(total);
     setData(data.map((item) => ({
       key: item._id,
       ...item._source,
     })));
+    setLoading(false);
   };
 
   const columns: TableColumnsType<PerfamceReportMsg & PublicMsg> = [
@@ -259,6 +263,7 @@ const PerformanceSearch = () => {
       <Table
         sticky
         key="_id"
+        loading={loading}
         columns={columns}
         dataSource={data}
         onChange={onTableChange}

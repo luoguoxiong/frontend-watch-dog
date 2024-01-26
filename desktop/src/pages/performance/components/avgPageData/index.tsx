@@ -23,6 +23,8 @@ export const AvgPageData = () => {
 
   const [data, setData] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   const [searchUrl, setUrl] = useState('');
 
   const [date, setDate] = useState<[dayjs.Dayjs, dayjs.Dayjs]>([dayjs().add(-7, 'day'), dayjs()]);
@@ -42,6 +44,7 @@ export const AvgPageData = () => {
   };
 
   const getData = async() => {
+    setLoading(true);
     const { data } = await getPageAvgPerformance({
       appId: active,
       beginTime: date[0].format('YYYY-MM-DD 00:00:00'),
@@ -49,6 +52,7 @@ export const AvgPageData = () => {
     });
     const res = data.map((item) => getDataValue(item));
     setData(res);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -158,6 +162,7 @@ export const AvgPageData = () => {
       }>
       <Table
         columns={columns}
+        loading={loading}
         dataSource={tableData}
         pagination={false}
         scroll={{ x: 1300 }}

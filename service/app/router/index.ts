@@ -29,5 +29,7 @@ export default (app: Application) => {
   router.get('/api/desktop/httpError/getHttpErrorRank', controller.httpError.getHttpErrorRank);
   router.get('/api/desktop/httpError/getHttpDoneRank', controller.httpError.getHttpDoneRank);
   router.get('/api/desktop/httpError/getHttpErrorRang', controller.httpError.getHttpErrorRang);
+  router.get('/api/desktop/httpError/getHttpList', controller.httpError.getHttpList);
+
   router.get('/test', controller.test.index);
 };

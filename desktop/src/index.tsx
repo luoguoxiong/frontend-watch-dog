@@ -14,18 +14,20 @@ new Monitor({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === 4 && xhr.status === 200) {
-    // 在这里处理请求完成后的逻辑
-    console.log('请求参数：', xhr.responseText);
-  }
-};
+// const xhr = new XMLHttpRequest();
+// xhr.onreadystatechange = function() {
+//   if (xhr.readyState === 4 && xhr.status === 200) {
+//     // 在这里处理请求完成后的逻辑
+//     console.log('请求参数：', xhr.responseText);
+//   }
+// };
 
-// 设置请求参数
-const params = '?param1=value1&param2=value2';
-xhr.open('get', 'http://localhost:7001/api/desktop/updateAppStatus', true);
-xhr.send(params);
+// // 设置请求参数
+// const params = {
+//   a: 1,
+// };
+// xhr.open('post', 'http://localhost:7001/api/desktop/updateAppStatus', true);
+// xhr.send(JSON.stringify(params));
 
 root.render(
   <ConfigProvider

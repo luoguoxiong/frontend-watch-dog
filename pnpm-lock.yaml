@@ -28,6 +28,7 @@ importers:
       '@hulljs/eslint-config-hull-app': ^0.1.0
       '@rematch/core': ^2.2.0
       '@svgr/webpack': ^8.1.0
+      '@types/lodash': ^4.14.202
       '@types/node': ^20.10.5
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.2.18
@@ -36,9 +37,9 @@ importers:
       axios: ^1.6.2
       classnames: ^2.5.1
       core-js: ^3.35.1
-      corejs: ^1.0.0
       dayjs: ^1.11.10
       echarts: ^5.4.3
+      lodash: ^4.17.21
       react: ^18.2.0
       react-dom: ^18.2.0
       react-redux: ^9.0.4
@@ -54,6 +55,7 @@ importers:
       classnames: 2.5.1
       dayjs: 1.11.10
       echarts: 5.4.3
+      lodash: 4.17.21
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-redux: 9.1.0_pb6tbf2f4gtdr3brmyeqnlzhze
@@ -64,12 +66,12 @@ importers:
       '@hulljs/cli': 0.8.1
       '@hulljs/eslint-config-hull-app': 0.1.0
       '@svgr/webpack': 8.1.0
+      '@types/lodash': 4.14.202
       '@types/node': 20.11.0
       '@types/react': 18.2.47
       '@types/react-dom': 18.2.18
       '@types/react-redux': 7.1.33
       core-js: 3.35.1
-      corejs: 1.0.0
 
   packages/web-sdk:
     specifiers:
@@ -5675,7 +5677,6 @@ packages:
 
   /@types/lodash/4.14.202:
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
-    dev: false
 
   /@types/methods/1.1.4:
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
@@ -8411,10 +8412,6 @@ packages:
 
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
-
-  /corejs/1.0.0:
-    resolution: {integrity: sha512-jUeyZwPm8qENqBFQi9tXr3FsUWBx+hi4HF5gZij5fynw9TtQOSEX0pip1kas5sBLValsRWAQssjiwEIAAkXWdQ==}
-    dev: true
 
   /cors/2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}

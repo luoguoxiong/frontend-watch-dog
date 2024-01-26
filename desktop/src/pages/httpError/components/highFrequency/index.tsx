@@ -3,9 +3,11 @@ import { DatePicker, Table, Input } from 'antd';
 import type { TableColumnsType } from 'antd';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router';
 import { Card } from '@/src/components';
 import { getHttpErrorRank } from '@/src/api';
 import { RootState } from '@/src/models/store';
+import { TableItem } from '@/src/components/tableItem';
 
 interface DataType {
   requestType: string;
@@ -15,8 +17,17 @@ interface DataType {
   count: number;
 }
 
-export const HighFrequency = () => {
+interface HighFrequencyIn{
+  setDetail: (msg: DetailMsg) => void;
+}
+const searchDate = {
+  beginTime: dayjs().add(-6, 'day').format('YYYY-MM-DD:00:00:00'),
+  endTime: dayjs().format('YYYY-MM-DD 23:59:59'),
+};
+export const HighFrequency: React.FC<HighFrequencyIn> = ({ setDetail }) => {
   const { active } = useSelector((state: RootState) => state.app);
+
+  const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState([]);
 
@@ -26,6 +37,7 @@ export const HighFrequency = () => {
       dataIndex: 'url',
       key: 'url',
       width: 200,
+      render: (val) => TableItem.renderUrl(val, 60, false),
     },
     {
       title: '请求方法',
@@ -42,21 +54,29 @@ export const HighFrequency = () => {
     {
       title: '操作',
       width: 120,
-      render: (_, record) => <a>查看详情</a>,
+      render: (_, record) => <a onClick={() => {
+        setDetail({
+          url: record.url,
+          requestType: 'error',
+          ...searchDate,
+          open: true,
+        });
+      }}>查看详情</a>,
     },
   ];
 
   const getData = async() => {
+    setLoading(true);
     const { data } = await getHttpErrorRank({
       appId: active,
-      beginTime: dayjs().add(-6, 'day').format('YYYY-MM-DD:00:00:00'),
-      endTime: dayjs().format('YYYY-MM-DD 23:59:59'),
+      ...searchDate,
     });
     const result = data.map((item) => ({
       count: item.doc_count,
       ...item.key,
     }));
     setData(result);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -69,6 +89,7 @@ export const HighFrequency = () => {
       <Table
         sticky
         rowKey="url"
+        loading={loading}
         columns={columns}
         dataSource={data}
         pagination={

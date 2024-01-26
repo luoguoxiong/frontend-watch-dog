@@ -1,0 +1,39 @@
+{
+	"index": "page_report_ai601fyz1706089185530",
+	"body": {
+		"from": 0,
+		"size": 10,
+		"query": {
+			"bool": {
+				"must": [
+          {
+					"term": {
+						"type": {
+							"value": "performance",
+              }
+            }
+          }
+        ],
+				"filter": [
+          {
+						"wildcard": {
+							"pageUrl": {
+								"value": "*/httpError*"
+              }
+            }
+          },
+          {
+						"range": {
+							"@timestamp": {
+								"gte": "2024-01-24T16: 00: 00.000Z",
+								"lte": "2024-01-25T15: 59: 59.000Z"
+              }
+            }
+          }
+        ]
+      }
+    },
+		"track_total_hits": true,
+		"sort": []
+  }
+}

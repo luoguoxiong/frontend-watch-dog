@@ -129,3 +129,17 @@ interface HttpErrorRankRes{
     url: string;
   };
 }
+
+interface GetHttpListReq{
+  appId: string;
+  from: number | undefined;
+  size: number | undefined;
+  url?: string | undefined;
+  beginTime?: string | undefined;
+  endTime?: string | undefined;
+  requestType?: 'done'|'error'|string;
+  sorterName?: string;
+  sorterKey?: string;
+}
+
+type GetHttpListRes = Pagination<RequestReportMsg & PublicMsg>

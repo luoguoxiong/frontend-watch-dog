@@ -264,7 +264,7 @@ export class Monitor {
         cost: 0,
       };
 
-      config.reqBody = JSON.stringify(method.toLocaleLowerCase() === 'get' ? url.split('?')[1] : '');
+      config.reqBody = method.toLocaleLowerCase() === 'get' ? url.split('?')[1] : '';
 
       let startTime;
 
@@ -279,13 +279,14 @@ export class Monitor {
       };
 
       xml.send = function(args: Document | XMLHttpRequestBodyInit){
-        config.reqBody = JSON.stringify(args);
+        if(args){
+          config.reqBody = typeof args === 'string' ? args : JSON.stringify(args);
+        }
         return originSend.apply(xml, [args]);
       };
 
       xml.addEventListener('readystatechange', function(ev: Event){
         if(this.readyState === XMLHttpRequest.DONE){
-          console.log('done', this.status, config.url);
           config.status = this.status;
           config.cost = performance.now() - startTime;
           config.reqHeaders = JSON.stringify(requestHeader);
@@ -300,19 +301,19 @@ export class Monitor {
       xml.addEventListener('loadstart', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
         startTime = performance.now();
       });
-      xml.addEventListener('error', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
-        console.log('error', config.url);
+      // xml.addEventListener('error', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
+      //   console.log('error', config.url);
 
-        config.requestType = 'error';
-        config.status = this.status;
-        config.cost = performance.now() - startTime;
-        config.reqHeaders = JSON.stringify(requestHeader);
-        // monitor.toReport({
-        //   type: 'request',
-        //   ...monitor.getPageMsg(),
-        //   ...config,
-        // });
-      });
+      //   config.requestType = 'error';
+      //   config.status = this.status;
+      //   config.cost = performance.now() - startTime;
+      //   config.reqHeaders = JSON.stringify(requestHeader);
+      //   // monitor.toReport({
+      //   //   type: 'request',
+      //   //   ...monitor.getPageMsg(),
+      //   //   ...config,
+      //   // });
+      // });
       return originOpen.apply(this, args);
     };
   }

@@ -134,3 +134,14 @@ export interface SearchPerformanceReq{
   sorterName: string;
   sorterKey: string;
 }
+
+export interface SearchHttpReq{
+  from: number;
+  size: number;
+  url?: string | undefined;
+  beginTime?: Date | undefined;
+  endTime?: Date | undefined;
+  sorterName: string;
+  sorterKey: string;
+  requestType?: 'done' | 'error' | string;
+}

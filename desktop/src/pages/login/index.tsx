@@ -4,13 +4,11 @@ import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import css from './index.module.less';
 import { login, register } from '@/src/api/index';
-import { Dispatch } from '@/src/models/store';
 enum ActionType{
   Login = 0,
   Regist
 }
 const LoginPage = () => {
-  const dispatch = useDispatch<Dispatch>();
   const navigate = useNavigate();
   const [type, setType] = useState(ActionType.Login);
   const [show, setShow] = useState(false);

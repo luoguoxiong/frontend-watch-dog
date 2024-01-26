@@ -3,7 +3,7 @@ import React from 'react';
 import { Drawer, Table, TableColumnsType, Tag } from 'antd';
 import { Col, Row } from 'antd';
 import styles from './index.module.less';
-import { usePerformanceColors } from '@/src/hooks/usePerformanceColors';
+import { getStatusColor } from '@/src/utils/getStatusColor';
 
 interface Detail{
   data: PerfamceReportMsg & PublicMsg | null;
@@ -139,8 +139,7 @@ const mapping = [
 ];
 
 const ShowPerformance: React.FC<ShowPerformanceIn> = ({ performanceKey, value, title }) => {
-  const { getColor } = usePerformanceColors();
-  const color = getColor(value, performanceKey);
+  const color = getStatusColor(value, performanceKey);
 
   return (
     <Tag

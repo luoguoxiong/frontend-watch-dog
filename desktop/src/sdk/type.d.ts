@@ -61,7 +61,7 @@ type RequestReportMsg = {
   reqHeaders: string;
   reqBody: string;
   status: number;
-  requestType: 'done' | 'error' | 'timeout';
+  requestType: 'done' | 'error';
   cost: number;
 }
 

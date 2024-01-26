@@ -1,5 +1,6 @@
 
 import dayjs from 'dayjs';
+import { SearchHttpReq } from './reportType';
 import ReportBaseEsService from './index';
 export default class ReportHttpErrorEsService extends ReportBaseEsService {
 
@@ -178,5 +179,79 @@ export default class ReportHttpErrorEsService extends ReportBaseEsService {
     };
     const { body } = await this.app.esClient.search(query);
     return body.hits.total.value;
+  }
+
+  async getHttpList(appId: string, query: SearchHttpReq){
+    const { url, beginTime, endTime, from, size, sorterName, sorterKey, requestType } = query;
+    const esQuery = {
+      index: this.getEsIndexName(appId),
+      body: {
+        from: from * size,
+        size,
+        'query': {
+          'bool': {
+            'must': [
+              {
+                'term': {
+                  'type': {
+                    'value': 'request',
+                  },
+                },
+              },
+            ],
+            'filter': [],
+          },
+        },
+        'track_total_hits': true,
+        sort: [],
+      },
+    };
+    const esFilters = esQuery.body.query.bool.filter as any[];
+    if(url){
+      esFilters.push({
+        'wildcard': {
+          'url': {
+            'value': `*${url}*`,
+          },
+        },
+      });
+    }
+
+    if(beginTime && endTime){
+      esFilters.push({
+        'range': {
+          '@timestamp': {
+            'gte': beginTime,
+            'lte': endTime,
+          },
+        },
+      });
+    }
+    if(requestType){
+      const must = esQuery.body.query.bool.must as any[];
+      must.push( {
+        'term': {
+          'requestType': {
+            'value': requestType,
+          },
+        },
+      });
+    }
+
+    if(sorterName && sorterKey){
+      const sort = esQuery.body.sort as any[];
+      sort.push( {
+        [sorterName]: {
+          'order': sorterKey,
+        },
+      });
+    }
+
+    const { body } = await this.app.esClient.search(esQuery);
+
+    return {
+      total: body.hits.total.value,
+      data: body.hits.hits,
+    };
   }
 }
