@@ -50,9 +50,10 @@ export default class HttpErrorController extends Controller {
   }
 
   public async getHttpList() {
-    const { url, beginTime, endTime, from, size, appId, sorterName, sorterKey, requestType } = this.ctx.query;
+    const { url, beginTime, endTime, from, size, appId, sorterName, sorterKey, requestType, link } = this.ctx.query;
     const data = await this.service.elasticsearch.report.httpError.getHttpList(appId, {
       url,
+      link,
       beginTime: beginTime ? new Date(beginTime) : undefined,
       endTime: endTime ? new Date(endTime) : undefined,
       from: from ? Number(from) - 1 : 1,

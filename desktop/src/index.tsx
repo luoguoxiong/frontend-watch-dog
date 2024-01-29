@@ -49,7 +49,6 @@ root.render(
           darkItemSelectedBg: 'rgba(255, 255, 255,0.5)',
           // 菜单项选中颜色
           darkItemSelectedColor: 'white',
-          //
           darkSubMenuItemBg: '#4684ff',
         },
       },

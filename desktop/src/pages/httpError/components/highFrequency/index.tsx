@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, Table, Input } from 'antd';
+import { Radio, Table } from 'antd';
 import type { TableColumnsType } from 'antd';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { useNavigate } from 'react-router';
+import { showHttpDetail } from '@/src/utils/enventBus';
 import { Card } from '@/src/components';
 import { getHttpErrorRank } from '@/src/api';
 import { RootState } from '@/src/models/store';
@@ -17,14 +17,9 @@ interface DataType {
   count: number;
 }
 
-interface HighFrequencyIn{
-  setDetail: (msg: DetailMsg) => void;
-}
-const searchDate = {
-  beginTime: dayjs().add(-6, 'day').format('YYYY-MM-DD:00:00:00'),
-  endTime: dayjs().format('YYYY-MM-DD 23:59:59'),
-};
-export const HighFrequency: React.FC<HighFrequencyIn> = ({ setDetail }) => {
+export const HighFrequency = () => {
+  const [day, setDay] = useState(1);
+
   const { active } = useSelector((state: RootState) => state.app);
 
   const [loading, setLoading] = useState(false);
@@ -55,11 +50,11 @@ export const HighFrequency: React.FC<HighFrequencyIn> = ({ setDetail }) => {
       title: '操作',
       width: 120,
       render: (_, record) => <a onClick={() => {
-        setDetail({
-          url: record.url,
+        showHttpDetail.publish({
+          link: record.url,
           requestType: 'error',
-          ...searchDate,
-          open: true,
+          beginTime: dayjs().add(-(day - 1), 'day').format('YYYY-MM-DD:00:00:00'),
+          endTime: dayjs().format('YYYY-MM-DD 23:59:59'),
         });
       }}>查看详情</a>,
     },
@@ -69,7 +64,8 @@ export const HighFrequency: React.FC<HighFrequencyIn> = ({ setDetail }) => {
     setLoading(true);
     const { data } = await getHttpErrorRank({
       appId: active,
-      ...searchDate,
+      beginTime: dayjs().add(-(day - 1), 'day').format('YYYY-MM-DD:00:00:00'),
+      endTime: dayjs().format('YYYY-MM-DD 23:59:59'),
     });
     const result = data.map((item) => ({
       count: item.doc_count,
@@ -80,12 +76,27 @@ export const HighFrequency: React.FC<HighFrequencyIn> = ({ setDetail }) => {
   };
 
   useEffect(() => {
-    getData();
-  }, [active]);
+    if(active){
+      getData();
+    }
+  }, [active, day]);
 
   return (
     <Card
-      title="高频错误（最近7天）" >
+      title="高频错误"
+      prefixHeadRight={
+        <Radio.Group
+          value={day}
+          onChange={(e) => {
+            setDay(e.target.value);
+          }}
+          size="small">
+          <Radio.Button value={7}>7天内</Radio.Button>
+          <Radio.Button value={3}>3天内</Radio.Button>
+          <Radio.Button value={1}>今天</Radio.Button>
+        </Radio.Group>
+      }
+    >
       <Table
         sticky
         rowKey="url"

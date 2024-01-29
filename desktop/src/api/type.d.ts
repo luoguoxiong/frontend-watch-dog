@@ -135,6 +135,7 @@ interface GetHttpListReq{
   from: number | undefined;
   size: number | undefined;
   url?: string | undefined;
+  link?: string | undefined;
   beginTime?: string | undefined;
   endTime?: string | undefined;
   requestType?: 'done'|'error'|string;

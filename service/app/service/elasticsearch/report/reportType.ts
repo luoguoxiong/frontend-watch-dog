@@ -139,6 +139,7 @@ export interface SearchHttpReq{
   from: number;
   size: number;
   url?: string | undefined;
+  link?: string| undefined;
   beginTime?: Date | undefined;
   endTime?: Date | undefined;
   sorterName: string;

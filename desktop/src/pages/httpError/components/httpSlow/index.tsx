@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Radio, Table } from 'antd';
 import type { TableColumnsType } from 'antd';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { useNavigate } from 'react-router';
 import { Card } from '@/src/components';
 import { getHttpDoneRank } from '@/src/api';
 import { RootState } from '@/src/models/store';
 import { TableItem } from '@/src/components/tableItem';
+import { showHttpDetail } from '@/src/utils/enventBus';
 
 interface DataType {
   requestType: string;
@@ -19,9 +19,9 @@ interface DataType {
 }
 
 export const HttpSlow = () => {
-  const { active } = useSelector((state: RootState) => state.app);
+  const [day, setDay] = useState(1);
 
-  const navigate = useNavigate();
+  const { active } = useSelector((state: RootState) => state.app);
 
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +58,12 @@ export const HttpSlow = () => {
       title: '操作',
       width: 120,
       render: (_, record) => <a onClick={() => {
-        navigate(`/httpSearch?url=${encodeURIComponent(record.url)}&requestType=done`);
+        showHttpDetail.publish({
+          link: record.url,
+          requestType: 'done',
+          beginTime: dayjs().add(-(day - 1), 'day').format('YYYY-MM-DD:00:00:00'),
+          endTime: dayjs().format('YYYY-MM-DD 23:59:59'),
+        });
       }}>查看详情</a>,
     },
   ];
@@ -67,7 +72,7 @@ export const HttpSlow = () => {
     setLoading(true);
     const { data } = await getHttpDoneRank({
       appId: active,
-      beginTime: dayjs().add(-6, 'day').format('YYYY-MM-DD:00:00:00'),
+      beginTime: dayjs().add(-(day - 1), 'day').format('YYYY-MM-DD:00:00:00'),
       endTime: dayjs().format('YYYY-MM-DD 23:59:59'),
     });
     const result = data.map((item) => ({
@@ -80,12 +85,27 @@ export const HttpSlow = () => {
   };
 
   useEffect(() => {
-    getData();
-  }, [active]);
+    if(active){
+      getData();
+    }
+  }, [active, day]);
 
   return (
     <Card
-      title="慢响应Top50（最近7天）" >
+      title="慢响应Top50"
+      prefixHeadRight={
+        <Radio.Group
+          value={day}
+          onChange={(e) => {
+            setDay(e.target.value);
+          }}
+          size="small">
+          <Radio.Button value={7}>7天内</Radio.Button>
+          <Radio.Button value={3}>3天内</Radio.Button>
+          <Radio.Button value={1}>今天</Radio.Button>
+        </Radio.Group>
+      }
+    >
       <Table
         sticky
         rowKey="url"

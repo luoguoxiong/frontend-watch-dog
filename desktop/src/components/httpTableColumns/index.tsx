@@ -16,17 +16,11 @@ export const httpTableColumns = (sorter: {
     render: (url) => TableItem.renderUrl(url, 30, true),
   },
   {
-    title: '请求状态',
-    dataIndex: 'requestType',
-    key: 'requestType',
-    width: 100,
-    render: (type) => <Tag color={type === 'done' ? '#1f8800' : '#c33300'}>{type === 'done' ? '成功' : '失败'}</Tag>,
-  },
-  {
     title: '状态码',
     dataIndex: 'status',
     key: 'status',
     width: 100,
+    render: (status, record) => <Tag color={record.requestType === 'done' ? '#1f8800' : '#c33300'}>{status}</Tag>,
   },
   {
     title: '请求耗时',

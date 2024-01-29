@@ -1,4 +1,5 @@
 import { message } from 'antd';
+
 export function copyTextToClipboard(text) {
   const textarea = document.createElement('textarea');
   textarea.value = text;

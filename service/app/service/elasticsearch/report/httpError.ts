@@ -182,7 +182,7 @@ export default class ReportHttpErrorEsService extends ReportBaseEsService {
   }
 
   async getHttpList(appId: string, query: SearchHttpReq){
-    const { url, beginTime, endTime, from, size, sorterName, sorterKey, requestType } = query;
+    const { url, beginTime, endTime, from, size, sorterName, sorterKey, requestType, link } = query;
     const esQuery = {
       index: this.getEsIndexName(appId),
       body: {
@@ -207,6 +207,19 @@ export default class ReportHttpErrorEsService extends ReportBaseEsService {
       },
     };
     const esFilters = esQuery.body.query.bool.filter as any[];
+    const esMusts = esQuery.body.query.bool.must as any[];
+
+    if(link){
+      esMusts.push(
+        {
+          'term': {
+            'url': {
+              'value': link,
+            },
+          },
+        },
+      );
+    }
     if(url){
       esFilters.push({
         'wildcard': {
@@ -216,7 +229,6 @@ export default class ReportHttpErrorEsService extends ReportBaseEsService {
         },
       });
     }
-
     if(beginTime && endTime){
       esFilters.push({
         'range': {

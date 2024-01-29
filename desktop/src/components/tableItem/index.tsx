@@ -2,9 +2,9 @@ import React from 'react';
 import { CopyOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import dayjs from 'dayjs';
+import styles from './index.module.less';
 import { getStatusColor } from '@/src/utils/getStatusColor';
 import { copyTextToClipboard } from '@/src/utils';
-
 const renderHttpCost = (val: number) => (
   <span style={{ color: getStatusColor(val, 'requestTime') }}>{val.toFixed(0)}ms</span>
 );
@@ -18,20 +18,21 @@ const renderUrl = (url: string, maxLen: number, copy: boolean) => {
   return (
     <>
       <Tooltip title={
-        <span>
+        <span className={styles.text}>
           {decodeURIComponent(url.replace(/\+/g, ' '))}
         </span>
       }>
-        <span>
+        <span className={styles.text}>
           {decodeURIComponent(str.replace(/\+/g, ' '))}
         </span>
       </Tooltip>
-
       {
         copy && <CopyOutlined
           style={{ marginLeft: 4 }}
           onClick={() => {
-            decodeURIComponent(url.replace(/\+/g, ' '));
+            copyTextToClipboard(
+              decodeURIComponent(url.replace(/\+/g, ' '))
+            );
           }} />
       }
     </>
@@ -47,11 +48,11 @@ const renderText = (url: string, maxLen: number, copy: boolean) => {
   return (
     <>
       <Tooltip title={
-        <span>
+        <span className={styles.text}>
           {url}
         </span>
       }>
-        <span>
+        <span className={styles.text}>
           {str}
         </span>
       </Tooltip>

@@ -6,8 +6,10 @@ export default class ReportService extends Service {
     this.app.kafka.consumer(Topics.TopicReport, async(message) => {
       const pageMsg = JSON.parse(message.value as string) as ReportItem;
       this.ctx.service.elasticsearch.report.index.saveReportData(pageMsg.appId, pageMsg);
-      this.ctx.service.redis.everyDayPv.addPv(pageMsg.appId);
-      this.ctx.service.redis.top.setTopData(pageMsg.appId, 'webVisit', pageMsg.pageUrl);
+      if(pageMsg.type === 'pageStatus'){
+        this.ctx.service.redis.top.setTopData(pageMsg.appId, 'webVisit', pageMsg.pageUrl);
+        this.ctx.service.redis.everyDayPv.addPv(pageMsg.appId);
+      }
       if (pageMsg.isFirst) {
         this.ctx.service.redis.everyDayActiveUsers.addUsers(pageMsg.appId, `${pageMsg.markUserId}`);
         this.ctx.service.redis.everyDayIps.addIps(pageMsg.appId, `${pageMsg.ip}`);
