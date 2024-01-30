@@ -19,10 +19,12 @@ import ExportRedisDayNewUsers from '../../../app/service/redis/dayNewUsers';
 import ExportRedisEveryDayActiveUsers from '../../../app/service/redis/everyDayActiveUsers';
 import ExportRedisEveryDayHttpError from '../../../app/service/redis/everyDayHttpError';
 import ExportRedisEveryDayIps from '../../../app/service/redis/everyDayIps';
+import ExportRedisEveryDayJsError from '../../../app/service/redis/everyDayJsError';
 import ExportRedisEveryDayPv from '../../../app/service/redis/everyDayPv';
 import ExportRedisTop from '../../../app/service/redis/top';
 import ExportElasticsearchReportHttpError from '../../../app/service/elasticsearch/report/httpError';
 import ExportElasticsearchReportIndex from '../../../app/service/elasticsearch/report/index';
+import ExportElasticsearchReportJsError from '../../../app/service/elasticsearch/report/jsError';
 import ExportElasticsearchReportPerformance from '../../../app/service/elasticsearch/report/performance';
 import ExportElasticsearchReportReportType from '../../../app/service/elasticsearch/report/reportType';
 import ExportElasticsearchReportTrafficStats from '../../../app/service/elasticsearch/report/trafficStats';
@@ -43,6 +45,7 @@ declare module 'egg' {
       report: {
         httpError: AutoInstanceType<typeof ExportElasticsearchReportHttpError>;
         index: AutoInstanceType<typeof ExportElasticsearchReportIndex>;
+        jsError: AutoInstanceType<typeof ExportElasticsearchReportJsError>;
         performance: AutoInstanceType<typeof ExportElasticsearchReportPerformance>;
         reportType: AutoInstanceType<typeof ExportElasticsearchReportReportType>;
         trafficStats: AutoInstanceType<typeof ExportElasticsearchReportTrafficStats>;
@@ -59,6 +62,7 @@ declare module 'egg' {
       everyDayActiveUsers: AutoInstanceType<typeof ExportRedisEveryDayActiveUsers>;
       everyDayHttpError: AutoInstanceType<typeof ExportRedisEveryDayHttpError>;
       everyDayIps: AutoInstanceType<typeof ExportRedisEveryDayIps>;
+      everyDayJsError: AutoInstanceType<typeof ExportRedisEveryDayJsError>;
       everyDayPv: AutoInstanceType<typeof ExportRedisEveryDayPv>;
       top: AutoInstanceType<typeof ExportRedisTop>;
     }

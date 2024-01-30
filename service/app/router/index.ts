@@ -31,5 +31,7 @@ export default (app: Application) => {
   router.get('/api/desktop/httpError/getHttpErrorRang', controller.httpError.getHttpErrorRang);
   router.get('/api/desktop/httpError/getHttpList', controller.httpError.getHttpList);
 
+  router.get('/api/desktop/jsError/getJsErrorRang', controller.jsError.getJsErrorRang);
+
   router.get('/test', controller.test.index);
 };

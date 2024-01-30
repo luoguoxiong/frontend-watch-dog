@@ -53,10 +53,10 @@ export const hasAppRouters = [
     element: lazyLoad(() => import('../pages/httpSearch')),
   },
   {
-    path: '/health',
+    path: '/jsError',
     name: '健康情况',
     icon: MedicineBoxOutlined,
-    element: lazyLoad(() => import('../pages/visitorStats')),
+    element: lazyLoad(() => import('../pages/jsError')),
   },
   {
     path: '/topAnalyse',

@@ -6,13 +6,16 @@ import { Monitor } from './sdk';
 import App from '@/src/app';
 
 new Monitor({
-  appId: 'ai601fyz1706089185530',
+  appId: 'wgnfezuv1706513953473',
   api: 'http://localhost:7001/report',
   cacheMax: 1,
   webVitalsTimeouts: 10000,
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// const a = 1;
+// console.log(a === b);
 
 // const xhr = new XMLHttpRequest();
 // xhr.onreadystatechange = function() {
