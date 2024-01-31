@@ -156,7 +156,9 @@ export const TrafficDayLine: React.FC<TrafficTimeLine> = ({ appId, pages }) => {
   };
 
   useEffect(() => {
-    getData();
+    if(appId && date){
+      getData();
+    }
   }, [appId, date, page]);
   return (
     <Card

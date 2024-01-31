@@ -35,4 +35,100 @@ export default class ReportJsErrorEsService extends ReportBaseEsService {
     return body.hits.total.value;
   }
 
+  async getOneDayJsError(appId: string){
+    const query = {
+      index: this.getEsIndexName(appId),
+      body: {
+        'size': 0,
+        'query': {
+          'bool': {
+            'must': [
+              {
+                'term': {
+                  'type': {
+                    'value': 'jsError',
+                  },
+                },
+              },
+            ],
+          },
+        },
+        'aggs': {
+          'data': {
+            'composite': {
+              'size': 10000,
+              'sources': [
+                {
+                  'colno': {
+                    'terms': {
+                      'field': 'colno',
+                    },
+                  },
+                },
+                {
+                  'stack': {
+                    'terms': {
+                      'field': 'stack',
+                    },
+                  },
+                },
+
+                {
+                  'filename': {
+                    'terms': {
+                      'field': 'filename',
+                    },
+                  },
+                },
+                {
+                  'lineno': {
+                    'terms': {
+                      'field': 'lineno',
+                    },
+                  },
+                },
+                {
+                  'message': {
+                    'terms': {
+                      'field': 'message',
+                    },
+                  },
+                },
+
+              ],
+            },
+            'aggs': {
+              'markUserId': {
+                'terms': {
+                  'field': 'markUserId',
+                  'size': 10000,
+                },
+              },
+              'doc_count_order': {
+                'bucket_sort': {
+                  'sort': [
+                    {
+                      '_count': {
+                        'order': 'desc',
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        'track_total_hits': true,
+      },
+    };
+    const { body } = await this.app.esClient.search(query);
+    const buckets = body.aggregations.data.buckets;
+    const data = buckets.map(({ key, markUserId, doc_count }) => ({
+      ...key,
+      userIds: markUserId.buckets.map((item) => item.key),
+      errorCount: doc_count,
+    }));
+    return data;
+  }
+
 }

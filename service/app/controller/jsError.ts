@@ -15,8 +15,8 @@ export default class JsErrorController extends Controller {
         return await service.elasticsearch.report.jsError.getOneDayJsErrorCount(appId, cacheKey);
       }else{
         const cacheData = await this.service.redis.everyDayJsError.getJsError(appId, cacheKey);
-        if(cacheData)return cacheData;
-        const esData = await service.elasticsearch.report.httpError.getOneDayHttpErrorCount(appId, cacheKey);
+        if(cacheData)return Number(cacheData);
+        const esData = await service.elasticsearch.report.jsError.getOneDayJsErrorCount(appId, cacheKey);
         await this.service.redis.everyDayJsError.saveJsError(appId, cacheKey, esData);
         return esData;
       }

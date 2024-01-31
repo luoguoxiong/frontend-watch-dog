@@ -105,8 +105,10 @@ export const HttpErrorDayLine = () => {
     setOption(option);
   };
   useEffect(() => {
-    getData();
-  }, []);
+    if(active && date){
+      getData();
+    }
+  }, [active, date]);
   return (
     <Card
       title="接口概况"

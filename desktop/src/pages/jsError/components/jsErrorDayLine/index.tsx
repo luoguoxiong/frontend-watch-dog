@@ -105,23 +105,23 @@ export const JsErrorDayLine = () => {
     setOption(option);
   };
   useEffect(() => {
-    getData();
-  }, []);
+    if(active && date){
+      getData();
+    }
+  }, [active, date]);
   return (
     <Card
       title="异常概况"
       prefixHeadRight={
-        <>
-          <DatePicker.RangePicker
-            value={date}
-            disabledDate={(current) => {
-              const today = dayjs(dayjs().add(1, 'day').format('YYYY-MM-DD'));
-              return current.isAfter(today);
-            }}
-            onChange={(value) => {
-              setDate(value);
-            }} />
-        </>
+        <DatePicker.RangePicker
+          value={date}
+          disabledDate={(current) => {
+            const today = dayjs(dayjs().add(1, 'day').format('YYYY-MM-DD'));
+            return current.isAfter(today);
+          }}
+          onChange={(value) => {
+            setDate(value);
+          }} />
       }
     >
       <div

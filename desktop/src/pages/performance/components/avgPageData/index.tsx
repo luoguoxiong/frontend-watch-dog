@@ -56,7 +56,9 @@ export const AvgPageData = () => {
   };
 
   useEffect(() => {
-    getData();
+    if(active && date){
+      getData();
+    }
   }, [active, date]);
 
 

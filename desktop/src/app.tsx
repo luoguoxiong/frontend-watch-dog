@@ -7,9 +7,6 @@ import { routes } from '@/src/router';
 import { store } from '@/src/models/store';
 const router = createBrowserRouter(routes);
 
-setTimeout(() => {
-  console.log(b);
-}, 1000);
 function App() {
   return (
     <Provider store={store}>
