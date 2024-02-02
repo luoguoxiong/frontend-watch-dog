@@ -7,6 +7,7 @@ import { routes } from '@/src/router';
 import { store } from '@/src/models/store';
 const router = createBrowserRouter(routes);
 
+
 function App() {
   return (
     <Provider store={store}>

@@ -4,7 +4,16 @@ export default class PerformanceController extends Controller {
   public async getAppAvgPerformance() {
     const { ctx, service } = this;
     const data = await service.elasticsearch.report.performance.getAppAvgPerformance(ctx.query.appId);
-    ctx.success(data);
+    const [all, fast, slow] = await Promise.all([
+      this.ctx.service.elasticsearch.report.performance.getPageOpenRate(ctx.query.appId),
+      this.ctx.service.elasticsearch.report.performance.getPageOpenRate(ctx.query.appId, [0, 1000]),
+      this.ctx.service.elasticsearch.report.performance.getPageOpenRate(ctx.query.appId, [5000, 100000]),
+    ]);
+    ctx.success({
+      ...data,
+      fastRote: { value: fast / all },
+      slowRote: { value: slow / all },
+    });
   }
 
   public async getPageAvgPerformance() {

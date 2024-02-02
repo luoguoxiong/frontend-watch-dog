@@ -1,7 +1,10 @@
 import React from 'react';
-import { JsErrorDayLine } from './components';
+import { JsErrorDayLine, JsErrorSearch } from './components';
 const JsError = () => (
-  <JsErrorDayLine />
+  <>
+    <JsErrorDayLine />
+    <JsErrorSearch/>
+  </>
 );
 
 export default JsError;

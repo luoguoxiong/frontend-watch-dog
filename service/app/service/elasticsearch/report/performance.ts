@@ -129,7 +129,6 @@ export default class ReportPerformanceEsService extends ReportBaseEsService {
       });
     }
 
-
     const enumWhiteTimeRange = {
       1: [0, 1000],
       2: [ 1001, 2000],
@@ -163,5 +162,42 @@ export default class ReportPerformanceEsService extends ReportBaseEsService {
       total: body.hits.total.value,
       data: body.hits.hits,
     };
+  }
+
+  async getPageOpenRate(appId: string, whiteRange?: number[]){
+    const esQuery = {
+      index: this.getEsIndexName(appId),
+      body: {
+        'size': 0,
+        'query': {
+          'bool': {
+            'must': [
+              {
+                'term': {
+                  'type': {
+                    'value': 'performance',
+                  },
+                },
+              },
+            ],
+            'filter': [],
+          },
+        },
+        'track_total_hits': true,
+      },
+    };
+    const filters = esQuery.body.query.bool.filter as any[];
+    if(whiteRange){
+      filters.push({
+        'range': {
+          'whiteTime': {
+            'gte': whiteRange[0],
+            'lte': whiteRange[1],
+          },
+        },
+      });
+    }
+    const { body } = await this.app.esClient.search(esQuery);
+    return body.hits.total.value;
   }
 }

@@ -111,7 +111,7 @@ export const JsErrorDayLine = () => {
   }, [active, date]);
   return (
     <Card
-      title="JS异常走势"
+      title="异常走势"
       prefixHeadRight={
         <DatePicker.RangePicker
           value={date}
