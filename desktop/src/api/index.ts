@@ -88,3 +88,12 @@ export const getHttpErrorRang = async(params: AnalyseReq): BluBiuResponse<Option
 export const getHttpList = async(params: GetHttpListReq): BluBiuResponse<GetHttpListRes> => await http.get('/httpError/getHttpList', { params });
 
 export const getJsErrorRang = async(params: AnalyseReq): BluBiuResponse<Options[]> => await http.get('/jsError/getJsErrorRang', { params });
+
+export const getJsErrorList = async(params: AnalyseReq): BluBiuResponse<JsErrorMsgItem[]> => await http.get('/jsError/getJsErrorList', { params });
+
+export const getNearbyCode = async(formateData: FormData): BluBiuResponse<JsErrorMsgItem[]> => await http.post('/jsError/getNearbyCode', formateData, {
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+});
+

@@ -35,7 +35,7 @@ export default class ReportJsErrorEsService extends ReportBaseEsService {
     return body.hits.total.value;
   }
 
-  async getOneDayJsError(appId: string){
+  async getJsErrorList(appId: string, beginTime: string, endTime: string){
     const query = {
       index: this.getEsIndexName(appId),
       body: {
@@ -47,6 +47,16 @@ export default class ReportJsErrorEsService extends ReportBaseEsService {
                 'term': {
                   'type': {
                     'value': 'jsError',
+                  },
+                },
+              },
+            ],
+            'filter': [
+              {
+                'range': {
+                  '@timestamp': {
+                    'gte': dayjs(dayjs(beginTime).format('YYYY-MM-DD 00:00:00')),
+                    'lte': dayjs(dayjs(endTime).format('YYYY-MM-DD 23:59:59')),
                   },
                 },
               },
@@ -94,7 +104,6 @@ export default class ReportJsErrorEsService extends ReportBaseEsService {
                     },
                   },
                 },
-
               ],
             },
             'aggs': {

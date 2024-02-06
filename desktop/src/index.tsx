@@ -14,9 +14,6 @@ new Monitor({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// const a = 1;
-// console.log(a === b);
-
 // const xhr = new XMLHttpRequest();
 // xhr.onreadystatechange = function() {
 //   if (xhr.readyState === 4 && xhr.status === 200) {

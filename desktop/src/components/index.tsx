@@ -8,3 +8,4 @@ export { Card } from './card';
 export { TopBar } from './topBar';
 export { HighlightText } from './highlightText';
 export { ShowTime } from './showTime';
+export { CodeShow } from './codeShow';

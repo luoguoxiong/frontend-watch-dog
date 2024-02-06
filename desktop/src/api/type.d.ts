@@ -144,3 +144,10 @@ interface GetHttpListReq{
 }
 
 type GetHttpListRes = Pagination<RequestReportMsg & PublicMsg>
+
+
+type JsErrorMsgItem = JsErrorReportMsg & {
+  errorCount: number;
+  userIds: string[];
+  id: number;
+}

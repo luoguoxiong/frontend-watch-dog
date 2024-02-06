@@ -207,6 +207,8 @@ export class Monitor {
       'error',
       (error: ErrorEvent | Event) => {
         if(error instanceof ErrorEvent){
+          console.log(error);
+
           monitor.toReport({
             ...monitor.getPageMsg(),
             type: 'jsError',

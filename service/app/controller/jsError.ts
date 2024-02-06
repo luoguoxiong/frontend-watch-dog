@@ -1,6 +1,7 @@
+import fs from 'fs/promises';
 import dayjs from 'dayjs';
 import { Controller } from 'egg';
-
+import { SourceMapConsumer } from 'source-map';
 export default class JsErrorController extends Controller {
   public async getJsErrorRang(){
     const { ctx, service } = this;
@@ -35,5 +36,55 @@ export default class JsErrorController extends Controller {
       label: label[index],
     }));
     this.ctx.success(result);
+  }
+
+  async getJsErrorList(){
+    const { ctx } = this;
+    const { appId, beginTime, endTime } = ctx.query;
+    const data = await this.ctx.service.elasticsearch.report.jsError.getJsErrorList(appId, beginTime, endTime);
+    this.ctx.success(data);
+  }
+
+  async getNearbyCode() {
+    const { lineNumber, columnNumber } = this.ctx.request.body;
+
+    try {
+      const sourcemapContent = await fs.readFile(this.ctx.request.files[0].filepath, 'utf-8');
+      const nearbyCode = await this.findNearbyCode(sourcemapContent, lineNumber, columnNumber);
+      this.ctx.success(nearbyCode);
+    } catch (error) {
+      this.ctx.success({
+        code: [],
+        line: -1,
+        source: '',
+      });
+    }
+  }
+
+  async findNearbyCode(sourcemap, lineNumber, columnNumber) {
+    return new Promise((resolve) => {
+      new SourceMapConsumer(sourcemap).then((consumer) => {
+        const originalPosition = consumer.originalPositionFor({
+          line: Number(lineNumber),
+          column: Number(columnNumber),
+        });
+
+        if(originalPosition.source && originalPosition.line){
+          const lines = consumer.sourceContentFor(originalPosition.source)?.split('\n');
+          const code = lines?.slice(Math.max(0, originalPosition.line - 5), originalPosition.line + 5);
+          resolve({
+            code,
+            line: 5,
+            source: originalPosition.source,
+          });
+        }else{
+          resolve({
+            code: [],
+            line: -1,
+            source: '',
+          });
+        }
+      });
+    });
   }
 }

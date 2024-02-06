@@ -45,6 +45,7 @@
     "jsonwebtoken": "^9.0.2",
     "kafka-node": "^5.0.0",
     "mysql2": "^3.6.5",
+    "source-map": "^0.7.4",
     "ua-parser-js": "^1.0.37"
   },
   "devDependencies": {

@@ -38,8 +38,13 @@ export default (appInfo: EggAppInfo) => {
     page_report: 'page_report_yourAppId',
   };
 
-  config.amapKey = '3d206482f787217632fca7ab2ac83266';
-
+  config.multipart = {
+    mode: 'file',
+    fieldSize: '10000kb',
+    // 单个文件大小
+    fileSize: '100mb',
+    fileExtensions: [ '.map' ],
+  };
   // the return config will combines to EggAppConfig
   return {
     ...config,

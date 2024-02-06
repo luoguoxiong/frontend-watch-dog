@@ -40,6 +40,7 @@ importers:
       dayjs: ^1.11.10
       echarts: ^5.4.3
       lodash: ^4.17.21
+      prismjs: ^1.29.0
       react: ^18.2.0
       react-dom: ^18.2.0
       react-redux: ^9.0.4
@@ -56,6 +57,7 @@ importers:
       dayjs: 1.11.10
       echarts: 5.4.3
       lodash: 4.17.21
+      prismjs: 1.29.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-redux: 9.1.0_pb6tbf2f4gtdr3brmyeqnlzhze
@@ -120,6 +122,7 @@ importers:
       mysql2: ^3.6.5
       sequelize: 6.6.2
       sequelize-cli: 6.6.2
+      source-map: ^0.7.4
       typescript: ~5.2.2
       ua-parser-js: ^1.0.37
     dependencies:
@@ -145,6 +148,7 @@ importers:
       jsonwebtoken: 9.0.2
       kafka-node: 5.0.0
       mysql2: 3.7.0
+      source-map: 0.7.4
       ua-parser-js: 1.0.37
     devDependencies:
       '@eggjs/tsconfig': 1.3.3
@@ -160,35 +164,6 @@ importers:
       sequelize: 6.6.2_mysql2@3.7.0
       sequelize-cli: 6.6.2
       typescript: 5.2.2
-
-  web-test:
-    specifiers:
-      '@frontend-watch-dog/web-sdk': ^0.0.1
-      '@hulljs/cli': 0.8.0
-      '@hulljs/eslint-config-hull-app': ^0.1.0
-      '@types/react': ^18.0.9
-      '@types/react-dom': ^18.0.4
-      node-fetch: ^3.3.2
-      react: ^18.0.1
-      react-dom: ^18.0.1
-      react-router-dom: ^6.21.2
-      source-map: ^0.7.4
-      source-map-loader: ^4.0.2
-      web-vitals: ^3.5.0
-    dependencies:
-      '@frontend-watch-dog/web-sdk': link:../packages/web-sdk
-      node-fetch: 3.3.2
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      react-router-dom: 6.21.2_biqbaboplfbrettd7655fr4n2y
-      source-map: 0.7.4
-      web-vitals: 3.5.1
-    devDependencies:
-      '@hulljs/cli': 0.8.0
-      '@hulljs/eslint-config-hull-app': 0.1.0
-      '@types/react': 18.2.47
-      '@types/react-dom': 18.2.18
-      source-map-loader: 4.0.2
 
 packages:
 
@@ -3608,71 +3583,6 @@ packages:
       - supports-color
     dev: true
 
-  /@hulljs/build/0.8.0:
-    resolution: {integrity: sha512-OLOrLAA28h7O70dLNE4po8WtBAdZTbJxC/PbiggEyHi8alSCyCXahhF6axBHIw26jtezJyfvhJ/IWcvpvTU2Cg==}
-    engines: {node: '>= 14.0.0'}
-    hasBin: true
-    dependencies:
-      '@hulljs/babel-preset-hull-app': 0.8.0
-      '@hulljs/utils': 0.8.0
-      '@hulljs/vite-plugin-babel-plugins': 0.8.0_vite@3.0.3
-      '@hulljs/vite-plugin-html': 0.8.0_vite@3.0.3
-      '@vitejs/plugin-legacy': 2.0.0_vite@3.0.3
-      '@vitejs/plugin-react': 2.0.0_vite@3.0.3
-      '@vitejs/plugin-vue': 3.0.1_vite@3.0.3+vue@3.4.13
-      '@vitejs/plugin-vue-jsx': 2.0.0_vite@3.0.3+vue@3.4.13
-      ajv: 8.12.0
-      babel-loader: 8.3.0_webpack@5.89.0
-      css-loader: 6.9.0_webpack@5.89.0
-      css-minimizer-webpack-plugin: 3.4.1_webpack@5.89.0
-      html-webpack-plugin: 5.6.0_webpack@5.89.0
-      less: 4.2.0
-      less-loader: 10.2.0_less@4.2.0+webpack@5.89.0
-      mini-css-extract-plugin: 2.7.7_webpack@5.89.0
-      postcss: 8.4.33
-      postcss-loader: 6.2.1_vtxoxj3xs2c72arvnxtthxs3jq
-      postcss-preset-env: 7.8.3_postcss@8.4.33
-      resolve-url-loader: 5.0.0
-      rimraf: 3.0.2
-      rollup-plugin-visualizer: 5.12.0
-      sass: 1.69.7
-      sass-loader: 12.6.0_sass@1.69.7+webpack@5.89.0
-      source-map-loader: 3.0.2_webpack@5.89.0
-      style-loader: 3.3.4_webpack@5.89.0
-      terser-webpack-plugin: 5.3.10_webpack@5.89.0
-      vite: 3.0.3_less@4.2.0+sass@1.69.7
-      vue: 3.4.13
-      vue-loader: 17.4.2_vue@3.4.13+webpack@5.89.0
-      webpack: 5.89.0
-      webpack-bundle-analyzer: 4.10.1
-      webpack-dev-server: 4.15.1_webpack@5.89.0
-      webpack-merge: 5.10.0
-      webpackbar: 5.0.2_webpack@5.89.0
-      yargs-parser: 21.1.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@parcel/css'
-      - '@rspack/core'
-      - '@swc/core'
-      - '@vue/compiler-sfc'
-      - bufferutil
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - node-sass
-      - rollup
-      - sass-embedded
-      - stylus
-      - supports-color
-      - terser
-      - typescript
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
-    dev: true
-
   /@hulljs/build/0.8.1:
     resolution: {integrity: sha512-NonOZ2DbGO39KXATLO8cZ/yXkN8SLlr6H0HUg0aLCA/slqb/tfnCRjsI+swwquyTxcMIWaoLRCu2Qd/pem9aSw==}
     engines: {node: '>= 14.0.0'}
@@ -3714,42 +3624,6 @@ packages:
       webpack-merge: 5.10.0
       webpackbar: 5.0.2_webpack@5.89.0
       yargs-parser: 21.1.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@parcel/css'
-      - '@rspack/core'
-      - '@swc/core'
-      - '@vue/compiler-sfc'
-      - bufferutil
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - node-sass
-      - rollup
-      - sass-embedded
-      - stylus
-      - supports-color
-      - terser
-      - typescript
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
-    dev: true
-
-  /@hulljs/cli/0.8.0:
-    resolution: {integrity: sha512-uUIJgqrSfmkE8KBjxR+Jkb+8+AtvLlfSWeaS8DaBAqUfiLMfeNJ8ZsHnB4ht7qaGn7XgQD3IZTsBFicJKpPk7Q==}
-    engines: {node: '>= 14.0.0'}
-    hasBin: true
-    dependencies:
-      '@hulljs/build': 0.8.0
-      '@hulljs/utils': 0.8.0
-      cac: 6.7.14
-      fs-extra: 10.1.0
-      prompts: 2.4.2
-      semver: 7.5.4
-      validate-npm-package-name: 4.0.0
     transitivePeerDependencies:
       - '@babel/core'
       - '@parcel/css'
@@ -8831,11 +8705,6 @@ packages:
       assert-plus: 1.0.0
     dev: true
 
-  /data-uri-to-buffer/4.0.1:
-    resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
-    engines: {node: '>= 12'}
-    dev: false
-
   /dateformat/3.0.3:
     resolution: {integrity: sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==}
     dev: true
@@ -10930,14 +10799,6 @@ packages:
       websocket-driver: 0.7.4
     dev: true
 
-  /fetch-blob/3.2.0:
-    resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
-    engines: {node: ^12.20 || >= 14.13}
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 3.3.2
-    dev: false
-
   /figures/3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
     engines: {node: '>=8'}
@@ -11144,13 +11005,6 @@ packages:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 4.0.0-beta.3
-
-  /formdata-polyfill/4.0.10:
-    resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
-    engines: {node: '>=12.20.0'}
-    dependencies:
-      fetch-blob: 3.2.0
-    dev: false
 
   /formidable/2.1.2:
     resolution: {integrity: sha512-CM3GuJ57US06mlpQ47YcunuUZ9jpm8Vx+P2CGt2j7HpgkKZO/DJYQ0Bobim8G6PFQmK5lOqOOdUXboU+h73A4g==}
@@ -14236,15 +14090,6 @@ packages:
     dependencies:
       whatwg-url: 5.0.0
 
-  /node-fetch/3.3.2:
-    resolution: {integrity: sha512-dRB78srN/l6gqWulah9SrxeYnxeddIG30+GOqK/9OlLVyLg3HPnr6SqOWTWOXKRwC2eGYCkZ59NNuSgvSrpgOA==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dependencies:
-      data-uri-to-buffer: 4.0.1
-      fetch-blob: 3.2.0
-      formdata-polyfill: 4.0.10
-    dev: false
-
   /node-forge/1.3.1:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
     engines: {node: '>= 6.13.0'}
@@ -15958,6 +15803,11 @@ packages:
     resolution: {integrity: sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==}
     engines: {node: '>=4'}
     dev: true
+
+  /prismjs/1.29.0:
+    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
+    engines: {node: '>=6'}
+    dev: false
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
@@ -17915,16 +17765,6 @@ packages:
       webpack: 5.89.0
     dev: true
 
-  /source-map-loader/4.0.2:
-    resolution: {integrity: sha512-oYwAqCuL0OZhBoSgmdrLa7mv9MjommVMiQIWgcztf+eS4+8BfcUee6nenFnDhKOhzAVnk5gpZdfnz1iiBv+5sg==}
-    engines: {node: '>= 14.15.0'}
-    peerDependencies:
-      webpack: ^5.72.1
-    dependencies:
-      iconv-lite: 0.6.3
-      source-map-js: 1.0.2
-    dev: true
-
   /source-map-support/0.5.21:
     resolution: {integrity: sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==}
     dependencies:
@@ -19423,11 +19263,6 @@ packages:
     dependencies:
       defaults: 1.0.4
     dev: true
-
-  /web-streams-polyfill/3.3.2:
-    resolution: {integrity: sha512-3pRGuxRF5gpuZc0W+EpwQRmCD7gRqcDOMt688KmdlDAgAyaB1XlN0zq2njfDNm44XVdIouE7pZ6GzbdyH47uIQ==}
-    engines: {node: '>= 8'}
-    dev: false
 
   /web-streams-polyfill/4.0.0-beta.3:
     resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}

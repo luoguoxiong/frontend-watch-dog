@@ -2140,6 +2140,11 @@
   "resolved" "https://registry.npmmirror.com/@types/parse-json/-/parse-json-4.0.2.tgz"
   "version" "4.0.2"
 
+"@types/prismjs@^1.26.3":
+  "integrity" "sha512-A0D0aTXvjlqJ5ZILMz3rNfDBOx9hHxLZYv2by47Sm/pqW35zzjusrZTryatjN/Rf8Us2gZrJD+KeHbUSTux1Cw=="
+  "resolved" "https://registry.npmmirror.com/@types/prismjs/-/prismjs-1.26.3.tgz"
+  "version" "1.26.3"
+
 "@types/prop-types@*":
   "integrity" "sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng=="
   "resolved" "https://registry.npmmirror.com/@types/prop-types/-/prop-types-15.7.11.tgz"
@@ -2723,7 +2728,7 @@
   dependencies:
     "color-convert" "^2.0.1"
 
-"antd@^5.12.5":
+"antd@^5.x":
   "integrity" "sha512-P+N8gc0NOPy2WqJj/57Ey3dZUmb7nEUwAM+CIJaR5SOEjZnhEtMGRJSt+3lnhJ3MNRR39aR6NYkRVp2mYfphiA=="
   "resolved" "https://registry.npmmirror.com/antd/-/antd-5.13.2.tgz"
   "version" "5.13.2"
@@ -2901,13 +2906,25 @@
   "version" "0.4.0"
 
 "autoprefixer@^10.4.13":
-  "integrity" "sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ=="
-  "resolved" "https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.16.tgz"
-  "version" "10.4.16"
+  "integrity" "sha512-/cpVNRLSfhOtcGflT13P2794gVSgmPgTR+erw5ifnMLZb0UnSlkK4tquLmkd3BhA+nLo5tX8Cu0upUsGKvKbmg=="
+  "resolved" "https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.17.tgz"
+  "version" "10.4.17"
   dependencies:
-    "browserslist" "^4.21.10"
-    "caniuse-lite" "^1.0.30001538"
-    "fraction.js" "^4.3.6"
+    "browserslist" "^4.22.2"
+    "caniuse-lite" "^1.0.30001578"
+    "fraction.js" "^4.3.7"
+    "normalize-range" "^0.1.2"
+    "picocolors" "^1.0.0"
+    "postcss-value-parser" "^4.2.0"
+
+"autoprefixer@10.4.5":
+  "integrity" "sha512-Fvd8yCoA7lNX/OUllvS+aS1I7WRBclGXsepbvT8ZaPgrH24rgXpZzF0/6Hh3ZEkwg+0AES/Osd196VZmYoEFtw=="
+  "resolved" "https://registry.npmmirror.com/autoprefixer/-/autoprefixer-10.4.5.tgz"
+  "version" "10.4.5"
+  dependencies:
+    "browserslist" "^4.20.2"
+    "caniuse-lite" "^1.0.30001332"
+    "fraction.js" "^4.2.0"
     "normalize-range" "^0.1.2"
     "picocolors" "^1.0.0"
     "postcss-value-parser" "^4.2.0"
@@ -3050,7 +3067,7 @@
   dependencies:
     "fill-range" "^7.0.1"
 
-"browserslist@^4.0.0", "browserslist@^4.14.5", "browserslist@^4.21.10", "browserslist@^4.21.4", "browserslist@^4.22.2", "browserslist@>= 4.21.0":
+"browserslist@^4.0.0", "browserslist@^4.14.5", "browserslist@^4.20.2", "browserslist@^4.21.4", "browserslist@^4.22.2", "browserslist@>= 4.21.0":
   "integrity" "sha512-0UgcrvQmBDvZHFGdYUehrCNIazki7/lUP3kkoi/r3YB2amZbFM9J43ZRkJTXBUZK4gmx56+Sqk9+Vs9mwZx9+A=="
   "resolved" "https://registry.npmmirror.com/browserslist/-/browserslist-4.22.2.tgz"
   "version" "4.22.2"
@@ -3132,10 +3149,10 @@
     "lodash.memoize" "^4.1.2"
     "lodash.uniq" "^4.5.0"
 
-"caniuse-lite@^1.0.0", "caniuse-lite@^1.0.30001538", "caniuse-lite@^1.0.30001565":
-  "integrity" "sha512-BtYEK4r/iHt/txm81KBudCUcTy7t+s9emrIaHqjYurQ10x71zJ5VQ9x1dYPcz/b+pKSp4y/v1xSI67A+LzpNyg=="
-  "resolved" "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001574.tgz"
-  "version" "1.0.30001574"
+"caniuse-lite@^1.0.0", "caniuse-lite@^1.0.30001332", "caniuse-lite@^1.0.30001565", "caniuse-lite@^1.0.30001578":
+  "integrity" "sha512-acWTYaha8xfhA/Du/z4sNZjHUWjkiuoAi2LM+T/aL+kemKQgPT1xBb/YKjlQ0Qo8gvbHsGNplrEJ+9G3gL7i4Q=="
+  "resolved" "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001583.tgz"
+  "version" "1.0.30001583"
 
 "chalk@^2.4.2":
   "integrity" "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="
@@ -4503,7 +4520,7 @@
   "resolved" "https://registry.npmmirror.com/forwarded/-/forwarded-0.2.0.tgz"
   "version" "0.2.0"
 
-"fraction.js@^4.3.6":
+"fraction.js@^4.2.0", "fraction.js@^4.3.7":
   "integrity" "sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew=="
   "resolved" "https://registry.npmmirror.com/fraction.js/-/fraction.js-4.3.7.tgz"
   "version" "4.3.7"
@@ -6636,6 +6653,11 @@
   "integrity" "sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA=="
   "resolved" "https://registry.npmmirror.com/pretty-time/-/pretty-time-1.1.0.tgz"
   "version" "1.1.0"
+
+"prismjs@^1.29.0":
+  "integrity" "sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q=="
+  "resolved" "https://registry.npmmirror.com/prismjs/-/prismjs-1.29.0.tgz"
+  "version" "1.29.0"
 
 "process-nextick-args@~2.0.0":
   "integrity" "sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag=="
