@@ -71,10 +71,11 @@ export default class JsErrorController extends Controller {
 
         if(originalPosition.source && originalPosition.line){
           const lines = consumer.sourceContentFor(originalPosition.source)?.split('\n');
-          const code = lines?.slice(Math.max(0, originalPosition.line - 5), originalPosition.line + 5);
+          const code = lines?.slice(Math.max(0, originalPosition.line - 10), originalPosition.line + 10);
           resolve({
             code,
-            line: 5,
+            originalPosition: originalPosition,
+            start: Math.max(0, originalPosition.line - 9),
             source: originalPosition.source,
           });
         }else{

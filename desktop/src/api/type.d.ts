@@ -151,3 +151,15 @@ type JsErrorMsgItem = JsErrorReportMsg & {
   userIds: string[];
   id: number;
 }
+
+type NearbyCodeMsg = {
+  code: string[];
+  originalPosition: {
+    source: string | null;
+    line: number | null;
+    column: number | null;
+    name: string | null;
+  };
+  source: string;
+  start: number;
+}

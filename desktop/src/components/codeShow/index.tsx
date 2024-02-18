@@ -7,7 +7,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.js';
 
 interface CodeShowIn {
-  hightLine?: string;
+  hightLine?: number;
   children: string;
   start?: number;
 }

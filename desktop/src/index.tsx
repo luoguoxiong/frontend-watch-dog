@@ -12,6 +12,9 @@ new Monitor({
   webVitalsTimeouts: 10000,
 });
 
+setTimeout(() => {
+  throw Error(1);
+}, 10);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // const xhr = new XMLHttpRequest();

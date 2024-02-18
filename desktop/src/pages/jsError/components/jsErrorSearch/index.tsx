@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, DatePicker, Form, Table } from 'antd';
+import { Alert, Button, DatePicker, Drawer, Form, Table } from 'antd';
 import type { TableColumnsType } from 'antd';
 import dayjs from 'dayjs';
 import styles from './index.module.less';
-import { Card } from '@/src/components';
+import { Card, CodeShow } from '@/src/components';
 import { getJsErrorList, getNearbyCode } from '@/src/api';
 import { useAppStore } from '@/src/hooks';
 
@@ -16,6 +16,18 @@ export const JsErrorSearch = () => {
   const { active } = useAppStore();
 
   const [loading, setLoading] = useState(false);
+
+  const [codeMsg, setCodeMsg] = useState({
+    open: false,
+    code: [],
+    originalPosition: {
+      source: '',
+      line: 0,
+      column: 0,
+      name: '',
+    },
+    start: 12,
+  });
 
   const toSearch = async() => {
     const { date } = form.getFieldsValue();
@@ -51,8 +63,11 @@ export const JsErrorSearch = () => {
     formData.append('sourcemapFile', file);
     formData.append('lineNumber', lineno);
     formData.append('columnNumber', colno);
-    const data = await getNearbyCode(formData);
-    console.log(data);
+    const { data } = await getNearbyCode(formData);
+    setCodeMsg({
+      ...data,
+      open: true,
+    });
   };
 
   const columns: TableColumnsType<JsErrorMsgItem> = [
@@ -150,6 +165,30 @@ export const JsErrorSearch = () => {
         dataSource={data}
         scroll={{ x: 1300 }}
       />
+      <Drawer
+        width={800}
+        title={'代码解析结果'}
+        onClose={(() => {
+          setCodeMsg({
+            ...codeMsg,
+            open: false,
+          });
+        })}
+        open={codeMsg.open}>
+        <Alert
+          message={
+            <span>
+              源代码位置：{codeMsg.originalPosition.source}{`(${codeMsg.originalPosition.line}, ${codeMsg.originalPosition.column})`}
+            </span>
+          }
+          type="info" />
+
+        <CodeShow
+          start={codeMsg.start}
+          hightLine={codeMsg.originalPosition?.line - codeMsg.start + 1}>
+          {codeMsg.code.join('\n')}
+        </CodeShow>
+      </Drawer>
     </Card>
   );
 };
