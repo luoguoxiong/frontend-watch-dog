@@ -1,1 +1,24 @@
 # frontend-watch-dog
+
+## 快速开始
+
+1. 安装Docker 官网：https://www.docker.com/
+
+2. 安装docker-compose 下载地址：https://github.com/docker/compose/releases
+
+3. 进入到service目录，修改hostIP
+
+```shell
+# 改成你的本地IP地址
+export hostIP='192.168.104.105'
+```
+4. 进入到service目录,执行安装docker基础服务
+```shell
+./start-docker-compose.sh
+```
+5. 安装依赖
+```shell
+yarn install
+
+yarn dev
+```
