@@ -22,3 +22,11 @@ yarn install
 
 yarn dev
 ```
+
+## 目录说明
+```shell
+|-- desktop                                                          // 监控后台系统
+|-- packages                                                         // 上报SDK
+|   |-- web-sdk
+|-- service                                                          // 监控服务端
+```
