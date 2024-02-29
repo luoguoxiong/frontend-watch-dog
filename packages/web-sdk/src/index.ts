@@ -207,6 +207,8 @@ export class Monitor {
       'error',
       (error: ErrorEvent | Event) => {
         if(error instanceof ErrorEvent){
+          console.log(error);
+
           monitor.toReport({
             ...monitor.getPageMsg(),
             type: 'jsError',
@@ -248,16 +250,23 @@ export class Monitor {
 
     xmlhttp.prototype.open = function(...args) {
       const xml = this as XMLHttpRequest;
+      const url = args[1];
+      const method = args[0];
+      const isGet = method.toLocaleLowerCase() === 'get';
+      const reqUrl = isGet ? url.split('?')[0] : url;
+
       const config: RequestReportMsg = {
         type: 'request',
-        url: args[1],
-        method: args[0],
+        url: reqUrl,
+        method: args[0].toLocaleLowerCase(),
         reqHeaders: '',
         reqBody: '',
         status: 0,
         requestType: 'done',
         cost: 0,
       };
+
+      config.reqBody = method.toLocaleLowerCase() === 'get' ? url.split('?')[1] : '';
 
       let startTime;
 
@@ -272,7 +281,9 @@ export class Monitor {
       };
 
       xml.send = function(args: Document | XMLHttpRequestBodyInit){
-        config.reqBody = JSON.stringify(args);
+        if(args){
+          config.reqBody = typeof args === 'string' ? args : JSON.stringify(args);
+        }
         return originSend.apply(xml, [args]);
       };
 
@@ -281,7 +292,7 @@ export class Monitor {
           config.status = this.status;
           config.cost = performance.now() - startTime;
           config.reqHeaders = JSON.stringify(requestHeader);
-          config.requestType = this.status === 0 ? 'error' : 'done';
+          config.requestType = this.status < 200 || this.status >= 300 ? 'error' : 'done';
           monitor.toReport({
             type: 'request',
             ...monitor.getPageMsg(),
@@ -292,28 +303,19 @@ export class Monitor {
       xml.addEventListener('loadstart', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
         startTime = performance.now();
       });
-      xml.addEventListener('error', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
-        config.requestType = 'error';
-        config.status = this.status;
-        config.cost = performance.now() - startTime;
-        config.reqHeaders = JSON.stringify(requestHeader);
-        monitor.toReport({
-          type: 'request',
-          ...monitor.getPageMsg(),
-          ...config,
-        });
-      });
-      xml.addEventListener('timeout', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
-        config.requestType = 'timeout';
-        config.status = this.status;
-        config.cost = performance.now() - startTime;
-        config.reqHeaders = JSON.stringify(requestHeader);
-        monitor.toReport({
-          type: 'request',
-          ...monitor.getPageMsg(),
-          ...config,
-        });
-      });
+      // xml.addEventListener('error', function(data: ProgressEvent<XMLHttpRequestEventTarget>){
+      //   console.log('error', config.url);
+
+      //   config.requestType = 'error';
+      //   config.status = this.status;
+      //   config.cost = performance.now() - startTime;
+      //   config.reqHeaders = JSON.stringify(requestHeader);
+      //   // monitor.toReport({
+      //   //   type: 'request',
+      //   //   ...monitor.getPageMsg(),
+      //   //   ...config,
+      //   // });
+      // });
       return originOpen.apply(this, args);
     };
   }
@@ -326,7 +328,7 @@ export class Monitor {
       const data: RequestReportMsg = {
         type: 'request',
         url: url as string,
-        method: method,
+        method: method.toLocaleLowerCase(),
         reqHeaders: headers ? JSON.stringify(headers) : '',
         reqBody: body ? JSON.stringify(body) : '',
         status: 0,
